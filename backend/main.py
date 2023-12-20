@@ -4,6 +4,13 @@ from database import engine, SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
 from routers import auth
+from dotenv import load_dotenv
+import os
+
+
+
+load_dotenv()
+
 
 app = FastAPI()
 
@@ -30,4 +37,5 @@ async def user(user: None, db:db_dependency):
 
 @app.get("/test", status_code=status.HTTP_200_OK)
 async def test():
+    print(os.getenv("SECRET_KEY"))
     return "test"
