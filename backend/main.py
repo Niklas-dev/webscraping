@@ -1,16 +1,13 @@
 from fastapi import FastAPI, status, Depends, HTTPException
 import models
-from database import engine, SessionLocal
+from database import engine, SessionLocal, db_dependency
 from typing import Annotated
 from sqlalchemy.orm import Session
-from routers import auth
+from routers.auth import auth
 from dotenv import load_dotenv
 import os
 
-
-
 load_dotenv()
-
 
 app = FastAPI()
 
