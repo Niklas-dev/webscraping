@@ -4,13 +4,13 @@ from typing import Annotated
 
 from starlette import status
 from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from db.database import db_dependency
+
 import os
 from jose import jwt, JWTError
 from .models import Users
-from .validators import CreateUserRequest, Token
+
 
 
 

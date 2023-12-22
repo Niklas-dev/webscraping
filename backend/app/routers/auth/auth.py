@@ -1,17 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
-from datetime import timedelta, datetime
+from datetime import timedelta
 from typing import Annotated
-from sqlalchemy.orm import Session
 from starlette import status
-from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import jwt, JWTError
-import os
-from .models import Users
+from fastapi.security import OAuth2PasswordRequestForm
 
+from .models import Users
 from .validators import CreateUserRequest, Token
 from db.database import db_dependency
-from .services import get_current_user, create_access_token, authenticate_user, user_dependency, bcrypt_context
+from .services import create_access_token, authenticate_user, bcrypt_context
 
 router = APIRouter(
 prefix='/auth',
