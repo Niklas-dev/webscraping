@@ -10,6 +10,7 @@ from routers.auth.services import user_dependency
 from routers.auth import models as auth_models
 from routers.auth.auth import router as auth_router
 
+
 load_dotenv()
 
 app = FastAPI()
@@ -33,3 +34,9 @@ async def user(user: user_dependency, db:db_dependency):
 async def test():
     print(os.getenv("SECRET_KEY"))
     return "test"
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app="main:app", host="0.0.0.0", port=80, reload=True)
