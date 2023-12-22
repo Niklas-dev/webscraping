@@ -6,25 +6,19 @@ from starlette import status
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
-from db.database import db_dependency
 import os
-
 from .models import Users
+
 from .validators import CreateUserRequest, Token
-from .services import get_current_user, create_access_token, authenticate_user
+from db.database import db_dependency
+from .services import get_current_user, create_access_token, authenticate_user, user_dependency, bcrypt_context
 
 router = APIRouter(
 prefix='/auth',
 tags = ['auth']
 )
 
-ALGORITHM = "HS256"
 
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-oauth_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
-    
-user_dependency = Annotated[dict, Depends(get_current_user)]
     
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
