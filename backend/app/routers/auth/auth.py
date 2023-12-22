@@ -4,14 +4,14 @@ from typing import Annotated
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
-from database import SessionLocal
+from app.database import SessionLocal
 from models import Users
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 import os
 from .validators import CreateUserRequest, Token
-from database import db_dependency
+from app.database import db_dependency
 router = APIRouter(
 prefix='/auth',
 tags = ['auth']
