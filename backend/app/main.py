@@ -1,8 +1,6 @@
 from fastapi import FastAPI, status, HTTPException
 
 from db.database import engine, db_dependency
-
-
 from routers.auth import auth
 from dotenv import load_dotenv
 from routers.auth import models as auth_models

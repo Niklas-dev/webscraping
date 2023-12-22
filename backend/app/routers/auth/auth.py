@@ -3,14 +3,15 @@ from datetime import timedelta, datetime
 from typing import Annotated
 from sqlalchemy.orm import Session
 from starlette import status
-
-from .models import Users
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
-import os
-from .validators import CreateUserRequest, Token
 from db.database import db_dependency
+import os
+
+from .models import Users
+from .validators import CreateUserRequest, Token
+
 router = APIRouter(
 prefix='/auth',
 tags = ['auth']
