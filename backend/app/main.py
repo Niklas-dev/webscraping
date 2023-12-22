@@ -1,11 +1,11 @@
-from fastapi import FastAPI, status, Depends, HTTPException
-import models
-from app.database import engine, SessionLocal, db_dependency
-from typing import Annotated
-from sqlalchemy.orm import Session
+from fastapi import FastAPI, status, HTTPException
+
+from db.database import engine, db_dependency
+
+
 from routers.auth import auth
 from dotenv import load_dotenv
-
+from routers.auth import models as auth_models
 import os
 
 load_dotenv()
@@ -14,17 +14,11 @@ app = FastAPI()
 
 app.include_router(auth.router)
 
-models.Base.metadata.create_all(bind=engine)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+auth_models.Base.metadata.create_all(bind=engine)
 
 
-db_dependency = Annotated[Session, Depends(get_db)]
+
 
 @app.get("/", status_code=status.HTTP_200_OK)
 async def user(user: auth.user_dependency, db:db_dependency):
