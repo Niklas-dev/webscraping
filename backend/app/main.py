@@ -1,9 +1,7 @@
 from fastapi import FastAPI, status, HTTPException
-
 from db.database import engine, db_dependency
-
 from dotenv import load_dotenv
-
+import logging
 import os
 
 from routers.auth.services import user_dependency
@@ -11,6 +9,8 @@ from routers.auth import models as auth_models
 from routers.auth.auth import router as auth_router
 
 load_dotenv()
+
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 app = FastAPI()
 
