@@ -1,3 +1,4 @@
+import os
 from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -5,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from typing import Annotated
 from sqlalchemy.orm import Session
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/webscraping-db"
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
