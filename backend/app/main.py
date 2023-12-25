@@ -6,7 +6,7 @@ import os
 
 from routers.auth.services import user_dependency
 from routers.auth import models as auth_models
-from routers.auth.auth import router as auth_router
+from routers.auth.auth import router as auth_router 
 
 load_dotenv()
 

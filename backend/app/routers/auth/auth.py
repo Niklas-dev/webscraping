@@ -3,11 +3,12 @@ import os
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import timedelta
 from typing import Annotated
+from pydantic import ValidationError
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
 import requests
 from .models import Users
-from .validators import CreateUserRequest, Token
+from .validators import CreateUserRequest, GoogleUser, Token
 
 from .services import create_access_token, authenticate_user, bcrypt_context
 from db.database import db_dependency
@@ -41,6 +42,14 @@ async def auth_google(code: str):
     response = requests.post(token_url, data=data)
     access_token = response.json().get("access_token")
     user_info = requests.get("https://www.googleapis.com/oauth2/v1/userinfo", headers={"Authorization": f"Bearer {access_token}"})
+
+
+    if user_info.status_code == 401:
+        return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Failed to authenticate.")
+    
+    google_user = GoogleUser(**user_info.json()) 
+    print(google_user)
+
     return user_info.json()
 
 
