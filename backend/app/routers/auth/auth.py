@@ -39,18 +39,28 @@ async def auth_google(code: str):
         "redirect_uri": GOOGLE_REDIRECT_URI,
         "grant_type": "authorization_code",
     }
-    response = requests.post(token_url, data=data)
-    access_token = response.json().get("access_token")
-    user_info = requests.get("https://www.googleapis.com/oauth2/v1/userinfo", headers={"Authorization": f"Bearer {access_token}"})
+    oauth_response = requests.post(token_url, data=data)
+
+    if oauth_response.status_code != 200:
+        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get google access token.")
+        
+    access_token = oauth_response.json().get("access_token")
 
 
-    if user_info.status_code == 401:
+    user_response = requests.get("https://www.googleapis.com/oauth2/v1/userinfo", headers={"Authorization": f"Bearer {access_token}"})
+
+    if user_response.status_code != 200:
         return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Failed to authenticate.")
     
-    google_user = GoogleUser(**user_info.json()) 
-    print(google_user)
+    google_user = GoogleUser(**user_response.json()) 
 
-    return user_info.json()
+    print(oauth_response.status_code)
+    print(user_response.status_code)
+
+
+
+
+    return google_user
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
