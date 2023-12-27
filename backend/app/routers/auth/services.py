@@ -55,4 +55,33 @@ async def get_current_user(token: Annotated[str, Depends(oauth_bearer)]):
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
     
+    from sqlalchemy.orm import Session
+from .models import User  # Import your User model
+
+def get_user_by_google_id(google_id: str, db: Session):
+    return db.query(User).filter(User.google_id == google_id).first()
+
+def create_user_from_google_info(user_info: dict, db: Session):
+    google_id = user_info.get("id")
+    email = user_info.get("email")
+    name = user_info.get("name")
+
+    existing_user = db.query(User).filter(User.email == email).first()
+
+    if existing_user:
+        existing_user.google_id = google_id
+        db.commit()
+        return existing_user
+    else:
+        new_user = User(
+            username=email,  
+            email=email,
+            google_id=google_id,
+            full_name=name,
+        )
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
+    
 user_dependency = Annotated[dict, Depends(get_current_user)]
