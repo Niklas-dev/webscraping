@@ -10,7 +10,7 @@ import requests
 from .models import Users
 from .validators import CreateUserRequest, GoogleUser, Token
 
-from .services import create_access_token, authenticate_user, bcrypt_context
+from .services import create_access_token, authenticate_user, bcrypt_context, create_user_from_google_info, get_user_by_google_id
 from db.database import db_dependency
 
 
@@ -30,7 +30,7 @@ async def login_google():
     }
 
 @router.get("/google")
-async def auth_google(code: str):
+async def auth_google(code: str, db: db_dependency):
     token_url = "https://accounts.google.com/o/oauth2/token"
     data = {
         "code": code,
@@ -57,10 +57,18 @@ async def auth_google(code: str):
     print(oauth_response.status_code)
     print(user_response.status_code)
 
+    existing_user = get_user_by_google_id(google_user.id, db)
+    if existing_user:
+        print("Existing user")
+        user = existing_user
+    else:
+        print("Creating user")
+        user = create_user_from_google_info(google_user, db)
 
 
-
-    return google_user
+    token = create_access_token(user.username, user.id, timedelta(days=3))
+    
+    return {"access_token": token, "token_type": "bearer"}
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
