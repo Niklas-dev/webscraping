@@ -27,6 +27,7 @@ class TokenAuthentication():
     def __init__(self):
         pass
 
+    @staticmethod
     def create_access_token(username: str, user_id: int, expires_delta: timedelta):
         encode = {"sub": username, "id": user_id}
 
@@ -36,6 +37,7 @@ class TokenAuthentication():
 
         return jwt.encode(encode, os.getenv("SECRET_KEY"), algorithm=ALGORITHM)
 
+    @staticmethod
     def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
 
         return create_access_token(username, user_id, expires_delta)
