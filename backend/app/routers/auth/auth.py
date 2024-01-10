@@ -1,5 +1,3 @@
-import os
-
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import timedelta
 from typing import Annotated
@@ -10,9 +8,9 @@ import requests
 from .models import Users
 from .validators import CreateUserRequest, GoogleUser, Token
 
-from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, create_user_from_google_info, get_user_by_google_id
-from db.database import db_dependency
-
+from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
+    create_user_from_google_info, get_user_by_google_id
+from app.db.database import db_dependency
 
 router = APIRouter(
     prefix='/auth',
@@ -23,11 +21,13 @@ GOOGLE_CLIENT_ID = "969709362942-oqoriveq3lumcs940jio55uj54uet39u.apps.googleuse
 GOOGLE_CLIENT_SECRET = "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"
 GOOGLE_REDIRECT_URI = "http://localhost/auth/google"
 
+
 @router.get("/login/google")
 async def login_google():
     return {
         "url": f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={GOOGLE_REDIRECT_URI}&scope=openid%20profile%20email&access_type=offline"
     }
+
 
 @router.get("/google")
 async def auth_google(code: str, db: db_dependency):
@@ -43,16 +43,16 @@ async def auth_google(code: str, db: db_dependency):
 
     if oauth_response.status_code != 200:
         return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get google access token.")
-        
+
     access_token = oauth_response.json().get("access_token")
 
-
-    user_response = requests.get("https://www.googleapis.com/oauth2/v1/userinfo", headers={"Authorization": f"Bearer {access_token}"})
+    user_response = requests.get("https://www.googleapis.com/oauth2/v1/userinfo",
+                                 headers={"Authorization": f"Bearer {access_token}"})
 
     if user_response.status_code != 200:
         return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Failed to authenticate.")
-    
-    google_user = GoogleUser(**user_response.json()) 
+
+    google_user = GoogleUser(**user_response.json())
 
     print(oauth_response.status_code)
     print(user_response.status_code)
@@ -65,10 +65,9 @@ async def auth_google(code: str, db: db_dependency):
         print("Creating user")
         user = create_user_from_google_info(google_user, db)
 
-
-        access_token = create_access_token(user.username, user.id, timedelta(days=7))
+    access_token = create_access_token(user.username, user.id, timedelta(days=7))
     refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
-    
+
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
 
 
