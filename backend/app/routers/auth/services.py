@@ -40,6 +40,8 @@ class TokenManager:
 
 
 class Authentication:
+
+    @staticmethod
     def authenticate_user(username: str, password: str, db: type[Session]):
         user: Users = db.query(Users).filter(Users.username == username).first()
 
@@ -49,9 +51,11 @@ class Authentication:
             return False
         return user
 
+    @staticmethod
     def get_user_by_google_id(google_id: str, db: Session):
         return db.query(Users).filter(Users.google_id == str(google_id)).first()
 
+    @staticmethod
     def create_user_from_google_info(google_user: GoogleUser, db: Session):
         google_id = google_user.id
         email = google_user.email
