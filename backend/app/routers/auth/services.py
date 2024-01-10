@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, UTC
 from typing import Annotated
 
 from starlette import status
@@ -13,17 +13,14 @@ from jose import jwt, JWTError
 from .validators import GoogleUser
 from .models import Users
 
-
-
-
-
 ALGORITHM = "HS256"
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
-    
-class TokenAuthentication():
+
+
+class TokenAuthentication:
     def __init__(self):
         pass
 
@@ -31,7 +28,7 @@ class TokenAuthentication():
     def create_access_token(username: str, user_id: int, expires_delta: timedelta):
         encode = {"sub": username, "id": user_id}
 
-        expires = datetime.utcnow() + expires_delta
+        expires = datetime.now(UTC) + expires_delta
 
         encode.update({"exp": expires})
 
@@ -39,8 +36,8 @@ class TokenAuthentication():
 
     @staticmethod
     def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
-
         return create_access_token(username, user_id, expires_delta)
+
 
 def authenticate_user(username: str, password: str, db: type[Session]):
     user: Users = db.query(Users).filter(Users.username == username).first()
@@ -51,22 +48,26 @@ def authenticate_user(username: str, password: str, db: type[Session]):
         return False
     return user
 
+
 def create_access_token(username: str, user_id: int, expires_delta: timedelta):
     encode = {"sub": username, "id": user_id}
 
-    expires = datetime.utcnow() + expires_delta
+    expires = datetime.now(UTC) + expires_delta
 
     encode.update({"exp": expires})
 
     return jwt.encode(encode, os.getenv("SECRET_KEY"), algorithm=ALGORITHM)
 
-def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
 
+def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
     return create_access_token(username, user_id, expires_delta)
 
 
+def decode_token(token):
+    return jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=ALGORITHM)
 
-async def get_current_user(token: Annotated[str, Depends(oauth_bearer)]):
+
+def get_current_user(token: Annotated[str, Depends(oauth_bearer)]):
     try:
         payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=ALGORITHM)
         username: str = payload.get("sub")
@@ -77,10 +78,22 @@ async def get_current_user(token: Annotated[str, Depends(oauth_bearer)]):
         return {"username": username, "id": user_id}
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
-    
+
+
+def token_expired(token: Annotated[str, Depends(oauth_bearer)]):
+    try:
+        payload = decode_token(token)
+        if not datetime.fromtimestamp(payload.get('exp'), UTC) > datetime.now(UTC):
+            return True
+        return False
+
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
+
 
 def get_user_by_google_id(google_id: str, db: Session):
     return db.query(Users).filter(Users.google_id == str(google_id)).first()
+
 
 def create_user_from_google_info(google_user: GoogleUser, db: Session):
     google_id = google_user.id
@@ -90,14 +103,14 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
     existing_user = db.query(Users).filter(Users.email == email).first()
 
     if existing_user:
-        
+
         existing_user.google_id = google_id
         db.commit()
         return existing_user
     else:
-        
+
         new_user = Users(
-            username=email,  
+            username=email,
             email=email,
             google_id=google_id,
 
@@ -106,5 +119,6 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
         db.commit()
         db.refresh(new_user)
         return new_user
-    
+
+
 user_dependency = Annotated[dict, Depends(get_current_user)]
