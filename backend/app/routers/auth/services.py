@@ -23,7 +23,22 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
     
+class TokenAuthentication():
+    def __init__(self):
+        pass
 
+    def create_access_token(username: str, user_id: int, expires_delta: timedelta):
+        encode = {"sub": username, "id": user_id}
+
+        expires = datetime.utcnow() + expires_delta
+
+        encode.update({"exp": expires})
+
+        return jwt.encode(encode, os.getenv("SECRET_KEY"), algorithm=ALGORITHM)
+
+    def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
+
+        return create_access_token(username, user_id, expires_delta)
 
 def authenticate_user(username: str, password: str, db: type[Session]):
     user: Users = db.query(Users).filter(Users.username == username).first()
@@ -42,6 +57,10 @@ def create_access_token(username: str, user_id: int, expires_delta: timedelta):
     encode.update({"exp": expires})
 
     return jwt.encode(encode, os.getenv("SECRET_KEY"), algorithm=ALGORITHM)
+
+def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
+
+    return create_access_token(username, user_id, expires_delta)
 
 
 
