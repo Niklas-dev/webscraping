@@ -20,7 +20,7 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
-class TokenAuthentication:
+class TokenManager:
     def __init__(self):
         pass
 
@@ -37,6 +37,10 @@ class TokenAuthentication:
     @staticmethod
     def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
         return create_access_token(username, user_id, expires_delta)
+
+
+class Authentication:
+    pass
 
 
 def authenticate_user(username: str, password: str, db: type[Session]):
