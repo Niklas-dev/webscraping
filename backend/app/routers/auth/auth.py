@@ -1,16 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import timedelta
 from typing import Annotated
-from pydantic import ValidationError
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
 import requests
 from .models import Users
-from .validators import CreateUserRequest, GoogleUser, Token
+from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest
 
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
-    create_user_from_google_info, get_user_by_google_id
-from app.db.database import db_dependency
+    create_user_from_google_info, get_user_by_google_id, token_expired, decode_token
+from db.database import db_dependency
 
 router = APIRouter(
     prefix='/auth',
@@ -81,7 +80,7 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
     db.add(create_user_model)
     db.commit()
 
-    return create_user_model
+    return create_user_request
 
 
 @router.post("/token", response_model=Token)
@@ -90,6 +89,22 @@ async def login_for_access_token(db: db_dependency, form_data: Annotated[OAuth2P
 
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
+
+    access_token = create_access_token(user.username, user.id, timedelta(days=7))
+    refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
+
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+
+
+@router.post("/refresh", response_model=Token)
+async def login_for_access_token(db: db_dependency, refresh_token_request: RefreshTokenRequest):
+    token = refresh_token_request.refresh_token
+
+    if token_expired(token):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token is expired.")
+
+    user = decode_token(token)
+    print(f"Refreshed token for {user.username}")
 
     access_token = create_access_token(user.username, user.id, timedelta(days=7))
     refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
