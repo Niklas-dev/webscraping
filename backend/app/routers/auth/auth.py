@@ -10,7 +10,7 @@ import requests
 from .models import Users
 from .validators import CreateUserRequest, GoogleUser, Token
 
-from .services import create_access_token, authenticate_user, bcrypt_context, create_user_from_google_info, get_user_by_google_id
+from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, create_user_from_google_info, get_user_by_google_id
 from db.database import db_dependency
 
 
@@ -66,9 +66,10 @@ async def auth_google(code: str, db: db_dependency):
         user = create_user_from_google_info(google_user, db)
 
 
-    token = create_access_token(user.username, user.id, timedelta(days=3))
+        access_token = create_access_token(user.username, user.id, timedelta(days=7))
+    refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
     
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
@@ -81,6 +82,8 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
     db.add(create_user_model)
     db.commit()
 
+    return create_user_model
+
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(db: db_dependency, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
@@ -89,6 +92,7 @@ async def login_for_access_token(db: db_dependency, form_data: Annotated[OAuth2P
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
 
-    token = create_access_token(user.username, user.id, timedelta(days=3))
+    access_token = create_access_token(user.username, user.id, timedelta(days=7))
+    refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
 
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
