@@ -1,0 +1,21 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 251.2397918701172 199.12811627052724" width="251.2397918701172" height="199.12811627052724">
+  <!-- svg-source:excalidraw -->
+  
+  <defs>
+    <style class="style-fonts">
+      @font-face {
+        font-family: "Virgil";
+        src: url("https://excalidraw.com/Virgil.woff2");
+      }
+      @font-face {
+        font-family: "Cascadia";
+        src: url("https://excalidraw.com/Cascadia.woff2");
+      }
+      @font-face {
+        font-family: "Assistant";
+        src: url("https://excalidraw.com/Assistant-Regular.woff2");
+      }
+    </style>
+    
+  </defs>
+  <g stroke-linecap="round"><g transform="translate(123.46802585977991 152.12811627052724) rotate(0 35.26598707011004 -71.5)"><path d="M0.3 1.16 C12.11 -9.24, 61.85 -38.93, 70.89 -62.81 C79.93 -86.7, 57.39 -128.73, 54.55 -142.13" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-dasharray="8 10"></path></g><g transform="translate(123.46802585977991 152.12811627052724) rotate(0 35.26598707011004 -71.5)"><path d="M70.39 -122.78 C67.56 -128.05, 61.1 -132.85, 54.55 -142.13" stroke="#ffffff" stroke-width="2.5" fill="none"></path></g><g transform="translate(123.46802585977991 152.12811627052724) rotate(0 35.26598707011004 -71.5)"><path d="M54.25 -117.13 C56.37 -124.16, 54.83 -130.68, 54.55 -142.13" stroke="#ffffff" stroke-width="2.5" fill="none"></path></g></g><mask></mask><g transform="translate(10 164.12811627052724) rotate(0 115.6198959350586 12.5)"><text x="0" y="0" font-family="Virgil, Segoe UI Emoji" font-size="20px" fill="#ffffff" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">to never miss click here</text></g></svg>
