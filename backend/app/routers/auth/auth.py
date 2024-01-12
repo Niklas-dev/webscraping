@@ -9,7 +9,7 @@ from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenReques
 
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
     create_user_from_google_info, get_user_by_google_id, token_expired, decode_token
-from db.database import db_dependency
+from ...db.database import db_dependency
 
 router = APIRouter(
     prefix='/auth',
