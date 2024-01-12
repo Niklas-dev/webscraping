@@ -13,7 +13,7 @@ class Token(BaseModel):
 
 
 class GoogleUser(BaseModel):
-    id: int
+    sub: int
     email: str
     name: str
     picture: str

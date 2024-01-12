@@ -1,3 +1,5 @@
+from authlib.integrations.base_client import OAuthError
+from authlib.oauth2.rfc6749 import OAuth2Token
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import timedelta
 from typing import Annotated
@@ -10,6 +12,8 @@ from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenReques
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
     create_user_from_google_info, get_user_by_google_id, token_expired, decode_token
 from ...db.database import db_dependency
+from .services import oauth
+from fastapi import Request
 
 router = APIRouter(
     prefix='/auth',
@@ -22,41 +26,23 @@ GOOGLE_REDIRECT_URI = "http://localhost/auth/google"
 
 
 @router.get("/login/google")
-async def login_google():
-    return {
-        "url": f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={GOOGLE_REDIRECT_URI}&scope=openid%20profile%20email&access_type=offline"
-    }
+async def login_google(request: Request):
+    return await oauth.google.authorize_redirect(request, GOOGLE_REDIRECT_URI)
 
 
 @router.get("/google")
-async def auth_google(code: str, db: db_dependency):
-    token_url = "https://accounts.google.com/o/oauth2/token"
-    data = {
-        "code": code,
-        "client_id": GOOGLE_CLIENT_ID,
-        "client_secret": GOOGLE_CLIENT_SECRET,
-        "redirect_uri": GOOGLE_REDIRECT_URI,
-        "grant_type": "authorization_code",
-    }
-    oauth_response = requests.post(token_url, data=data)
+async def auth_google(request: Request, db: db_dependency):
+    try:
+        user_response: OAuth2Token = await oauth.google.authorize_access_token(request)
+    except OAuthError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
-    if oauth_response.status_code != 200:
-        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to get google access token.")
+    user_info = user_response.get("userinfo")
 
-    access_token = oauth_response.json().get("access_token")
+    google_user = GoogleUser(**user_info)
 
-    user_response = requests.get("https://www.googleapis.com/oauth2/v1/userinfo",
-                                 headers={"Authorization": f"Bearer {access_token}"})
+    existing_user = get_user_by_google_id(google_user.sub, db)
 
-    if user_response.status_code != 200:
-        return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Failed to authenticate.")
-
-    google_user = GoogleUser(**user_response.json())
-
-    print(oauth_response.status_code)
-    print(user_response.status_code)
-
-    existing_user = get_user_by_google_id(google_user.id, db)
     if existing_user:
         print("Existing user")
         user = existing_user

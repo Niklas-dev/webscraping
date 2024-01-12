@@ -1,4 +1,6 @@
 from fastapi import FastAPI, status, HTTPException
+from starlette.middleware.sessions import SessionMiddleware
+
 from app.db.database import engine, db_dependency
 from dotenv import load_dotenv
 import logging
@@ -10,9 +12,13 @@ from app.routers.auth.auth import router as auth_router
 
 load_dotenv()
 
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 app = FastAPI()
+
+app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 app.include_router(auth_router)
 
