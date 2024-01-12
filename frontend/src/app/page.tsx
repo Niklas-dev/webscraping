@@ -21,14 +21,16 @@ export default function Home() {
         alt="Follow us on Twitter"
       />
       <div className="text-white relative flex flex-col items-center justify-center mt-40">
-        <div className="text-7xl text-center font-bold">
+        <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-center font-bold">
           <h1 className="">Missed an discount?</h1>
-          <h2 className="text-3xl ">Won&apos;t happen again.</h2>
+          <h2 className="text-xl md:text-2xl 2xl:text-3xl ">
+            Won&apos;t happen again.
+          </h2>
         </div>
-        <div className="mt-8">
-          <p className="text-xl text-center font-medium">
-            Listen to price changes and discounts easily all possible with Eavy.{" "}
-            <br />
+        <div className="mt-8 px-14">
+          <p className="text-base md:text-lg xl:text-xl text-center font-medium">
+            Listen to price changes and discounts easily all possible with Eavy.
+            <br className="md:block hidden" />
             Track your products and receive a notice on price drop.
           </p>
         </div>
