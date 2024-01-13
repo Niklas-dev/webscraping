@@ -1,8 +1,8 @@
-import NavBar from "./components/NavBar";
-import MainSection from "./components/landing/MainSection";
-import BlurColors from "./components/landing/BlurColors";
-import WhatDoes from "./components/landing/WhatDoes";
-import HowDoes from "./components/landing/HowDoes";
+import NavBar from "@/components/NavBar";
+import BlurColors from "@/components/landing/BlurColors";
+import HowDoes from "@/components/landing/HowDoes";
+import MainSection from "@/components/landing/MainSection";
+import WhatDoes from "@/components/landing/WhatDoes";
 
 export default function Home() {
   return (
