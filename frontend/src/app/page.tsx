@@ -60,7 +60,7 @@ export default function Home() {
           </h4>
         </div>
         <p className="text-3xl mt-8 w-[36rem] text-center">
-          &quot;TendPilot is a one-in-all platfrom for findings ideas and
+          &quot;TrendPilot is a one-in-all platfrom for findings ideas and
           creating content, which comply with modern social media.&quot; <br />{" "}
           - Niklas-dev
         </p>
