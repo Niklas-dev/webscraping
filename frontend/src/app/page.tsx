@@ -3,7 +3,7 @@ import NavBar from "./components/NavBar";
 
 export default function Home() {
   return (
-    <div className="w-screen h-screen relative bg-[#070707]">
+    <div className="w-screen h-screen relative  bg-gradient-to-b from-[#111111] to-black">
       <div className="absolute w-full h-96 blur-[135px] flex justify-center -top-10 gap-2 ">
         <div className="w-44 h-44 bg-red-600 rounded-full"></div>
         <div className="w-44 h-44 bg-orange-600 rounded-full"></div>
@@ -13,13 +13,7 @@ export default function Home() {
         <div className="w-44 h-44 bg-indigo-600 rounded-full"></div>
       </div>
       <NavBar />
-      <Image
-        className="absolute hidden md:block top-56 md:-left-10 lg:left-2 xl:left-32 scale-50 lg:scale-75 xl:scale-90 2xl:scale-100"
-        src="/process.svg"
-        width={400}
-        height={400}
-        alt="Follow us on Twitter"
-      />
+
       <div className="text-white relative flex flex-col items-center justify-center mt-40">
         <div className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl text-center font-bold">
           <h1 className="">Missed an discount?</h1>
