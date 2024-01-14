@@ -1,4 +1,5 @@
 import BlurColors from "@/components/BlurColors";
+import Link from "next/link";
 
 export default function page() {
   return (
@@ -22,6 +23,18 @@ export default function page() {
             />
           </div>
           <div className="flex flex-col">
+            <label className=" text-white" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="w-64 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg"
+              type="text"
+              name="Email"
+              placeholder="Email"
+              id="email"
+            />
+          </div>
+          <div className="flex flex-col">
             <label className=" text-white" htmlFor="password">
               Password
             </label>
@@ -36,7 +49,7 @@ export default function page() {
 
           <div className="flex flex-col gap-2 mt-4">
             <button className="bg-white rounded-lg py-1 px-3 font-medium text-lg ">
-              Login
+              Register
             </button>
             <button className="border-white border-2 text-white rounded-lg py-1 px-3 font-medium text-lg ">
               Google
@@ -47,9 +60,14 @@ export default function page() {
               or
             </span>
           </div>
-          <button className="text-lg text-white hover:underline">
-            create a new account
-          </button>
+          <div className="w-full flex flex-row justify-center">
+            <Link
+              href={"/login"}
+              className="text-lg text-white hover:underline w-fit"
+            >
+              login to existing account
+            </Link>
+          </div>
         </form>
       </div>
     </div>

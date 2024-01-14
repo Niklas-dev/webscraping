@@ -1,4 +1,5 @@
 import BlurColors from "@/components/BlurColors";
+import Link from "next/link";
 
 export default function page() {
   return (
@@ -47,9 +48,14 @@ export default function page() {
               or
             </span>
           </div>
-          <button className="text-lg text-white hover:underline">
-            create a new account
-          </button>
+          <div className="w-full flex flex-row justify-center">
+            <Link
+              href={"/register"}
+              className="text-lg text-white hover:underline w-fit"
+            >
+              create a new account
+            </Link>
+          </div>
         </form>
       </div>
     </div>
