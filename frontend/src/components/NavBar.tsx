@@ -16,8 +16,8 @@ export default function NavBar() {
           Pricing
         </Link>
         <Link
-          href={""}
-          className=" bg-white text-black rounded-lg  py-1.5 px-2.5 text-xl font-bold hover:scale-105"
+          href={"/login"}
+          className=" bg-white text-black rounded-lg  py-1.5 px-2.5 text-xl font-bold hover:scale-105 transition-transform"
         >
           Get Started
         </Link>
