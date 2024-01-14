@@ -5,10 +5,7 @@ export default function page() {
     <div className="h-screen w-screen relative selection:bg-orange-500  bg-gradient-to-b from-[#111111] to-black overflow-x-hidden">
       <div className="w-screen h-screen flex justify-center items-center">
         <BlurColors />
-        <form
-          action=""
-          className="flex flex-col gap-4 bg-[#0f0f0f] p-12 rounded-xl z-10"
-        >
+        <form action="" className="flex flex-col gap-4  p-12 rounded-xl z-10">
           <h1 className="text-2xl text-white text-center font-bold">
             TrendPilot
           </h1>
@@ -46,7 +43,7 @@ export default function page() {
             </button>
           </div>
           <div className="h-[1px] bg-white w-full flex flex-row justify-center mt-4">
-            <span className="text-white font-medium bg-[#0f0f0f] -translate-y-2.5 w-fit h-fit px-2">
+            <span className="text-white font-medium bg-[#080808] -translate-y-2.5 w-fit h-fit px-2">
               or
             </span>
           </div>
