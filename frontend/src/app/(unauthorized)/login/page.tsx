@@ -4,9 +4,12 @@ import Link from "next/link";
 export default function page() {
   return (
     <div className="h-screen w-screen relative selection:bg-orange-500  bg-gradient-to-b from-[#111111] to-black overflow-x-hidden">
-      <div className="w-screen h-screen flex justify-center items-center">
+      <div className="flex flex-col justify-start items-center">
         <BlurColors />
-        <form action="" className="flex flex-col gap-4  p-12 rounded-xl z-10">
+        <form
+          action=""
+          className="flex flex-col gap-4  p-12 rounded-xl z-10 mt-60"
+        >
           <h1 className="text-2xl text-white text-center font-bold">
             TrendPilot
           </h1>
@@ -15,7 +18,7 @@ export default function page() {
               Username
             </label>
             <input
-              className="w-64 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg"
+              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg"
               type="text"
               name="Username"
               placeholder="Username"
@@ -27,7 +30,7 @@ export default function page() {
               Password
             </label>
             <input
-              className="w-64 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg"
+              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg"
               type="text"
               name="Password"
               placeholder="Password"
