@@ -30,7 +30,7 @@ async def login_google(request: Request):
     return await oauth.google.authorize_redirect(request, GOOGLE_REDIRECT_URI)
 
 
-@router.get("/callback/google")
+@router.post("/callback/google")
 async def auth_google(request: Request, db: db_dependency):
     try:
         user_response: OAuth2Token = await oauth.google.authorize_access_token(request)
