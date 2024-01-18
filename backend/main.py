@@ -9,14 +9,25 @@ import os
 from app.routers.auth.services import user_dependency
 from app.routers.auth import models as auth_models
 from app.routers.auth.auth import router as auth_router
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+origins = ["*"]
+
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 

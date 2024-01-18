@@ -1,9 +1,14 @@
+"use client";
+
 import BlurColors from "@/components/BlurColors";
 import Link from "next/link";
 
 export default function Page() {
-  const register = async () => {
-    const response = fetch("", {});
+  const registerGoogle = async () => {
+    const response = fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/auth/google`,
+      {}
+    );
   };
   return (
     <div className="h-screen w-screen relative selection:bg-orange-500  bg-gradient-to-b from-[#111111] to-black overflow-x-hidden">
@@ -54,7 +59,11 @@ export default function Page() {
             <button className="bg-white rounded-lg py-1 px-3 font-medium text-lg ">
               Register
             </button>
-            <button className="border-white border-2 text-white rounded-lg py-1 px-3 font-medium text-lg ">
+            <button
+              type="button"
+              onClick={registerGoogle}
+              className="border-white border-2 text-white rounded-lg py-1 px-3 font-medium text-lg "
+            >
               Google
             </button>
           </div>
