@@ -25,12 +25,12 @@ GOOGLE_CLIENT_SECRET = "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"
 GOOGLE_REDIRECT_URI = "http://localhost/auth/google"
 
 
-@router.get("/login/google")
+@router.get("/google")
 async def login_google(request: Request):
     return await oauth.google.authorize_redirect(request, GOOGLE_REDIRECT_URI)
 
 
-@router.get("/google")
+@router.get("/callback/google")
 async def auth_google(request: Request, db: db_dependency):
     try:
         user_response: OAuth2Token = await oauth.google.authorize_access_token(request)
@@ -56,7 +56,7 @@ async def auth_google(request: Request, db: db_dependency):
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/create-user", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
     create_user_model = Users(
         username=create_user_request.username,
