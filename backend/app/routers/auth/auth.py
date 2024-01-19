@@ -14,6 +14,7 @@ from .services import create_access_token, authenticate_user, bcrypt_context, cr
 from ...db.database import db_dependency
 from .services import oauth
 from fastapi import Request
+from fastapi.responses import RedirectResponse
 
 router = APIRouter(
     prefix='/auth',
@@ -23,6 +24,7 @@ router = APIRouter(
 GOOGLE_CLIENT_ID = "969709362942-oqoriveq3lumcs940jio55uj54uet39u.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "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"
 GOOGLE_REDIRECT_URI = "http://localhost/auth/callback/google"
+FRONTEND_URL = "localhost:3000"
 
 
 @router.get("/google")
@@ -30,7 +32,7 @@ async def login_google(request: Request):
     return await oauth.google.authorize_redirect(request, GOOGLE_REDIRECT_URI)
 
 
-@router.post("/callback/google")
+@router.get("/callback/google")
 async def auth_google(request: Request, db: db_dependency):
     try:
         user_response: OAuth2Token = await oauth.google.authorize_access_token(request)
@@ -53,7 +55,7 @@ async def auth_google(request: Request, db: db_dependency):
     access_token = create_access_token(user.username, user.id, timedelta(days=7))
     refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
 
-    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+    return RedirectResponse(f"{FRONTEND_URL}/auth?access_token={access_token}&refresh_token={refresh_token}")
 
 
 @router.post("/create-user", status_code=status.HTTP_201_CREATED)
