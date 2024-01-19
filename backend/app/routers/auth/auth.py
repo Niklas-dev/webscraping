@@ -24,7 +24,7 @@ router = APIRouter(
 GOOGLE_CLIENT_ID = "969709362942-oqoriveq3lumcs940jio55uj54uet39u.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "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"
 GOOGLE_REDIRECT_URI = "http://localhost/auth/callback/google"
-FRONTEND_URL = "localhost:3000"
+FRONTEND_URL = "http://localhost:3000"
 
 
 @router.get("/google")
@@ -56,6 +56,9 @@ async def auth_google(request: Request, db: db_dependency):
     refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
 
     return RedirectResponse(f"{FRONTEND_URL}/auth?access_token={access_token}&refresh_token={refresh_token}")
+
+
+
 
 
 @router.post("/create-user", status_code=status.HTTP_201_CREATED)

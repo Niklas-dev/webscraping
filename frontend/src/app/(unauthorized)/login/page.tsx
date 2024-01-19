@@ -7,7 +7,7 @@ export default function page() {
       <div className="flex flex-col justify-start items-center">
         <BlurColors />
         <form
-          action=""
+          action={`${process.env.NEXT_PUBLIC_BACKEND}/auth/google`}
           className="flex flex-col gap-4  p-12 rounded-xl z-10 mt-60"
         >
           <h1 className="text-2xl text-white text-center font-bold">
@@ -39,10 +39,16 @@ export default function page() {
           </div>
 
           <div className="flex flex-col gap-2 mt-4">
-            <button className="bg-white rounded-lg py-1 px-3 font-medium text-lg ">
+            <button
+              type="button"
+              className="bg-white rounded-lg py-1 px-3 font-medium text-lg "
+            >
               Login
             </button>
-            <button className="border-white border-2 text-white rounded-lg py-1 px-3 font-medium text-lg ">
+            <button
+              type="submit"
+              className="border-white border-2 text-white rounded-lg py-1 px-3 font-medium text-lg "
+            >
               Google
             </button>
           </div>
