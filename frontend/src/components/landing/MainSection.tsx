@@ -22,6 +22,7 @@ export default function MainSection() {
 
         <div className="relative -translate-x-7 mt-2">
           <Image
+            priority={true}
             src="/arrow.svg"
             width={200}
             height={200}

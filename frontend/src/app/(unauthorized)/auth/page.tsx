@@ -2,7 +2,6 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { setCookie } from "cookies-next";
-import { Spinner } from "flowbite-react";
 export default function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -20,8 +19,6 @@ export default function Page() {
   }, [searchParams, router]);
 
   return (
-    <div className="flex justify-center items-center w-screen h-screen">
-      <Spinner color={"green"} aria-label="Default status example" />
-    </div>
+    <div className="flex justify-center items-center w-screen h-screen bg-gradient-to-b from-[#111111] to-black"></div>
   );
 }
