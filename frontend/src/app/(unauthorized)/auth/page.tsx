@@ -1,19 +1,27 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { setCookie } from "cookies-next";
+import { Spinner } from "flowbite-react";
 export default function Page() {
   const searchParams = useSearchParams();
-
+  const router = useRouter();
   useEffect(() => {
     return () => {
-      second;
+      setCookie("access_token", searchParams.get("access_token"), {
+        maxAge: 60 * 6 * 24 * 7,
+      });
+      setCookie("refresh_token", searchParams.get("refresh_token"), {
+        maxAge: 60 * 6 * 24 * 14,
+      });
+
+      router.push("/");
     };
-  }, [third]);
+  }, [searchParams, router]);
 
   return (
-    <div>
-      {searchParams.get("access_token")} {searchParams.get("refresh_token")}
+    <div className="flex justify-center items-center w-screen h-screen">
+      <Spinner color={"green"} aria-label="Default status example" />
     </div>
   );
 }
