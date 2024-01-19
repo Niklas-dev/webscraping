@@ -2,7 +2,7 @@
 import BlurColors from "@/components/BlurColors";
 import Link from "next/link";
 import { useState } from "react";
-
+import { setCookie } from "cookies-next";
 export default function Page() {
   const [formData, setFormData] = useState({
     username: "Test",
@@ -14,22 +14,27 @@ export default function Page() {
       `${process.env.NEXT_PUBLIC_BACKEND}/auth/token`,
       {
         method: "POST",
-        mode: "no-cors",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
         },
         body: new URLSearchParams(_formData),
       }
     );
 
-    if (!response.ok) {
-      console.log("Error fetching");
-    }
+    const data = await response.json();
 
-    const { access_token, refresh_token } = (await response.json()) as {
+    const { access_token, refresh_token } = data as {
       access_token: string;
       refresh_token: string;
     };
+
+    setCookie("access_token", access_token, {
+      maxAge: 60 * 6 * 24 * 7,
+    });
+    setCookie("refresh_token", refresh_token, {
+      maxAge: 60 * 6 * 24 * 14,
+    });
   };
   return (
     <div className="h-screen w-screen relative selection:bg-orange-500  bg-gradient-to-b from-[#111111] to-black overflow-x-hidden">
