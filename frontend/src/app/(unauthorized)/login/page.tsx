@@ -1,7 +1,36 @@
+"use client";
 import BlurColors from "@/components/BlurColors";
 import Link from "next/link";
+import { useState } from "react";
 
-export default function page() {
+export default function Page() {
+  const [formData, setFormData] = useState({
+    username: "Test",
+    password: "test",
+  });
+  const login = async (_formData: { username: string; password: string }) => {
+    console.log(_formData);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/auth/token`,
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams(_formData),
+      }
+    );
+
+    if (!response.ok) {
+      console.log("Error fetching");
+    }
+
+    const { access_token, refresh_token } = (await response.json()) as {
+      access_token: string;
+      refresh_token: string;
+    };
+  };
   return (
     <div className="h-screen w-screen relative selection:bg-orange-500  bg-gradient-to-b from-[#111111] to-black overflow-x-hidden">
       <div className="flex flex-col justify-start items-center">
@@ -18,7 +47,10 @@ export default function page() {
               Username
             </label>
             <input
-              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg"
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
+              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg text-white outline-none focus:ring-2"
               type="text"
               name="Username"
               placeholder="Username"
@@ -30,7 +62,10 @@ export default function page() {
               Password
             </label>
             <input
-              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg"
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg text-white outline-none focus:ring-2"
               type="text"
               name="Password"
               placeholder="Password"
@@ -41,6 +76,7 @@ export default function page() {
           <div className="flex flex-col gap-2 mt-4">
             <button
               type="button"
+              onClick={() => login(formData)}
               className="bg-white rounded-lg py-1 px-3 font-medium text-lg "
             >
               Login
