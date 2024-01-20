@@ -10,7 +10,7 @@ from .models import Users
 from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest
 
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
-    create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token
+    create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token, user_dependency
 from ...db.database import db_dependency
 from .services import oauth
 from fastapi import Request
@@ -60,9 +60,6 @@ async def auth_google(request: Request, db: db_dependency):
     return RedirectResponse(f"{FRONTEND_URL}/auth?access_token={access_token}&refresh_token={refresh_token}")
 
 
-
-
-
 @router.post("/create-user", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
     create_user_model = Users(
@@ -75,6 +72,10 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
 
     return create_user_request
 
+
+@router.post("/get-user", status_code=status.HTTP_201_CREATED)
+async def create_user(db: db_dependency, user: user_dependency):
+    return user
 
 @router.post("/token", response_model=Token, status_code=status.HTTP_200_OK)
 async def login_for_access_token(db: db_dependency, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):

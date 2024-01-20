@@ -5,7 +5,7 @@ from typing import Annotated
 from starlette import status
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, defer
 from authlib.integrations.starlette_client import OAuth
 from authlib.integrations.starlette_client import OAuthError
 import os
@@ -14,6 +14,7 @@ from starlette.config import Config
 
 from .validators import GoogleUser
 from .models import Users
+from ...db.database import db_dependency
 
 ALGORITHM = "HS256"
 
@@ -69,15 +70,19 @@ def decode_token(token):
     return jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=ALGORITHM)
 
 
-def get_current_user(token: Annotated[str, Depends(oauth_bearer)]):
+def get_current_user(token: Annotated[str, Depends(oauth_bearer)], db: db_dependency):
     try:
         payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=ALGORITHM)
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
 
+        user: Users = db.query(Users).filter(Users.username == str(username)).options(defer(Users.hashed_password)).first()
+
+
+
         if username is None or user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
-        return {"username": username, "id": user_id}
+        return user
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
 
