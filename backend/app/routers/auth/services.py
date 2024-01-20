@@ -93,8 +93,8 @@ def token_expired(token: Annotated[str, Depends(oauth_bearer)]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
 
 
-def get_user_by_google_id(google_id: int, db: Session):
-    return db.query(Users).filter(Users.google_id == str(google_id)).first()
+def get_user_by_google_sub(google_sub: int, db: Session):
+    return db.query(Users).filter(Users.google_sub == str(google_sub)).first()
 
 
 def create_user_from_google_info(google_user: GoogleUser, db: Session):

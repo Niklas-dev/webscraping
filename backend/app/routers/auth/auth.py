@@ -10,7 +10,7 @@ from .models import Users
 from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest
 
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
-    create_user_from_google_info, get_user_by_google_id, token_expired, decode_token
+    create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token
 from ...db.database import db_dependency
 from .services import oauth
 from fastapi import Request
@@ -45,7 +45,7 @@ async def auth_google(request: Request, db: db_dependency):
 
     google_user = GoogleUser(**user_info)
 
-    existing_user = get_user_by_google_id(google_user.sub, db)
+    existing_user = get_user_by_google_sub(google_user.sub, db)
 
     if existing_user:
         print("Existing user")
