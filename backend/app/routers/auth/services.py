@@ -98,7 +98,7 @@ def get_user_by_google_id(google_id: int, db: Session):
 
 
 def create_user_from_google_info(google_user: GoogleUser, db: Session):
-    google_id = google_user.id
+    google_sub = google_user.sub
     email = google_user.email
     name = google_user.name
 
@@ -106,7 +106,7 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
 
     if existing_user:
 
-        existing_user.google_id = google_id
+        existing_user.google_id = google_sub
         db.commit()
         return existing_user
     else:
@@ -114,7 +114,7 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
         new_user = Users(
             username=email,
             email=email,
-            google_id=google_id,
+            google_sub=google_sub,
 
         )
         db.add(new_user)

@@ -41,6 +41,8 @@ async def auth_google(request: Request, db: db_dependency):
 
     user_info = user_response.get("userinfo")
 
+    print(user_info)
+
     google_user = GoogleUser(**user_info)
 
     existing_user = get_user_by_google_id(google_user.sub, db)

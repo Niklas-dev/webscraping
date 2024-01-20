@@ -5,7 +5,7 @@ class Users(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    google_id = Column(String, unique=True, nullable=True)
+    google_sub = Column(String, unique=True, nullable=True)
     username = Column(String, unique=True)
     email = Column(String, unique=True)
     hashed_password = Column(String)
