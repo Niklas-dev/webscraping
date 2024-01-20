@@ -81,6 +81,7 @@ export default function Page() {
               onChange={(e) =>
                 setFormData({ ...formData, username: e.target.value })
               }
+              defaultValue={formData.username}
               className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg text-white outline-none focus:ring-2"
               type="text"
               name="Username"
@@ -96,6 +97,7 @@ export default function Page() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
+              defaultValue={formData.email}
               className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg text-white outline-none focus:ring-2"
               type="email"
               name="Email"
@@ -111,6 +113,7 @@ export default function Page() {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
+              defaultValue={formData.password}
               className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg text-white outline-none focus:ring-2"
               type="password"
               name="Password"
