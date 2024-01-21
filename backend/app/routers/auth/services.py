@@ -76,9 +76,8 @@ def get_current_user(token: Annotated[str, Depends(oauth_bearer)], db: db_depend
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
 
-        user: Users = db.query(Users).filter(Users.username == str(username)).options(defer(Users.hashed_password)).first()
-
-
+        user: Users = db.query(Users).filter(Users.username == str(username)).options(
+            defer(Users.hashed_password)).first()
 
         if username is None or user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
