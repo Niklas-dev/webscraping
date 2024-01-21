@@ -2,16 +2,19 @@
 import { getCookie } from "cookies-next";
 import { createContext, useLayoutEffect, useState } from "react";
 
-export const AuthContext = createContext<object | null>({
-  username: "",
-});
+interface IUser {
+  username: string;
+  email: string;
+  id: string;
+}
+export const AuthContext = createContext<IUser | null>(null);
 
 export function AuthProvider({
   children,
 }: {
   children: React.ReactNode[] | React.ReactNode;
 }) {
-  const [user, setUser] = useState<object | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   const getUser = async () => {
     const response = await fetch(
@@ -24,13 +27,11 @@ export function AuthProvider({
         },
       }
     );
-    if (!response.ok) {
-      return;
-    }
 
-    const user = await response.json();
-    console.log(user);
-    setUser();
+    if (response.ok) {
+      const user: IUser = await response.json();
+      setUser(user);
+    }
   };
 
   useLayoutEffect(() => {
