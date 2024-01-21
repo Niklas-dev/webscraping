@@ -1,4 +1,6 @@
 import Image from "next/image";
+import ActionButton from "../ActionButton";
+
 export default function MainSection() {
   return (
     <div className="text-white relative flex flex-col items-center justify-center mt-56">
@@ -16,9 +18,7 @@ export default function MainSection() {
         </p>
       </div>
       <div className="flex flex-col items-center justify-center mt-6">
-        <button className="mt-2 bg-white text-black rounded-lg w-36 h-14 text-xl font-bold hover:scale-105">
-          Get Started
-        </button>
+        <ActionButton className="h-12" />
 
         <div className="relative -translate-x-7 mt-2">
           <Image

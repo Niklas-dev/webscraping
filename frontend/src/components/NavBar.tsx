@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ActionButton from "./ActionButton";
 
 export default function NavBar() {
   return (
@@ -15,12 +16,7 @@ export default function NavBar() {
         <Link href={""} className="hover:underline">
           Pricing
         </Link>
-        <Link
-          href={"/login"}
-          className=" bg-white text-black rounded-lg  py-1.5 px-2.5 text-xl font-bold hover:scale-105 transition-transform"
-        >
-          Get Started
-        </Link>
+        <ActionButton className="w-28 h-11" />
       </div>
     </nav>
   );
