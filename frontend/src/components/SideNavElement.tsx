@@ -16,7 +16,7 @@ export default function SideNavElement({
       href={route}
       className={`${
         pathname == route
-          ? "text-white bg-[#a88484] hover:bg-[#1f1f1f]"
+          ? "text-white bg-[#1b1b1b] hover:bg-[#252525]"
           : "text-gray-500 hover:bg-gray-200"
       } p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2  transition-colors cursor-pointer`}
     >

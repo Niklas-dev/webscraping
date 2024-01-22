@@ -36,11 +36,11 @@ export default function DashboardNavBar() {
           </div>
           <h4 className="font-medium text-gray-400 mt-12">SETTINGS</h4>
           <div className="flex flex-col gap-4 mt-2">
-            <SideNavElement route="/dashboard/archived-ideas" name="Account ">
+            <SideNavElement route="/dashboard/settings/account" name="Account ">
               <BiArchive />
             </SideNavElement>
             <SideNavElement
-              route="/dashboard/archived-ideas"
+              route="/dashboard/settings/idea-creation"
               name="Idea Creation"
             >
               <BiArchive />
