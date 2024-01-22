@@ -1,5 +1,6 @@
+"use client";
 import Link from "next/link";
-
+import { usePathname } from "next/navigation";
 export default function SideNavElement({
   route,
   name,
@@ -9,10 +10,15 @@ export default function SideNavElement({
   name: string;
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   return (
     <Link
       href={route}
-      className=" text-gray-500 p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2 hover:bg-gray-200 transition-colors cursor-pointer"
+      className={`${
+        pathname == route
+          ? "text-white bg-[#a88484] hover:bg-[#1f1f1f]"
+          : "text-gray-500 hover:bg-gray-200"
+      } p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2  transition-colors cursor-pointer`}
     >
       {children} {name}
     </Link>

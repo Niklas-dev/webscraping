@@ -36,18 +36,15 @@ export default function DashboardNavBar() {
           </div>
           <h4 className="font-medium text-gray-400 mt-12">SETTINGS</h4>
           <div className="flex flex-col gap-4 mt-2">
-            <div className=" text-gray-500 p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2">
-              <BiArchive /> Dashboard
-            </div>
-            <div className=" text-gray-500 p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2">
-              <BiArchive /> Ideas
-            </div>
-            <div className=" text-gray-500 p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2">
-              <BiArchive /> Trending
-            </div>
-            <div className=" text-gray-500 p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2">
-              <BiArchive /> Archived Ideas
-            </div>
+            <SideNavElement route="/dashboard/archived-ideas" name="Account ">
+              <BiArchive />
+            </SideNavElement>
+            <SideNavElement
+              route="/dashboard/archived-ideas"
+              name="Idea Creation"
+            >
+              <BiArchive />
+            </SideNavElement>
           </div>
         </div>
       </div>
