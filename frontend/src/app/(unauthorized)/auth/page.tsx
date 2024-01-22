@@ -14,7 +14,7 @@ export default function Page() {
         maxAge: 60 * 6 * 24 * 14,
       });
 
-      router.push("/");
+      router.push("/dashboard");
     };
   }, [searchParams, router]);
 
