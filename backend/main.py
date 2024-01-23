@@ -9,6 +9,7 @@ import os
 from app.routers.auth.services import user_dependency
 from app.routers.auth import models as auth_models
 from app.routers.auth.auth import router as auth_router
+from app.routers.payments.payments import router as payments_router
 from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
@@ -32,6 +33,7 @@ app.add_middleware(
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 app.include_router(auth_router)
+app.include_router(payments_router)
 
 auth_models.Base.metadata.create_all(bind=engine)
 
