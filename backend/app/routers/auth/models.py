@@ -1,11 +1,15 @@
+from sqlalchemy.orm import relationship
+
 from ...db.database import Base
 from sqlalchemy import Column, Integer, String
+
 
 class Users(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     google_sub = Column(String, unique=True, nullable=True)
     username = Column(String, unique=True)
     email = Column(String, unique=True)
     hashed_password = Column(String)
+    stripe_customer = relationship('StripeCustomer', back_populates='user')
