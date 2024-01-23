@@ -1,10 +1,11 @@
 import os
 
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException, Header
 import stripe
 from starlette import status
 from starlette.responses import RedirectResponse
 
+from app.routers.auth.services import user_dependency
 
 router = APIRouter(
     prefix='/payments',
@@ -15,9 +16,9 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 @router.get("/create-checkout-session")
-def create_checkout_session(request: Request):
+def create_checkout_session(request: Request, user: user_dependency):
     domain_url = "http://localhost:3000/"
-
+    print(user)
     try:
         checkout_session = stripe.checkout.Session.create(
             # you should get the user id here and pass it along as 'client_reference_id'
