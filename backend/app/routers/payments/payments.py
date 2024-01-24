@@ -1,7 +1,9 @@
 import os
+from typing import Optional
 
 from fastapi import APIRouter, Request, HTTPException, Header
 import stripe
+from pydantic import BaseModel
 from starlette import status
 from starlette.responses import RedirectResponse
 
@@ -44,27 +46,28 @@ def create_checkout_session(request: Request, user: user_dependency):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
 
-@router.get("/webhook")
-async def stripe_webhook(request: Request, stripe_signature: str = Header(None)):
-    payload = await request.body()
+class WebHookData(BaseModel):
+    data: dict
+    type: str
 
-    # Access payload as text
-    payload_text = payload.decode('utf-8')
 
-    # Access Stripe-Signature from headers
-    sig_header = stripe_signature
-
+@router.post("/webhook")
+async def stripe_webhook(event: dict, request: Request, stripe_signature=Header(None)):
+    webhook_secret = os.getenv("WEBHOOK_SECRET")
+    raw_body = await request.body()
     try:
         event = stripe.Webhook.construct_event(
-            payload, sig_header, os.getenv("WEBHOOK_SECRET")
+            raw_body, stripe_signature, webhook_secret
         )
 
     except ValueError as e:
         # Invalid payload
-        return "Invalid payload", 400
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid payload.")
+
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
-        return "Invalid signature", 400
+
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid signature.")
 
     # Handle the checkout.session.completed event
     if event["type"] == "checkout.session.completed":
@@ -73,7 +76,7 @@ async def stripe_webhook(request: Request, stripe_signature: str = Header(None))
         # Fulfill the purchase...
         handle_checkout_session(session)
 
-    return "Success", 200
+    return "Success"
 
 
 def handle_checkout_session(session):

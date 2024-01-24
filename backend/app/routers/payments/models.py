@@ -13,4 +13,4 @@ class StripeCustomer(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     stripeCustomerId = Column(String(255), nullable=False)
     stripeSubscriptionId = Column(String(255), nullable=False)
-    user = relationship('Users', back_populates='stripe_customer')
+    user = relationship('User', back_populates='stripe_customer')

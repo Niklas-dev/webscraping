@@ -42,7 +42,7 @@ oauth.register(
 
 
 def authenticate_user(username: str, password: str, db: type[Session]):
-    user: Users = db.query(Users).filter(Users.username == username).first()
+    user: User = db.query(User).filter(User.username == username).first()
 
     if not user:
         return False
