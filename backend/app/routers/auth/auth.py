@@ -6,7 +6,7 @@ from typing import Annotated
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
 import requests
-from .models import Users
+from .models import User
 from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest
 
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
@@ -62,7 +62,7 @@ async def auth_google(request: Request, db: db_dependency):
 
 @router.post("/create-user", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
-    create_user_model = Users(
+    create_user_model = User(
         username=create_user_request.username,
         hashed_password=bcrypt_context.hash(create_user_request.password)
     )

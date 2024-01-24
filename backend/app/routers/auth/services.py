@@ -13,7 +13,7 @@ from jose import jwt, JWTError
 from starlette.config import Config
 
 from .validators import GoogleUser
-from .models import Users
+from .models import User
 from ...db.database import db_dependency
 
 ALGORITHM = "HS256"
@@ -76,8 +76,8 @@ def get_current_user(token: Annotated[str, Depends(oauth_bearer)], db: db_depend
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
 
-        user: Users = db.query(Users).filter(Users.username == str(username)).options(
-            defer(Users.hashed_password), defer(Users.google_sub)).first()
+        user: User = db.query(User).filter(User.username == str(username)).options(
+            defer(User.hashed_password), defer(User.google_sub)).first()
 
         if username is None or user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
@@ -98,7 +98,7 @@ def token_expired(token: Annotated[str, Depends(oauth_bearer)]):
 
 
 def get_user_by_google_sub(google_sub: int, db: Session):
-    return db.query(Users).filter(Users.google_sub == str(google_sub)).first()
+    return db.query(User).filter(User.google_sub == str(google_sub)).first()
 
 
 def create_user_from_google_info(google_user: GoogleUser, db: Session):
@@ -106,7 +106,7 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
     email = google_user.email
     name = google_user.name
 
-    existing_user = db.query(Users).filter(Users.email == email).first()
+    existing_user = db.query(User).filter(User.email == email).first()
 
     if existing_user:
 
@@ -115,7 +115,7 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
         return existing_user
     else:
 
-        new_user = Users(
+        new_user = User(
             username=email,
             email=email,
             google_sub=google_sub,
