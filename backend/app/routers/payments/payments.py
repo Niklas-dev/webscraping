@@ -4,10 +4,14 @@ from typing import Optional
 from fastapi import APIRouter, Request, HTTPException, Header
 import stripe
 from pydantic import BaseModel
+from sqlalchemy.orm import defer
 from starlette import status
 from starlette.responses import RedirectResponse
 
+from app.db.database import db_dependency
+from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
+from app.routers.payments.models import StripeCustomer
 
 router = APIRouter(
     prefix='/payments',
@@ -29,7 +33,7 @@ def create_checkout_session(request: Request, user: user_dependency):
             # this will allow you to associate the Stripe session with
             # the user saved in your database
             #
-            # example: client_reference_id=user.id,
+            client_reference_id=user.id,
 
             success_url=domain_url + "payments/success?session_id={CHECKOUT_SESSION_ID}",
             cancel_url=domain_url + "payments/cancel",
@@ -53,7 +57,7 @@ class WebHookData(BaseModel):
 
 
 @router.post("/webhook")
-async def stripe_webhook(event: dict, request: Request, stripe_signature=Header(None)):
+async def stripe_webhook(db: db_dependency, event: dict, request: Request, stripe_signature=Header(None)):
     webhook_secret = os.getenv("WEBHOOK_SECRET")
     raw_body = await request.body()
     try:
@@ -71,28 +75,49 @@ async def stripe_webhook(event: dict, request: Request, stripe_signature=Header(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid signature.")
 
     # Handle the checkout.session.completed event
+    session = event["data"]["object"]
+    if not session:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid session.")
+
+    user_id = int(session.client_reference_id)
+    if not user_id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid user.")
+
+    user = db.query(User).filter(User.id == user_id).options(
+            defer(User.hashed_password), defer(User.google_sub)).first()
     if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
+
 
         # Fulfill the purchase...
-        pass
+        handle_session_completed(session, user, db)
 
     if event["type"] == "checkout.session.paid":
         session = event["data"]["object"]
-
+        print(session)
         # Fulfill the purchase...
         pass
 
     if event["type"] == "checkout.session.payment_failed":
         session = event["data"]["object"]
-
+        print(session)
         # Fulfill the purchase...
-        handle_checkout_session(session)
+        pass
 
     return "Success"
 
 
-def handle_checkout_session(session):
-    # here you should fetch the details from the session and save the relevant information
-    # to the database (e.g. associate the user with their subscription)
-    print("Subscription was successful.")
+def handle_session_completed(session, user, db):
+    print(session.customer)
+    print(session.subscription)
+    print(session.client_reference_id)
+
+    customer_id, subscription_id = session.customer, session.subscription
+
+    create_stripe_customer_model = StripeCustomer(
+        user=user,
+        customer_id=customer_id,
+        subscription_id=subscription_id
+    )
+
+    db.add(create_stripe_customer_model)
+    db.commit()
