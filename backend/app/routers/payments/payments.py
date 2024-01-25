@@ -116,7 +116,8 @@ def handle_session_completed(session, user, db):
     create_stripe_customer_model = StripeCustomer(
         user=user,
         customer_id=customer_id,
-        subscription_id=subscription_id
+        subscription_id=subscription_id,
+        subscription_status=True
     )
 
     db.add(create_stripe_customer_model)
