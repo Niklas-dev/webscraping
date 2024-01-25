@@ -21,6 +21,7 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 def create_checkout_session(request: Request, user: user_dependency):
     domain_url = "http://localhost:3000/"
     print(user)
+
     try:
         checkout_session = stripe.checkout.Session.create(
             # you should get the user id here and pass it along as 'client_reference_id'
@@ -71,6 +72,18 @@ async def stripe_webhook(event: dict, request: Request, stripe_signature=Header(
 
     # Handle the checkout.session.completed event
     if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+
+        # Fulfill the purchase...
+        pass
+
+    if event["type"] == "checkout.session.paid":
+        session = event["data"]["object"]
+
+        # Fulfill the purchase...
+        pass
+
+    if event["type"] == "checkout.session.payment_failed":
         session = event["data"]["object"]
 
         # Fulfill the purchase...
