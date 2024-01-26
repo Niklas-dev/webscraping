@@ -39,6 +39,9 @@ def create_checkout_session(request: Request, user: user_dependency):
             cancel_url=domain_url + "payments/cancel",
             payment_method_types=["card", "paypal"],
             mode="subscription",
+            metadata={
+                "client_reference_id": user.id,
+            },
             line_items=[
                 {
                     "price": "price_1Obq5xGpk89JeyEsqb8Twsx3",
@@ -49,11 +52,6 @@ def create_checkout_session(request: Request, user: user_dependency):
         return checkout_session.url
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-
-
-class WebHookData(BaseModel):
-    data: dict
-    type: str
 
 
 @router.post("/webhook")
@@ -76,49 +74,82 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
 
     # Handle the checkout.session.completed event
     session = event["data"]["object"]
+
     if not session:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid session.")
 
-    user_id = int(session.client_reference_id)
-    if not user_id:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid user.")
-
-    user = db.query(User).filter(User.id == user_id).options(
-            defer(User.hashed_password), defer(User.google_sub)).first()
     if event["type"] == "checkout.session.completed":
+        handle_session_completed(session, db)
 
+    if event["type"] == "invoice.paid":
+        handle_invoice_paid(session, db)
 
-        # Fulfill the purchase...
-        handle_session_completed(session, user, db)
-
-    if event["type"] == "checkout.session.paid":
-        session = event["data"]["object"]
-        print(session)
-        # Fulfill the purchase...
-        pass
-
-    if event["type"] == "checkout.session.payment_failed":
-        session = event["data"]["object"]
-        print(session)
-        # Fulfill the purchase...
-        pass
+    if event["type"] == "invoice.payment_failed":
+        handle_invoice_payment_failed(session, db)
 
     return "Success"
 
 
-def handle_session_completed(session, user, db):
-    print(session.customer)
-    print(session.subscription)
-    print(session.client_reference_id)
+def get_user_by_id(user_id, db):
+    return db.query(User).filter(User.id == user_id).options(
+        defer(User.hashed_password), defer(User.google_sub)).first()
+
+
+def handle_session_completed(session, db):
+    user = get_user_by_id(session.client_reference_id, db)
 
     customer_id, subscription_id = session.customer, session.subscription
+    customer = db.query(StripeCustomer).where(StripeCustomer.customer_id == customer_id).first()
 
-    create_stripe_customer_model = StripeCustomer(
-        user=user,
-        customer_id=customer_id,
-        subscription_id=subscription_id,
-        subscription_status=True
-    )
+    if not customer:
+        create_stripe_customer_model = StripeCustomer(
+            user=user,
+            customer_id=customer_id,
+            subscription_id=subscription_id,
+            subscription_status="active"
+        )
 
-    db.add(create_stripe_customer_model)
-    db.commit()
+        db.add(create_stripe_customer_model)
+        db.commit()
+    else:
+        customer.subscription_status = "active"
+
+
+def handle_invoice_paid(session, db):
+    user = "/"  # get real user here
+
+    customer_id, subscription_id = session.customer, session.subscription
+    customer = db.query(StripeCustomer).where(StripeCustomer.customer_id == customer_id).first()
+
+    if not customer:
+        create_stripe_customer_model = StripeCustomer(
+            user=user,
+            customer_id=customer_id,
+            subscription_id=subscription_id,
+            subscription_status="active"
+        )
+
+        db.add(create_stripe_customer_model)
+        db.commit()
+    else:
+        customer.subscription_status = "active"
+
+
+def handle_invoice_payment_failed(session, db):
+    user = "/"  # get real user here
+
+    customer_id, subscription_id = session.customer, session.subscription
+    customer = db.query(StripeCustomer).where(StripeCustomer.customer_id == customer_id).first()
+
+    if not customer:
+        create_stripe_customer_model = StripeCustomer(
+            user=user,
+            customer_id=customer_id,
+            subscription_id=subscription_id,
+            subscription_status="unpaid"
+        )
+
+        db.add(create_stripe_customer_model)
+        db.commit()
+    else:
+        customer.subscription_status = "unpaid"
