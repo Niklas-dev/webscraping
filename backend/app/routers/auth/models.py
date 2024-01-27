@@ -12,4 +12,7 @@ class User(Base):
     username = Column(String, unique=True)
     email = Column(String, unique=True)
     hashed_password = Column(String)
-    stripe_customer = relationship('StripeCustomer', back_populates='user')
+
+    customer_id = Column(String(255), nullable=True)
+    subscription_id = Column(String(255), nullable=True)
+    subscription_status = Column(String(64), nullable=True)

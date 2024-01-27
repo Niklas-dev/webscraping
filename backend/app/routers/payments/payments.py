@@ -11,7 +11,6 @@ from starlette.responses import RedirectResponse
 from app.db.database import db_dependency
 from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
-from app.routers.payments.models import StripeCustomer
 
 router = APIRouter(
     prefix='/payments',
@@ -79,15 +78,18 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid session.")
 
     if event["type"] == "checkout.session.completed":
-        handle_session_completed(session, db)
+        print(event["type"])
+        print(session)
 
     if event["type"] == "invoice.paid":
-        handle_invoice_paid(session, db)
+        print(event["type"])
+        print(session)
 
     if event["type"] == "invoice.payment_failed":
-        handle_invoice_payment_failed(session, db)
+        print(event["type"])
+        print(session)
 
-    return "Success"
+    print("\n")
 
 
 def get_user_by_id(user_id, db):
@@ -97,59 +99,12 @@ def get_user_by_id(user_id, db):
 
 def handle_session_completed(session, db):
     user = get_user_by_id(session.client_reference_id, db)
-
-    customer_id, subscription_id = session.customer, session.subscription
-    customer = db.query(StripeCustomer).where(StripeCustomer.customer_id == customer_id).first()
-
-    if not customer:
-        create_stripe_customer_model = StripeCustomer(
-            user=user,
-            customer_id=customer_id,
-            subscription_id=subscription_id,
-            subscription_status="active"
-        )
-
-        db.add(create_stripe_customer_model)
-        db.commit()
-    else:
-        customer.subscription_status = "active"
+    print(user.username)
 
 
 def handle_invoice_paid(session, db):
-    user = "/"  # get real user here
-
-    customer_id, subscription_id = session.customer, session.subscription
-    customer = db.query(StripeCustomer).where(StripeCustomer.customer_id == customer_id).first()
-
-    if not customer:
-        create_stripe_customer_model = StripeCustomer(
-            user=user,
-            customer_id=customer_id,
-            subscription_id=subscription_id,
-            subscription_status="active"
-        )
-
-        db.add(create_stripe_customer_model)
-        db.commit()
-    else:
-        customer.subscription_status = "active"
+    user = "/"
 
 
 def handle_invoice_payment_failed(session, db):
-    user = "/"  # get real user here
-
-    customer_id, subscription_id = session.customer, session.subscription
-    customer = db.query(StripeCustomer).where(StripeCustomer.customer_id == customer_id).first()
-
-    if not customer:
-        create_stripe_customer_model = StripeCustomer(
-            user=user,
-            customer_id=customer_id,
-            subscription_id=subscription_id,
-            subscription_status="unpaid"
-        )
-
-        db.add(create_stripe_customer_model)
-        db.commit()
-    else:
-        customer.subscription_status = "unpaid"
+    user = "/"
