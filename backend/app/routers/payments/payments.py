@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import defer
 from starlette import status
 from starlette.responses import RedirectResponse
+from stripe import InvalidRequestError
 
 from app.db.database import db_dependency
 from app.routers.auth.models import User
@@ -89,14 +90,18 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
             print(user.subscription_id)
             print(subscription.id)
             print(session.subscription)
+            print(subscription.cancel_at_period_end)
+            try:
+                stripe.Subscription.modify(
+                    user.subscription_id,
+                    cancel_at_period_end=True,
+                )
 
-            stripe.Subscription.modify(
-                user.subscription_id,
-                cancel_at_period_end=True,
-            )
+            except InvalidRequestError as e:
+                print("Old subscription has already been canceled.")
+                return "Old subscription has already been canceled."
 
-
-            return "User already has an active subscription, old will be canceled"
+            return "User already has an active subscription, old will be canceled."
 
         user.customer_id = session.customer
         user.subscription_id = session.subscription
