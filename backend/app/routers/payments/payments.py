@@ -78,22 +78,41 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid session.")
 
     if event["type"] == "checkout.session.completed":
+
+        user = get_user_by_customer_id(session.customer, db)
+
+        if not user:
+            user = get_user_by_id(session.client_reference_id, db)
+
+        subscription = stripe.Subscription.list(customer=session.customer).data[0]
+
+        user.customer_id = session.customer
+        user.subscription_id = session.subscription
+        user.subscription_status = subscription.status
+
+        db.commit()
+
+        print(subscription.status)
         print(event["type"])
-        print(session)
+
+
 
     if event["type"] == "invoice.paid":
-        print(event["type"])
-        print(session)
+        pass
 
     if event["type"] == "invoice.payment_failed":
-        print(event["type"])
-        print(session)
+        pass
 
     print("\n")
 
 
 def get_user_by_id(user_id, db):
     return db.query(User).filter(User.id == user_id).options(
+        defer(User.hashed_password), defer(User.google_sub)).first()
+
+
+def get_user_by_customer_id(customer_id, db):
+    return db.query(User).filter(User.customer_id == customer_id).options(
         defer(User.hashed_password), defer(User.google_sub)).first()
 
 
