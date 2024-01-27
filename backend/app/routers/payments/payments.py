@@ -23,7 +23,7 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 @router.get("/create-checkout-session")
 def create_checkout_session(request: Request, user: user_dependency):
     domain_url = "http://localhost:3000/"
-    print(user)
+    print(user.customer_id)
 
     try:
         checkout_session = stripe.checkout.Session.create(
@@ -33,7 +33,6 @@ def create_checkout_session(request: Request, user: user_dependency):
             # the user saved in your database
             #
             client_reference_id=user.id,
-
             success_url=domain_url + "payments/success?session_id={CHECKOUT_SESSION_ID}",
             cancel_url=domain_url + "payments/cancel",
             payment_method_types=["card", "paypal"],
@@ -86,24 +85,51 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
 
         subscription = stripe.Subscription.list(customer=session.customer).data[0]
 
+        if subscription.id and subscription.status == "active":
+            print(user.subscription_id)
+            print(subscription.id)
+            print(session.subscription)
+
+            stripe.Subscription.modify(
+                user.subscription_id,
+                cancel_at_period_end=True,
+            )
+
+
+            return "User already has an active subscription, old will be canceled"
+
         user.customer_id = session.customer
         user.subscription_id = session.subscription
         user.subscription_status = subscription.status
 
         db.commit()
 
-        print(subscription.status)
-        print(event["type"])
-
-
-
     if event["type"] == "invoice.paid":
         pass
 
     if event["type"] == "invoice.payment_failed":
-        pass
+        user = get_user_by_customer_id(session.customer, db)
+
+        if not user:
+            user = get_user_by_subscription_id(session.subscription, db)
+
+        if not user:
+            return "User doesnt have an active subscription"
+
+        subscription = stripe.Subscription.list(customer=session.customer).data[0]
+
+        user.customer_id = session.customer
+        user.subscription_id = session.subscription
+        user.subscription_status = subscription.status
+
+        db.commit()
 
     print("\n")
+
+
+def get_user_by_subscription_id(subscription_id, db):
+    return db.query(User).filter(User.subscription_id == subscription_id).options(
+        defer(User.hashed_password), defer(User.google_sub)).first()
 
 
 def get_user_by_id(user_id, db):
