@@ -40,6 +40,12 @@ export default function DashboardNavBar() {
               <BiArchive />
             </SideNavElement>
             <SideNavElement
+              route="/dashboard/settings/subscription"
+              name="Subscription"
+            >
+              <BiArchive />
+            </SideNavElement>{" "}
+            <SideNavElement
               route="/dashboard/settings/idea-creation"
               name="Idea Creation"
             >
