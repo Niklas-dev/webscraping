@@ -24,8 +24,9 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 @router.get("/create-checkout-session")
 def create_checkout_session(request: Request, user: user_dependency):
     domain_url = "http://localhost:3000/"
-    print(user.customer_id)
 
+    if user.subscription_status == "active":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an ongoing subscription.")
     try:
         checkout_session = stripe.checkout.Session.create(
             # you should get the user id here and pass it along as 'client_reference_id'
@@ -130,6 +131,17 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         db.commit()
 
     print("\n")
+
+
+@router.get("/create-billing-portal-session")
+def create_checkout_session(request: Request, user: user_dependency):
+    domain_url = "http://localhost:3000/"
+    session = stripe.billing_portal.Session.create(
+        customer=user.customer_id,
+        return_url=domain_url,
+    )
+
+    return session.url
 
 
 def get_user_by_subscription_id(subscription_id, db):
