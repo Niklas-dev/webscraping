@@ -6,14 +6,18 @@ import {
   BiSquareRounded,
 } from "react-icons/bi";
 import SideNavElement from "./SideNavElement";
+import Link from "next/link";
 
 export default function DashboardNavBar() {
   return (
     <div className="h-full w-72 bg-gray-100">
       <div className="h-full w-full p-8 ">
-        <h3 className="text-2xl font-medium flex flex-row items-center gap-1">
+        <Link
+          href={"/"}
+          className="text-2xl font-medium flex flex-row items-center gap-1 "
+        >
           <BiChart color="#00000" /> TrendPilot
-        </h3>
+        </Link>
 
         <div className="mt-12 flex flex-col ">
           <h4 className="font-medium text-gray-400">CONTENT CREATION</h4>
