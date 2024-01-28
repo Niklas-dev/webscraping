@@ -7,6 +7,8 @@ from stripe import InvalidRequestError
 from app.db.database import db_dependency
 from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
+from .models import Plan
+from .validators import Subscription, Product
 
 router = APIRouter(
     prefix='/payments',
@@ -17,23 +19,28 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 @router.get("/get-user-subscription")
-def get_user_subscription(request: Request, user: user_dependency):
-
+def get_user_subscription(request: Request, user: user_dependency, db: db_dependency):
     if not user.subscription_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No subscription available.")
 
     subscription = stripe.Subscription.retrieve(user.subscription_id)
 
-    selected_keys = ["id", "current_period_start", "current_period_end", "status", "created", "cancel_at_period_end", "currency", "plan"]
+    selected_keys = ["id", "current_period_start", "current_period_end", "status", "created", "cancel_at_period_end",
+                     "currency", "plan"]
 
     filtered_sub = {key: subscription[key] for key in selected_keys if key in subscription}
 
-    return filtered_sub
+    product: dict = db.query(Plan).where(Plan.product_id == filtered_sub["plan"].product).first()
+
+    filtered_sub["product"] = Product(**product.__dict__)
+
+    final_sub = Subscription(**filtered_sub)
+
+    return final_sub
 
 
 @router.post("/create-checkout-session")
 def create_checkout_session(request: Request, user: user_dependency):
-
     if user.subscription_status == "active":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an ongoing subscription.")
     try:
