@@ -1,14 +1,9 @@
 import os
-from typing import Optional
-
 from fastapi import APIRouter, Request, HTTPException, Header
 import stripe
-from pydantic import BaseModel
 from sqlalchemy.orm import defer
 from starlette import status
-from starlette.responses import RedirectResponse
 from stripe import InvalidRequestError
-
 from app.db.database import db_dependency
 from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
@@ -23,7 +18,6 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 @router.get("/get-user-subscription")
 def get_user_subscription(request: Request, user: user_dependency):
-    domain_url = "http://localhost:3000/"
 
     if not user.subscription_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No subscription available.")
@@ -39,20 +33,14 @@ def get_user_subscription(request: Request, user: user_dependency):
 
 @router.post("/create-checkout-session")
 def create_checkout_session(request: Request, user: user_dependency):
-    domain_url = "http://localhost:3000/"
 
     if user.subscription_status == "active":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an ongoing subscription.")
     try:
         checkout_session = stripe.checkout.Session.create(
-            # you should get the user id here and pass it along as 'client_reference_id'
-            #
-            # this will allow you to associate the Stripe session with
-            # the user saved in your database
-            #
             client_reference_id=user.id,
-            success_url=domain_url + "payments/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url=domain_url + "payments/cancel",
+            success_url=os.getenv("FRONTEND_URL") + "payments/success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=os.getenv("FRONTEND_URL") + "payments/cancel",
             payment_method_types=["card", "paypal"],
             mode="subscription",
             metadata={
