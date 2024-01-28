@@ -21,7 +21,23 @@ router = APIRouter(
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
-@router.get("/create-checkout-session")
+@router.get("/get-user-subscription")
+def get_user_subscription(request: Request, user: user_dependency):
+    domain_url = "http://localhost:3000/"
+
+    if not user.subscription_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No subscription available.")
+
+    subscription = stripe.Subscription.retrieve(user.subscription_id)
+
+    selected_keys = ["id", "current_period_start", "current_period_end", "status", "created", "cancel_at_period_end", "currency", "plan"]
+
+    filtered_sub = {key: subscription[key] for key in selected_keys if key in subscription}
+
+    return filtered_sub
+
+
+@router.post("/create-checkout-session")
 def create_checkout_session(request: Request, user: user_dependency):
     domain_url = "http://localhost:3000/"
 
