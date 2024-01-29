@@ -31,7 +31,7 @@ def get_user_subscription(request: Request, user: user_dependency, db: db_depend
     filtered_sub = {key: subscription[key] for key in selected_keys if key in subscription}
 
     product: dict = db.query(Plan).where(Plan.product_id == filtered_sub["plan"].product).first()
-
+    print(filtered_sub["plan"].product)
     filtered_sub["product"] = Product(**product.__dict__)
 
     final_sub = Subscription(**filtered_sub)
@@ -118,6 +118,8 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         user.customer_id = session.customer
         user.subscription_id = session.subscription
         user.subscription_status = subscription.status
+        user.subscription_last_renew = subscription.current_period_start
+        user.subscription_next_renew = subscription.current_period_end
 
         db.commit()
 
