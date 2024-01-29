@@ -16,3 +16,5 @@ class User(Base):
     customer_id = Column(String(255), nullable=True)
     subscription_id = Column(String(255), nullable=True)
     subscription_status = Column(String(64), nullable=True)
+    subscription_last_renew = Column(String, unique=False, nullable=True)
+    subscription_next_renew = Column(String, unique=False, nullable=True)
