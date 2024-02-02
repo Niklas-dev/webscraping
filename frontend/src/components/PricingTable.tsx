@@ -9,7 +9,7 @@ export default function PricingTable() {
         <div className="blur-[120px] bg-yellow-400 h-56 w-56 top-0 left-0 bg-opacity-50"></div>
         <div className="blur-[120px] bg-red-600 h-56 w-56 top-0 left-0 bg-opacity-50"></div>
       </div>
-      <div className="h-fit w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2">
+      <div className="h-fit w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2 ring-blue-500 transition-all">
         <h3 className="text-blue-500 text-2xl font-medium">Basic</h3>
         <p className="text-gray-300 mt-2">
           Basic Plan - Just perfect for getting started.
@@ -48,7 +48,7 @@ export default function PricingTable() {
           </li>
         </ul>
       </div>
-      <div className="h-fit w-80 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10">
+      <div className="h-fit w-80 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2 ring-yellow-300 transition-all">
         <h3 className="text-yellow-300 text-2xl font-medium">
           Pro Plan - Yearly
         </h3>
@@ -94,7 +94,7 @@ export default function PricingTable() {
           </li>
         </ul>
       </div>
-      <div className="h-fit w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10">
+      <div className="h-fit w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2 ring-orange-500 transition-all">
         <h3 className="text-orange-500 text-2xl font-medium">
           Pro Plan - Monthly
         </h3>
