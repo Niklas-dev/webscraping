@@ -13,7 +13,7 @@ export default function NavBar() {
           How does it work?
         </Link>
 
-        <Link href={""} className="hover:underline">
+        <Link href={"/pricing"} className="hover:underline">
           Pricing
         </Link>
         <ActionButton className="w-28 h-11" />

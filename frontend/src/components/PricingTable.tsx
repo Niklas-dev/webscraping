@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaCheck } from "react-icons/fa";
 
 export default function PricingTable() {
   return (
@@ -14,11 +15,32 @@ export default function PricingTable() {
           Basic Plan - Just perfect for getting started.
         </p>
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
-          € <p className="text-5xl font-medium">9,99</p>
+          € <p className="text-5xl font-semibold">9,99</p>
         </div>
-        <Link href={""} className="">
+
+        <button className="w-full h-10 font-semibold text-lg rounded-lg bg-white text-black">
           Get started
-        </Link>
+        </button>
+        <ul className="mt-6 flex flex-col gap-3">
+          <li className="flex flex-row gap-2 text-[#e6e6e6]">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-white  ">
+              <FaCheck color="#e6e6e6" size={"12.5px"} />
+            </div>{" "}
+            Create 2 posts per day
+          </li>
+          <li className="flex flex-row gap-2 text-[#e6e6e6]">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-white">
+              <FaCheck color="#e6e6e6" size={"12.5px"} />
+            </div>{" "}
+            Create 2 posts per day
+          </li>
+          <li className="flex flex-row gap-2 text-[#e6e6e6]">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-white">
+              <FaCheck color="#e6e6e6" size={"12.5px"} />
+            </div>{" "}
+            Create 2 posts per day
+          </li>
+        </ul>
       </div>
       <div className="h-96 w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10">
         <h3 className="text-yellow-300 text-2xl font-medium">Basic</h3>
@@ -26,11 +48,11 @@ export default function PricingTable() {
           Basic Plan - Just perfect for getting started.
         </p>
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
-          € <p className="text-5xl font-medium">9,99</p>
+          € <p className="text-5xl font-semibold">9,99</p>
         </div>
-        <Link href={""} className="">
+        <button className="w-full h-10 font-semibold text-lg rounded-lg bg-white text-black">
           Get started
-        </Link>
+        </button>
       </div>
       <div className="h-96 w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10">
         <h3 className="text-yellow-300 text-2xl font-medium">Basic</h3>
@@ -38,8 +60,11 @@ export default function PricingTable() {
           Basic Plan - Just perfect for getting started.
         </p>
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
-          € <p className="text-5xl font-medium">9,99</p>
+          € <p className="text-5xl font-semibold">9,99</p>
         </div>
+        <button className="w-full h-10 font-semibold text-lg rounded-lg bg-white text-black">
+          Get started
+        </button>
       </div>
     </main>
   );
