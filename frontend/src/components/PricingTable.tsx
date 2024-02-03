@@ -1,7 +1,77 @@
+import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { FaCheck } from "react-icons/fa";
+import { cookies } from "next/headers";
+interface IPlan {
+  product_id: string;
+  product_name: string;
+  price: string;
+  id: number;
+}
 
-export default function PricingTable() {
+export default async function PricingTable() {
+  const cookieStore = cookies();
+  const getPlans = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/payments/get-plans`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    console.log(response.ok);
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data: IPlan[] = await response.json();
+
+    console.log(data);
+
+    return data;
+  };
+
+  const createRedirects = async (data: IPlan[] | null) => {
+    let redirectUrls: string[] = [];
+
+    if (!data) {
+      return null;
+    }
+
+    for (let i in data) {
+      console.log(data[i]);
+      const checkoutResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}/payments/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${cookieStore.get("access_token")?.value}`,
+          },
+        }
+      );
+
+      if (!checkoutResponse.ok) {
+        return null;
+      }
+
+      const checkoutUrl = await checkoutResponse.json();
+
+      redirectUrls.push(checkoutUrl);
+    }
+
+    return redirectUrls;
+  };
+
+  const data: IPlan[] | null = await getPlans();
+  const urls = await createRedirects(data);
+  console.log(urls);
+
   return (
     <main className="flex flex-col lg:flex-row items-center lg:justify-center mt-10 relative z-10 gap-16 pb-16">
       <div className="absolute flex flex-row justify-center gap-20">
