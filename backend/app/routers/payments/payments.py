@@ -1,6 +1,7 @@
 import os
 from fastapi import APIRouter, Request, HTTPException, Header
 import stripe
+from sqlalchemy import desc, asc
 from sqlalchemy.orm import defer
 from starlette import status
 from stripe import InvalidRequestError
@@ -37,6 +38,11 @@ def get_user_subscription(request: Request, user: user_dependency, db: db_depend
     final_sub = Subscription(**filtered_sub)
 
     return final_sub
+
+@router.get("/get-plans")
+def get_user_subscription(request: Request, db: db_dependency):
+    plans = db.query(Plan).order_by(asc(Plan.id)).all()
+    return plans
 
 
 @router.post("/create-checkout-session")
