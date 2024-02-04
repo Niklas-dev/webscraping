@@ -1,16 +1,62 @@
+"use client";
 import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { FaCheck } from "react-icons/fa";
 import { cookies } from "next/headers";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { AuthContext } from "@/providers/AuthProvider";
+import { useRouter } from "next/navigation";
 interface IPlan {
   product_id: string;
   product_name: string;
   price: string;
   id: number;
 }
+interface ISubscription {
+  id: string;
+  current_period_start: number;
+  current_period_end: number;
+  status:
+    | "canceled"
+    | "active"
+    | "trialing"
+    | "past_due"
+    | "unpaid"
+    | "incomplete"
+    | "incomplete_expired";
+  created: number;
+  cancel_at_period_end: boolean;
+  currency: string;
+  plan: {
+    id: string;
+    object: "plan";
+    active: boolean;
+    amount: number;
+    billing_scheme: "per_unit" | "tiered" | "volume";
+    created: number;
+    currency: string;
+    interval: "day" | "week" | "month" | "year";
+    interval_count: number;
+    livemode: boolean;
+    metadata: Record<string, any>;
+    product: string;
+    trial_period_days: number | null;
+    usage_type: "licensed" | "metered";
+  };
+  product: {
+    id: number;
+    price: string;
+    product_name: string;
+    product_id: string;
+  };
+}
 
-export default async function PricingTable() {
-  const cookieStore = cookies();
+export default function PricingTable() {
+  const user = useContext(AuthContext);
+  const router = useRouter();
+
+  const [subscription, setSubscription] = useState<ISubscription>();
+
   const getPlans = async () => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/payments/get-plans`,
@@ -35,42 +81,40 @@ export default async function PricingTable() {
     return data;
   };
 
-  const createRedirects = async (data: IPlan[] | null) => {
-    let redirectUrls: string[] = [];
+  const getCurrentUserPlan = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/payments/get-user-subscription`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+      }
+    );
+    console.log(response.ok);
 
-    if (!data) {
+    if (!response.ok) {
       return null;
     }
 
-    for (let i in data) {
-      console.log(data[i]);
-      const checkoutResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND}/payments/create-checkout-session`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${cookieStore.get("access_token")?.value}`,
-          },
-        }
-      );
+    const data: ISubscription = await response.json();
 
-      if (!checkoutResponse.ok) {
-        return null;
-      }
-
-      const checkoutUrl = await checkoutResponse.json();
-
-      redirectUrls.push(checkoutUrl);
-    }
-
-    return redirectUrls;
+    setSubscription(data);
   };
 
-  const data: IPlan[] | null = await getPlans();
-  const urls = await createRedirects(data);
-  console.log(urls);
+  useLayoutEffect(() => {
+    getCurrentUserPlan();
+    getPlans();
+    return () => {};
+  }, []);
+
+  const onPlanClick = () => {
+    if (!user) {
+      router.push("login");
+    }
+  };
 
   return (
     <main className="flex flex-col lg:flex-row items-center lg:justify-center mt-10 relative z-10 gap-16 pb-16">
@@ -88,8 +132,17 @@ export default async function PricingTable() {
           € <p className="text-5xl font-semibold">9,99</p>
         </div>
 
-        <button className="w-full h-10 font-semibold text-lg rounded-lg bg-white text-black">
-          Get started
+        <button
+          onClick={() => onPlanClick()}
+          className={`w-full h-10 font-semibold text-lg rounded-lg ${
+            subscription?.product.product_name === "Prod1"
+              ? "text-white border-white border-2"
+              : "bg-white text-black"
+          }`}
+        >
+          {subscription?.product.product_name === "Prod1"
+            ? "Currently subscribed"
+            : "Get Started"}
         </button>
         <ul className="mt-6 flex flex-col gap-3">
           <li className="flex flex-row gap-2 text-[#e6e6e6]">
@@ -128,8 +181,17 @@ export default async function PricingTable() {
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
           € <p className="text-5xl font-semibold">199,99</p>
         </div>
-        <button className="w-full h-10 font-semibold text-lg rounded-lg bg-white text-black">
-          Get started
+        <button
+          onClick={() => onPlanClick()}
+          className={`w-full h-10 font-semibold text-lg rounded-lg  ${
+            subscription?.product.product_name === "Prod3"
+              ? "text-white border-white border-2"
+              : "bg-white text-black"
+          }`}
+        >
+          {subscription?.product.product_name === "Prod3"
+            ? "Currently subscribed"
+            : "Get Started"}
         </button>
         <ul className="mt-6 flex flex-col gap-3">
           <li className="flex flex-row gap-2 text-[#e6e6e6]">
@@ -174,8 +236,17 @@ export default async function PricingTable() {
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
           € <p className="text-5xl font-semibold">19,99</p>
         </div>
-        <button className="w-full h-10 font-semibold text-lg rounded-lg bg-white text-black">
-          Get started
+        <button
+          onClick={() => onPlanClick()}
+          className={`w-full h-10 font-semibold text-lg rounded-lg  ${
+            subscription?.product.product_name === "Prod2"
+              ? "text-white border-white border-2"
+              : "bg-white text-black"
+          }`}
+        >
+          {subscription?.product.product_name === "Prod2"
+            ? "Currently subscribed"
+            : "Get Started"}
         </button>
         <ul className="mt-6 flex flex-col gap-3">
           <li className="flex flex-row gap-2 text-[#e6e6e6]">
