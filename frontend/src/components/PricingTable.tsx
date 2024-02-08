@@ -113,9 +113,20 @@ export default function PricingTable() {
     return () => {};
   }, []);
 
-  const onPlanClick = async () => {
+  const onPlanClick = async (product: string, currentSub: ISubscription) => {
     if (!user) {
       router.push("login");
+    }
+    if (product === currentSub.product.product_name) {
+      toast.error("You are already subscribed to this plan.", {
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return null;
     }
 
     const response = await fetch(
@@ -163,11 +174,11 @@ export default function PricingTable() {
         </div>
 
         <button
-          onClick={() => onPlanClick()}
-          className={`w-full h-10 font-semibold text-lg rounded-lg ${
+          onClick={() => onPlanClick("Prod1", subscription!)}
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
             subscription?.product.product_name === "Prod1"
-              ? "text-white border-white border-2"
-              : "bg-white text-black"
+              ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
+              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
           }`}
         >
           {subscription?.product.product_name === "Prod1"
@@ -212,11 +223,11 @@ export default function PricingTable() {
           € <p className="text-5xl font-semibold">199,99</p>
         </div>
         <button
-          onClick={() => onPlanClick()}
-          className={`w-full h-10 font-semibold text-lg rounded-lg  ${
+          onClick={() => onPlanClick("Prod3", subscription!)}
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
             subscription?.product.product_name === "Prod3"
-              ? "text-white border-white border-2"
-              : "bg-white text-black"
+              ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
+              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
           }`}
         >
           {subscription?.product.product_name === "Prod3"
@@ -267,11 +278,11 @@ export default function PricingTable() {
           € <p className="text-5xl font-semibold">19,99</p>
         </div>
         <button
-          onClick={() => onPlanClick()}
-          className={`w-full h-10 font-semibold text-lg rounded-lg  ${
+          onClick={() => onPlanClick("Prod2", subscription!)}
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all ${
             subscription?.product.product_name === "Prod2"
-              ? "text-white border-white border-2"
-              : "bg-white text-black"
+              ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
+              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
           }`}
         >
           {subscription?.product.product_name === "Prod2"
