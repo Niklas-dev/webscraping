@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 interface IPlan {
   product_id: string;
   product_name: string;
@@ -101,6 +102,8 @@ export default function PricingTable() {
 
     const data: ISubscription = await response.json();
 
+    console.log(data);
+
     setSubscription(data);
   };
 
@@ -110,10 +113,37 @@ export default function PricingTable() {
     return () => {};
   }, []);
 
-  const onPlanClick = () => {
+  const onPlanClick = async () => {
     if (!user) {
       router.push("login");
     }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/payments/create-checkout-session`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error: { detail: string } = await response.json();
+      toast.error(error.detail, {
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return null;
+    }
+
+    const data: string = await response.json();
   };
 
   return (
