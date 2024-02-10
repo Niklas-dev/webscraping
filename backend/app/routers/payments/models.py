@@ -11,5 +11,6 @@ class Plan(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     product_name = Column(String, unique=True, nullable=False)
     product_id = Column(String, unique=True, nullable=False)
+    price_id = Column(String, unique=True, nullable=False)
     price = Column(String, unique=False, nullable=False)
 
