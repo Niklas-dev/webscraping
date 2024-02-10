@@ -9,7 +9,7 @@ from app.db.database import db_dependency
 from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
 from .models import Plan
-from .validators import Subscription, Product
+from .validators import Subscription, Product, CreateCheckoutRequest
 
 router = APIRouter(
     prefix='/payments',
@@ -46,7 +46,7 @@ def get_user_subscription(request: Request, db: db_dependency):
 
 
 @router.post("/create-checkout-session")
-def create_checkout_session(request: Request, user: user_dependency):
+def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
     if user.subscription_status == "active":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an ongoing subscription.")
     try:
@@ -59,9 +59,10 @@ def create_checkout_session(request: Request, user: user_dependency):
             metadata={
                 "client_reference_id": user.id,
             },
+
             line_items=[
                 {
-                    "price": "price_1Obq5xGpk89JeyEsqb8Twsx3",
+                    "price": create_checkout_request.price_id,
                     "quantity": 1,
                 }
             ]
