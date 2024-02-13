@@ -1,17 +1,26 @@
+import time
+
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from starlette import status
 import json
 import os
 
-
+from .models import UserPostIdea
 from .validators import PostIdea
+from ...db.database import db_dependency
 
 chat_model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
                         model_name="gpt-3.5-turbo")
 
 
-def create_new_post(niche: str, description: str, extra: str):
+def create_new_post(niche: str, description: str, extra: str, user_id: str, db: db_dependency):
+    create_user_post_idea_model = UserPostIdea(
+        user_id=user_id
+    )
+
+    db.add(create_user_post_idea_model)
+    db.commit()
     template = \
         (
             "You are a social content creator assistant. Make use of everything that you know about social media growth, trends, viral videos and more to fulfil this task."
@@ -32,4 +41,10 @@ def create_new_post(niche: str, description: str, extra: str):
     json_result = json.loads(result.content)
     post = PostIdea(**json_result)
     print(post.description)
+    time.sleep(30)
+    create_user_post_idea_model.title = post.title
+    create_user_post_idea_model.description = post.description
+    create_user_post_idea_model.video_description = post.video_description
+    create_user_post_idea_model.is_finished = True
+    db.commit()
     return post
