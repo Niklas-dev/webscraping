@@ -4,6 +4,9 @@ from starlette import status
 import json
 import os
 
+
+from .validators import PostIdea
+
 chat_model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
                         model_name="gpt-3.5-turbo")
 
@@ -26,4 +29,7 @@ def create_new_post(niche: str, description: str, extra: str):
     ])
     msg = chat_prompt.format_messages(text="business creation/decide yourself")
     result = chat_model.predict_messages(msg)
-    return json.loads(result.content)
+    json_result = json.loads(result.content)
+    post = PostIdea(**json_result)
+    print(post.description)
+    return post
