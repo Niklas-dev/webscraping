@@ -41,7 +41,7 @@ def create_new_post(niche: str, description: str, extra: str, user_id: str, db: 
     json_result = json.loads(result.content)
     post = PostIdea(**json_result)
     print(post.description)
-    time.sleep(30)
+
     create_user_post_idea_model.title = post.title
     create_user_post_idea_model.description = post.description
     create_user_post_idea_model.video_description = post.video_description
