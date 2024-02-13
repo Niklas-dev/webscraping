@@ -9,7 +9,7 @@ import os
 from app.routers.auth.services import user_dependency
 from app.routers.auth import models as auth_models
 from app.routers.payments import models as payments_models
-
+from app.routers.socials import models as socials_models
 
 from app.routers.auth.auth import router as auth_router
 from app.routers.payments.payments import router as payments_router
@@ -42,7 +42,7 @@ app.include_router(socials_router)
 
 auth_models.Base.metadata.create_all(bind=engine)
 payments_models.Base.metadata.create_all(bind=engine)
-
+socials_models.Base.metadata.create_all(bind=engine)
 
 
 @app.get("/", status_code=status.HTTP_200_OK)

@@ -18,3 +18,5 @@ class User(Base):
     subscription_status = Column(String(64), nullable=True)
     subscription_last_renew = Column(String, unique=False, nullable=True)
     subscription_next_renew = Column(String, unique=False, nullable=True)
+
+    user_post_ideas = relationship("UserPostIdea", back_populates="user")
