@@ -92,7 +92,7 @@ async def login_for_access_token(db: db_dependency, form_data: Annotated[OAuth2P
 
 
 @router.post("/refresh", response_model=Token)
-async def login_for_access_token(db: db_dependency, refresh_token_request: RefreshTokenRequest):
+async def refresh_access_token(db: db_dependency, refresh_token_request: RefreshTokenRequest):
     token = refresh_token_request.refresh_token
 
     if token_expired(token):
