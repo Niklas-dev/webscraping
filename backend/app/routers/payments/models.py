@@ -13,4 +13,5 @@ class Plan(Base):
     product_id = Column(String, unique=True, nullable=False)
     price_id = Column(String, unique=True, nullable=False)
     price = Column(String, unique=False, nullable=False)
+    weekly_uses = Column(Integer, default=0)
 

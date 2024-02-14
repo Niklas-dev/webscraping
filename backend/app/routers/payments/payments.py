@@ -39,6 +39,7 @@ def get_user_subscription(request: Request, user: user_dependency, db: db_depend
 
     return final_sub
 
+
 @router.get("/get-plans")
 def get_user_subscription(request: Request, db: db_dependency):
     plans = db.query(Plan).order_by(asc(Plan.id)).all()
@@ -105,7 +106,7 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
 
         subscription = stripe.Subscription.list(customer=session.customer).data[0]
 
-        if subscription.id and subscription.status == "active":
+        if user.subscription_id and user.subscription_status == "active":
             print(user.subscription_id)
             print(subscription.id)
             print(session.subscription)
@@ -127,6 +128,14 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         user.subscription_status = subscription.status
         user.subscription_last_renew = subscription.current_period_start
         user.subscription_next_renew = subscription.current_period_end
+
+        plan_id = subscription.items.data[0].plan.product.id
+
+        if not plan_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Plan not found.")
+
+        plan: Plan = db.query(Plan).filter(Plan.product_id == plan_id).first()
+        user.remaining_post_creations = plan.weekly_uses
 
         db.commit()
 

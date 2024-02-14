@@ -13,7 +13,7 @@ class User(Base):
     email = Column(String, unique=True)
     hashed_password = Column(String)
 
-    created_posts_this_week = Column(Integer, default=0)
+    remaining_post_creations = Column(Integer, default=0)
     created_posts_all_time = Column(Integer, default=0)
 
     customer_id = Column(String(255), nullable=True)
