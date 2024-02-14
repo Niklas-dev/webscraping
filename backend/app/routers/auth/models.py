@@ -13,7 +13,11 @@ class User(Base):
     email = Column(String, unique=True)
     hashed_password = Column(String)
 
+    created_posts_this_week = Column(Integer, default=0)
+    created_posts_all_time = Column(Integer, default=0)
+
     customer_id = Column(String(255), nullable=True)
+    plan_id = Column(Integer, nullable=True)
     subscription_id = Column(String(255), nullable=True)
     subscription_status = Column(String(64), nullable=True)
     subscription_last_renew = Column(String, unique=False, nullable=True)
