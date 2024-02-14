@@ -128,13 +128,14 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         user.subscription_status = subscription.status
         user.subscription_last_renew = subscription.current_period_start
         user.subscription_next_renew = subscription.current_period_end
-
-        plan_id = subscription.items.data[0].plan.product.id
+        print(subscription)
+        plan_id = subscription["items"].data[0].price.product
 
         if not plan_id:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Plan not found.")
 
         plan: Plan = db.query(Plan).filter(Plan.product_id == plan_id).first()
+        user.plan_id = plan.id
         user.remaining_post_creations = plan.weekly_uses
 
         db.commit()
