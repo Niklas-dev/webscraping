@@ -31,8 +31,39 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     restart: unless-stopped
 
+  redis:
+    image: redis:6.2-alpine
+    container_name: "redis"
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    command: redis-server --requirepass yourpassword --save 20 1 #--loglevel warning 
+    volumes:
+      - redis:/data
+
+  celery_worker:
+    container_name: celery_worker
+    build: .
+    working_dir: /app/backend/
+    command: celery -A celery_setup worker --pool=solo --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - postgres
+  flower:
+    container_name: flower
+    build: .
+    command: celery -A backend flower --port=5556
+    ports:
+      - 5556:5556
+    depends_on:
+      - postgres
+      - redis
+      - celery_worker
+
 
 
 volumes:
   postgres-data:
-  cache:
+  redis:
