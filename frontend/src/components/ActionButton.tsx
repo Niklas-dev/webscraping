@@ -18,7 +18,7 @@ export default function ActionButton({ className }: { className: string }) {
   };
   return (
     <button
-      onClick={onClick}
+      onClick={() => onClick()}
       className={`bg-white text-black rounded-lg w-32 h-10 text-lg flex justify-center items-center font-bold hover:scale-105 ${className}`}
     >
       Get Started
