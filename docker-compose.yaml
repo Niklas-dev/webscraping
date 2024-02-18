@@ -43,7 +43,9 @@ services:
 
   celery_worker:
     container_name: celery_worker
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     working_dir: /app/backend/
     command: celery -A celery_setup worker --pool=solo --loglevel=info
     volumes:
@@ -51,12 +53,14 @@ services:
     depends_on:
       - redis
       - postgres
+
   flower:
-    container_name: flower
-    build: .
-    command: celery -A backend flower --port=5556
+    image: mher/flower
     ports:
-      - 5556:5556
+      - "5556:5556"
+    environment:
+      - CELERY_BROKER_API=redis://:yourpassword@192.168.178.50:6379
+      - CELERY_BROKER_URL=redis://:yourpassword@192.168.178.50:6379
     depends_on:
       - postgres
       - redis
