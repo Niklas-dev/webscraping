@@ -1,6 +1,7 @@
 from fastapi import FastAPI, status, HTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
+from app.config.settings import app_settings
 from app.db.database import engine, db_dependency
 from dotenv import load_dotenv
 import logging
@@ -16,25 +17,19 @@ from app.routers.payments.payments import router as payments_router
 from app.routers.socials.socials import router as socials_router
 from fastapi.middleware.cors import CORSMiddleware
 
-load_dotenv()
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-
-origins = ["*"]
-
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=app_settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
+app.add_middleware(SessionMiddleware, secret_key=app_settings.SECRET_KEY)
 
 app.include_router(auth_router)
 app.include_router(payments_router)

@@ -14,6 +14,7 @@ from starlette.config import Config
 
 from .validators import GoogleUser
 from .models import User
+from ...config.settings import app_settings
 from ...db.database import db_dependency
 
 ALGORITHM = "HS256"
@@ -59,7 +60,7 @@ def create_access_token(username: str, user_id: int, expires_delta: timedelta):
 
     encode.update({"exp": expires})
 
-    return jwt.encode(encode, os.getenv("SECRET_KEY"), algorithm=ALGORITHM)
+    return jwt.encode(encode, app_settings.SECRET_KEY, algorithm=ALGORITHM)
 
 
 def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
@@ -67,12 +68,12 @@ def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
 
 
 def decode_token(token):
-    return jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=ALGORITHM)
+    return jwt.decode(token, app_settings.SECRET_KEY, algorithms=ALGORITHM)
 
 
 def get_current_user(token: Annotated[str, Depends(oauth_bearer)], db: db_dependency):
     try:
-        payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=ALGORITHM)
+        payload = jwt.decode(token, app_settings.SECRET_KEY, algorithms=ALGORITHM)
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
 
