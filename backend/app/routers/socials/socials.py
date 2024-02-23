@@ -48,4 +48,6 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
 async def create_new_post_idea(user: user_dependency, db: db_dependency):
     if user.subscription_status != "active":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No active subscription")
-    return create_new_post(niche="", description="", extra="", user_id=user.id, db=db)
+
+    result = create_new_post(niche="", description="", extra="", user_id=user.id, db=db)
+    return {"task_id": result.id}
