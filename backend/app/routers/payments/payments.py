@@ -107,10 +107,6 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         subscription = stripe.Subscription.list(customer=session.customer).data[0]
 
         if user.subscription_id and user.subscription_status == "active":
-            print(user.subscription_id)
-            print(subscription.id)
-            print(session.subscription)
-            print(subscription.cancel_at_period_end)
             try:
                 stripe.Subscription.modify(
                     user.subscription_id,
@@ -128,13 +124,15 @@ async def stripe_webhook(db: db_dependency, event: dict, request: Request, strip
         user.subscription_status = subscription.status
         user.subscription_last_renew = subscription.current_period_start
         user.subscription_next_renew = subscription.current_period_end
-        print(subscription)
-        plan_id = subscription["items"].data[0].price.product
 
+        plan_id = subscription["items"].data[0].price.product
+        print(plan_id)
         if not plan_id:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Plan not found.")
 
-        plan: Plan = db.query(Plan).filter(Plan.product_id == plan_id).first()
+        plan = db.query(Plan).filter(Plan.product_id == plan_id).first()
+        print("test")
+        print(plan)
         user.plan_id = plan.id
         user.remaining_post_creations = plan.weekly_uses
 

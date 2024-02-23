@@ -5,10 +5,8 @@ from datetime import timedelta
 from typing import Annotated
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
-import requests
 from .models import User
 from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest
-
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
     create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token, user_dependency
 from ...db.database import db_dependency
