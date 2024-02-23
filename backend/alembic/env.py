@@ -17,7 +17,10 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 from app.routers.auth import models as auth_models
-target_metadata = [auth_models.Base.metadata]
+from app.routers.socials import models as socials_models
+from app.routers.payments import models as payments_models
+
+target_metadata = [payments_models.Base.metadata]
 
 
 # other values from the config, defined by the needs of env.py,
