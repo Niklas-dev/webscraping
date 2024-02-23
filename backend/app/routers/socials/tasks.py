@@ -13,10 +13,9 @@ from .models import UserPostIdea
 from .validators import PostIdea
 from ..auth.models import User
 
-
-
 chat_model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
                         model_name="gpt-3.5-turbo")
+
 
 @celery_app.task()
 def test_tasks():
@@ -26,13 +25,9 @@ def test_tasks():
 
 @celery_app.task()
 def create_post_idea_task(niche: str, description: str, extra: str, user_id: str, post_id: int):
-    print("test")
     db = SessionLocal()
-    time.sleep(20)
-    print("test2")
 
     create_user_post_idea_model = db.query(UserPostIdea).filter(UserPostIdea.id == post_id).first()
-    print("test3")
 
     template = \
         (
