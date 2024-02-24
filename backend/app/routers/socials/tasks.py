@@ -44,16 +44,16 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
             "steps) - not the actual content of the video but showcase what needs to be shown or done - must be long "
             "enough to actually explain it, hashtags: relevant hashtags which could go viral,"
             "video_description: the text that should be written under the posts/reel dont include hashtags here - "
-            "should be short and hook the viewer and not longer than two lines - not hashtags at the end of this "
+            "should be short and hook the viewer and not longer than two lines - not hashtags at the end of the "
             "description!!"
         )
-    human_template = "{text}"
+    human_template = "niche: {niche} description: {description} extra: {extra}"
     chat_prompt = ChatPromptTemplate.from_messages([
         ("system", template),
         ("human", human_template)
     ])
-    msg = chat_prompt.format_messages(text="business creation/decide yourself")
-    result = chat_model.predict_messages(msg)
+    formatted_prompt = chat_prompt.format_messages(niche=niche, description=description, extra=extra)
+    result = chat_model.invoke(formatted_prompt)
     json_result = json.loads(result.content)
     post = PostIdea(**json_result)
     print(post.description)
@@ -61,6 +61,7 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
     create_user_post_idea_model.title = post.title
     create_user_post_idea_model.description = post.description
     create_user_post_idea_model.video_description = post.video_description
+
     create_user_post_idea_model.is_finished = True
     db.commit()
     return "test"
