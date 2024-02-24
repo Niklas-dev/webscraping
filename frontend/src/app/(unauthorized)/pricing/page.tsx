@@ -3,7 +3,7 @@ import PricingTable from "@/components/PricingTable";
 
 export default function page() {
   return (
-    <div className="h-screen w-screen relative selection:bg-orange-500  bg-gradient-to-b from-[#111111] to-black overflow-y-scroll overflow-x-hidden text-white">
+    <div className="h-screen w-screen relative selection:bg-orange-500  bg-black overflow-y-scroll overflow-x-hidden text-white">
       <NavBar />
       <div className="flex flex-col items-center mt-28">
         <h1 className="text-5xl font-bold text-white text-center">
