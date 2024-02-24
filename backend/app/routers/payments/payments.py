@@ -10,6 +10,7 @@ from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
 from .models import Plan
 from .validators import Subscription, Product, CreateCheckoutRequest
+from ...config.settings import app_settings
 
 router = APIRouter(
     prefix='/payments',
@@ -17,6 +18,7 @@ router = APIRouter(
 )
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+FRONTEND_URL = app_settings.FRONTEND_URL
 
 
 @router.get("/get-user-subscription")
@@ -63,8 +65,8 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
     try:
         checkout_session = stripe.checkout.Session.create(
             client_reference_id=user.id,
-            success_url=os.getenv("FRONTEND_URL") + "payments/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url=os.getenv("FRONTEND_URL") + "payments/cancel",
+            success_url=FRONTEND_URL + "payments/success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=FRONTEND_URL + "payments/cancel",
             payment_method_types=["card", "paypal"],
             mode="subscription",
             metadata={
