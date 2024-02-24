@@ -46,6 +46,16 @@ def get_user_subscription(request: Request, db: db_dependency):
     return plans
 
 
+@router.delete("/cancel-subscription")
+def get_user_subscription(request: Request, db: db_dependency, user: user_dependency):
+    stripe.Subscription.modify(
+        user.subscription_id,
+        cancel_at_period_end=True,
+    )
+
+    return {"detail": "Subscription is canceled and will stop at period end"}
+
+
 @router.post("/create-checkout-session")
 def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
     if user.subscription_status == "active":
