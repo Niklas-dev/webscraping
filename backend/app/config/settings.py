@@ -8,6 +8,7 @@ class Settings:
         load_dotenv()
 
         self.SECRET_KEY = os.getenv("SECRET_KEY")
+        self.FRONTEND_URL = os.getenv("FRONTEND_URL")
         self.CORS_ORIGINS = ["*"]
 
 

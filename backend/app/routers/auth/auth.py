@@ -1,3 +1,5 @@
+import os
+
 from authlib.integrations.base_client import OAuthError
 from authlib.oauth2.rfc6749 import OAuth2Token
 from fastapi import APIRouter, Depends, HTTPException
@@ -22,7 +24,7 @@ router = APIRouter(
 GOOGLE_CLIENT_ID = "969709362942-oqoriveq3lumcs940jio55uj54uet39u.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "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"
 GOOGLE_REDIRECT_URI = "http://localhost/auth/callback/google"
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 
 @router.get("/google")
