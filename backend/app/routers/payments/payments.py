@@ -20,7 +20,7 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 @router.get("/get-user-subscription")
-def get_user_subscription(request: Request, user: user_dependency, db: db_dependency):
+def get_user_subscription(user: user_dependency, db: db_dependency):
     if not user.subscription_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No subscription available.")
 
@@ -41,13 +41,13 @@ def get_user_subscription(request: Request, user: user_dependency, db: db_depend
 
 
 @router.get("/get-plans")
-def get_user_subscription(request: Request, db: db_dependency):
+def get_user_subscription(db: db_dependency):
     plans = db.query(Plan).order_by(asc(Plan.id)).all()
     return plans
 
 
 @router.delete("/cancel-subscription")
-def get_user_subscription(request: Request, db: db_dependency, user: user_dependency):
+def get_user_subscription(user: user_dependency):
     stripe.Subscription.modify(
         user.subscription_id,
         cancel_at_period_end=True,
@@ -84,7 +84,7 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
 
 
 @router.post("/webhook")
-async def stripe_webhook(db: db_dependency, event: dict, request: Request, stripe_signature=Header(None)):
+async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=Header(None)):
     webhook_secret = os.getenv("WEBHOOK_SECRET")
     raw_body = await request.body()
     try:
