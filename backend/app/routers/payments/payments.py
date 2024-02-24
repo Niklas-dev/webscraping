@@ -172,11 +172,10 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
 
 
 @router.get("/create-billing-portal-session")
-def create_checkout_session(request: Request, user: user_dependency):
-    domain_url = "http://localhost:3000/"
+def create_checkout_session(user: user_dependency):
     session = stripe.billing_portal.Session.create(
         customer=user.customer_id,
-        return_url=domain_url,
+        return_url=os.getenv("FRONTEND_URL"),
     )
 
     return session.url
