@@ -44,7 +44,7 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
     else:
         await websocket.send_text(result.state)
 
-
+# test
 @router.post("/create-new-post-idea")
 async def create_new_post_idea(user: user_dependency, db: db_dependency, create_post_idea_request: CreatePostIdeaRequest):
     if user.subscription_status != "active":
