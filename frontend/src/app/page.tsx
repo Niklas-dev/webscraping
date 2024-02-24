@@ -1,8 +1,7 @@
 import NavBar from "@/components/NavBar";
 import BlurColors from "@/components/BlurColors";
-import HowDoes from "@/components/landing/HowDoes";
+
 import MainSection from "@/components/landing/MainSection";
-import WhatDoes from "@/components/landing/WhatDoes";
 
 export default function Home() {
   return (
@@ -10,11 +9,8 @@ export default function Home() {
       <div className="w-screen h-screen ">
         <BlurColors />
         <NavBar />
-
         <MainSection />
       </div>
-      <WhatDoes />
-      <HowDoes />
     </div>
   );
 }
