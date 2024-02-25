@@ -10,9 +10,9 @@ export default function page() {
           Our pricing, simple and fair
         </h1>
         <p className="text-xl text-gray-300 text-center mt-4">
-          Get started with TendPilot - Perfect social media posts by finding for
-          you tailored content. <br /> Follow hyped trends and grow with wanted
-          content.
+          Get started with TrendPilot - Perfect social media posts by finding
+          for you tailored content. <br /> Follow hyped trends and grow with
+          wanted content.
         </p>
       </div>
       <PricingTable />
