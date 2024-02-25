@@ -37,7 +37,7 @@ export default function MainSection() {
         </div>
       </div>
 
-      <div className="mt-20 md:mt-4 pb-96 flex flex-col gap-4">
+      <div className="mt-20 md:mt-4 pb-96 flex flex-col gap-4 px-4">
         <h3 className="text-xl md:text-2xl lg:text-4xl text-white font-bold text-center">
           One Platform, every niche <br /> Create unique post ideas on demand.
         </h3>
