@@ -33,45 +33,51 @@ const Skeleton = () => (
 );
 const items = [
   {
-    title: "The Dawn of Innovation",
-    description: "Explore the birth of groundbreaking ideas and inventions.",
+    title: "Unlock Your Potential: 5 Quick Workouts for Busy Days 💪",
+    description: "Unlock Your Potential: 5 Quick Workouts for Busy Days 💪",
     header: <Skeleton />,
     icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Digital Revolution",
-    description: "Dive into the transformative power of technology.",
+    title: "Hidden Gems: Exploring Local Wonders Off the Beaten Path 🌍",
+    description:
+      "Discover the beauty that's right in your backyard! Uncover secret spots and lesser-known destinations that promise unforgettable adventures. #TravelLocal",
     header: <Skeleton />,
     icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Art of Design",
-    description: "Discover the beauty of thoughtful and functional design.",
+    title:
+      "Sensational Seasonal Recipes: Fall in Love with Autumn Flavors 🍁🍂",
+    description:
+      "From cozy soups to indulgent desserts, dive into the delicious world of autumnal cooking with these mouthwatering recipes. #FallFoodie",
     header: <Skeleton />,
     icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Power of Communication",
+    title: "Style Spotlight: Embrace Vintage Vibes with Modern Twists 👗✨",
     description:
-      "Understand the impact of effective communication in our lives.",
+      "Elevate your wardrobe with timeless pieces and contemporary flair! Discover how to seamlessly blend vintage aesthetics with current trends. #Vintage",
     header: <Skeleton />,
     icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Pursuit of Knowledge",
-    description: "Join the quest for understanding and enlightenment.",
+    title: "Tech Talk: Exploring the Future of Artificial Intelligence 🤖🔮",
+    description:
+      "From AI-powered assistants to cutting-edge robotics, dive into the fascinating world of artificial intelligence and its impact on our daily lives. #AIInnovation",
     header: <Skeleton />,
     icon: <IconArrowWaveRightUp className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Joy of Creation",
-    description: "Experience the thrill of bringing ideas to life.",
+    title: "Mindful Living: Small Changes, Big Impact 🌱✨",
+    description:
+      "Transform your life with simple yet powerful practices that promote mindfulness, gratitude, and overall well-being. Start your journey to a more balanced lifestyle today! #MindfulLiving",
     header: <Skeleton />,
     icon: <IconBoxAlignTopLeft className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "The Spirit of Adventure",
-    description: "Embark on exciting journeys and thrilling discoveries.",
+    title: "Capturing the Magic: Mastering Night Photography 🌙📸",
+    description:
+      "Unlock the secrets to breathtaking night shots! Learn essential techniques and gear recommendations to capture stunning images after the sun sets. #NightPhotographyTips",
     header: <Skeleton />,
     icon: <IconBoxAlignRightFilled className="h-4 w-4 text-neutral-500" />,
   },

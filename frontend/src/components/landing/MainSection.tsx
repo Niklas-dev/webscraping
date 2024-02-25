@@ -6,12 +6,19 @@ import Link from "next/link";
 import { InfoGrid } from "../InfoGrid";
 
 import { useRef } from "react";
+import { TextGenerateEffect } from "../ui/TextGen";
+import {
+  GlowingStarsBackgroundCard,
+  GlowingStarsTitle,
+  GlowingStarsDescription,
+  Illustration,
+} from "../ui/GlowingStars";
 
 export default function MainSection() {
   return (
-    <div className="h-screen overflow-y-scroll overflow-x-hidden">
-      <div className="h-screen">
-        <div className="h-[40rem] w-full rounded-md flex md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-x-hidden pt-40 md:pt-80">
+    <div className="h-screen overflow-x-hidden">
+      <div className="h-screen ">
+        <div className="h-[40rem] w-full rounded-md flex md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative  pt-40 md:pt-80">
           <Spotlight
             className="-top-0 left-0 sm:-top-24 sm:-left-10 md:-left-18 md:-top-4 lg:left-[18%] lg:-top-16"
             fill="white"
@@ -29,8 +36,20 @@ export default function MainSection() {
           </div>
         </div>
       </div>
-      <div className="pb-96 ">
+
+      <div className="pb-96 flex flex-col gap-4">
+        <h3 className="text-4xl text-white font-bold text-center">
+          One Platform, every niche <br /> Create unique post ideas on demand.
+        </h3>
         <InfoGrid />
+      </div>
+
+      <div className="pb-96 ">
+        <div className="flex flex-row justify-center text-white px-20">
+          <div className="bg-[#161616] w-96 h-72 antialiased relative p-4">
+            <h3 className="text-xl">Post Idea</h3>
+          </div>
+        </div>
       </div>
     </div>
   );
