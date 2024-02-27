@@ -19,6 +19,7 @@ export function InfoGrid() {
       {items.map((item, i) => (
         <BentoGridItem
           key={i}
+          delay={i * 100}
           title={item.title}
           description={item.description}
           header={item.header}

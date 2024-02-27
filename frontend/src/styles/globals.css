@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(150px);
+  transition: 0.4s ease-in-out;
+}
+
+.fade-in-element.in-view {
+  transform: translateY(0px);
+  opacity: 1;
+}
