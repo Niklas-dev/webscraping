@@ -3,7 +3,7 @@ import ActionButton from "./ActionButton";
 
 export default function NavBar() {
   return (
-    <nav className="h-20 w-screen bg-transparent text-white   flex flex-row justify-between  items-center px-10 md:px-28 fixed  shadow-xl z-20">
+    <nav className="h-20 w-full bg-transparent text-white bg-red-500   flex flex-row justify-between  items-center px-10 md:px-28 fixed top-0 shadow-xl z-20">
       <h4 className="text-xl md:text-3xl font-bold">TrendPilot</h4>
       <div className="flex flex-row items-center gap-4 text-xl font-medium">
         <Link href={""} className="hover:underline hidden md:flex">
