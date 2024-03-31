@@ -1,6 +1,31 @@
+import { cookies } from "next/headers";
 import Link from "next/link";
 
-export default function page() {
+export default async function page() {
+  const cookieStore = cookies();
+  const getBillingPortal = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/payments/create-billing-portal-session`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${cookieStore.get("access_token")!.value}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const url: string = await response.json();
+
+    return url;
+  };
+
+  const url = await getBillingPortal();
+
   return (
     <div className="p-4">
       <div className="w-full h-full">
@@ -12,18 +37,12 @@ export default function page() {
             </p>
           </div>
           <div className="flex flex-row gap-4 items-center">
-            <Link
-              className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg  shadow-sm"
-              href={""}
-            >
-              Cancel Subscription
-            </Link>
-            <Link
+            <a
               className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg shadow-sm"
-              href={""}
+              href={url!}
             >
-              View Billing
-            </Link>
+              Manage Plan
+            </a>
           </div>
         </div>
 
