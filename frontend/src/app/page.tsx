@@ -13,9 +13,9 @@ export default function Home() {
     <div className="w-full h-screen relative bg-black bg-grid-white/[0.05] overflow-x-hidden overflow-y-scroll">
       <NavBar />
       <div className="h-fit lg:h-screen">
-        <div className="h-[40rem] w-full rounded-md flex md:items-center md:justify-center  relative  pt-40 md:pt-80">
+        <div className="h-[40rem] w-full rounded-md flex md:items-center md:justify-center  relative  pt-40 md:pt-60">
           <Spotlight
-            className="-top-0 left-0 sm:-top-24 sm:-left-10 md:-left-18 md:-top-4 lg:left-[18%] lg:-top-16"
+            className="-top-0 left-0 sm:-top-24 sm:-left-10 md:-left-18 md:-top-4 lg:left-[18%] lg:-top-12"
             fill="white"
           />
           <div className=" p-4 max-w-7xl  mx-auto relative z-10  w-full pt-20 md:pt-0">
