@@ -49,7 +49,7 @@ export default async function page() {
 
         <div className="mt-10">
           <div className="h-[2px] w-full bg-gray-200 mb-2"></div>
-          test
+
           <div className="flex flex-row items-center justify-between">
             <h3 className="text-lg font-bold text-gray-800">Current Plan</h3>
             <Link

@@ -39,8 +39,8 @@ class CreateCheckoutRequest(BaseModel):
 
 class Subscription(BaseModel):
     id: str
-    current_period_start: int
-    current_period_end: int
+    current_period_start: int | str
+    current_period_end: int | str
     status: str
     created: int
     cancel_at_period_end: bool
