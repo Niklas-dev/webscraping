@@ -1,8 +1,35 @@
+import { ISubscription } from "@/shared/interfaces";
+import { capitalizeFirstChar } from "@/utils/utils";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default async function page() {
   const cookieStore = cookies();
+
+  const getCurrentUserPlan = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/payments/get-user-subscription`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${cookieStore.get("access_token")!.value}`,
+        },
+      }
+    );
+    console.log(response.ok);
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data: ISubscription = await response.json();
+
+    console.log(data);
+
+    return data;
+  };
 
   const getBillingPortal = async () => {
     const response = await fetch(
@@ -26,6 +53,7 @@ export default async function page() {
   };
 
   const url = await getBillingPortal();
+  const subscription = await getCurrentUserPlan();
 
   return (
     <div className="p-4">
@@ -67,15 +95,21 @@ export default async function page() {
                   {"19,99€ / Month"}
                 </div>
               </div>
-              <div className="bg-green-600 bg-opacity-55 px-5 py-1.5 rounded-full text-green-900 font-semibold">
-                Active
+              <div
+                className={`bg-opacity-55 px-5 py-1.5 rounded-full text-black font-semibold ${
+                  subscription?.status! === "active"
+                    ? "bg-green-600 text-green-900"
+                    : "bg-red-600"
+                }`}
+              >
+                {capitalizeFirstChar(subscription?.status!)}
               </div>
             </div>
             <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
               <div className="flex flex-col text-base font-medium text-gray-500">
                 Last renew
                 <div className="text-xl font-semibold text-black">
-                  {"1. Sep 2024"}
+                  {subscription?.current_period_start}
                 </div>
               </div>
               <div className="border-2 border-gray-300 bg-opacity-55 px-5 py-1.5 rounded-full text-gray-500  font-semibold">
@@ -86,7 +120,7 @@ export default async function page() {
               <div className="flex flex-col text-base font-medium text-gray-500">
                 Renew at
                 <div className="text-xl font-semibold text-black">
-                  {"20. Oct 2025"}
+                  {subscription?.current_period_end}
                 </div>
               </div>
             </div>
