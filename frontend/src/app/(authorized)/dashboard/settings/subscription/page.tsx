@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default async function page() {
   const cookieStore = cookies();
+
   const getBillingPortal = async () => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/payments/create-billing-portal-session`,
@@ -38,8 +39,8 @@ export default async function page() {
           </div>
           <div className="flex flex-row gap-4 items-center">
             <a
-              className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg shadow-sm"
-              href={url!}
+              className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg shadow-sm cursor-pointer"
+              href={url! === null ? "/pricing" : url!}
             >
               Manage Plan
             </a>
@@ -48,6 +49,7 @@ export default async function page() {
 
         <div className="mt-10">
           <div className="h-[2px] w-full bg-gray-200 mb-2"></div>
+          test
           <div className="flex flex-row items-center justify-between">
             <h3 className="text-lg font-bold text-gray-800">Current Plan</h3>
             <Link

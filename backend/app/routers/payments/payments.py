@@ -11,6 +11,7 @@ from app.routers.auth.services import user_dependency
 from .models import Plan
 from .validators import Subscription, Product, CreateCheckoutRequest
 from ...config.settings import app_settings
+from datetime import datetime, UTC
 
 router = APIRouter(
     prefix='/payments',
@@ -34,8 +35,17 @@ def get_user_subscription(user: user_dependency, db: db_dependency):
     filtered_sub = {key: subscription[key] for key in selected_keys if key in subscription}
 
     product: dict = db.query(Plan).where(Plan.product_id == filtered_sub["plan"].product).first()
-    print(filtered_sub["plan"].product)
+
     filtered_sub["product"] = Product(**product.__dict__)
+
+    print(filtered_sub["current_period_start"])
+    print(filtered_sub["current_period_end"])
+
+    period_start = datetime.fromtimestamp(filtered_sub["current_period_start"], UTC)
+    period_end = datetime.fromtimestamp(filtered_sub["current_period_start"], UTC)
+
+    filtered_sub["current_period_start"] = period_start.strftime("%Y-%m-%d")
+    filtered_sub["current_period_end"] = period_end.strftime("%Y-%m-%d")
 
     final_sub = Subscription(**filtered_sub)
 
