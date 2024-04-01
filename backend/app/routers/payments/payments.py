@@ -44,8 +44,8 @@ def get_user_subscription(user: user_dependency, db: db_dependency):
     period_start = datetime.fromtimestamp(filtered_sub["current_period_start"], UTC)
     period_end = datetime.fromtimestamp(filtered_sub["current_period_end"], UTC)
 
-    filtered_sub["current_period_start"] = period_start.strftime("%Y-%m-%d")
-    filtered_sub["current_period_end"] = period_end.strftime("%Y-%m-%d")
+    filtered_sub["current_period_start"] = period_start.strftime("%d. %b %Y")
+    filtered_sub["current_period_end"] = period_end.strftime("%d. %b %Y")
 
     final_sub = Subscription(**filtered_sub)
 
