@@ -4,10 +4,11 @@ export default function page() {
   return (
     <div className="px-8">
       <h2 className="text-3xl font-semibold">
-        Get started with your next awesome post <sup>✨</sup>
+        Get started with your next awesome post ✨
       </h2>
+      <div className="h-[2px] w-full bg-gray-200 mt-2 "></div>
       <div className="flex flex-row flex-wrap gap-8 pt-4 ">
-        <div className="h-96 w-[30rem] bg-gradient-to-tr from-[#3c1053] to-[#ad5389] rounded-xl flex flex-col justify-end p-8 drop-shadow-2xl relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300">
+        <div className="mt-2 h-96 w-[30rem] bg-gradient-to-tr from-[#3c1053] to-[#ad5389] rounded-xl flex flex-col justify-end p-8 drop-shadow-2xl relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300">
           <FaInstagram
             className="absolute top-4 left-4 group-hover/card:translate-x-1 group-hover/card:translate-y-1 transition-all"
             color="white"

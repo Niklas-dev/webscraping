@@ -82,7 +82,7 @@ export default async function page() {
             <h3 className="text-lg font-bold text-gray-800">Current Plan</h3>
             <Link
               className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg shadow-sm"
-              href={""}
+              href={"/pricing"}
             >
               Change Plan
             </Link>
