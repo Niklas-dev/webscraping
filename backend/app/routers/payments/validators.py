@@ -29,6 +29,8 @@ class Product(BaseModel):
     price: str
     product_name: str
     product_id: str
+    full_plan_name: str
+    full_price_name: str
 
 
 class CreateCheckoutRequest(BaseModel):
