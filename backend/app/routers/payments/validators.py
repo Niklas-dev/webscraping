@@ -24,6 +24,7 @@ class Plan(BaseModel):
     trial_period_days: Optional[int]
     usage_type: str
 
+
 class Product(BaseModel):
     id: int
     price: str
@@ -37,8 +38,6 @@ class CreateCheckoutRequest(BaseModel):
     price_id: str
 
 
-
-
 class Subscription(BaseModel):
     id: str
     current_period_start: int | str
@@ -49,5 +48,3 @@ class Subscription(BaseModel):
     currency: str
     plan: Plan
     product: Product
-
-
