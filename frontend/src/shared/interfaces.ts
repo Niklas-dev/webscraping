@@ -34,5 +34,7 @@ export interface ISubscription {
     price: string;
     product_name: string;
     product_id: string;
+    full_plan_name: string;
+    full_price_name: string;
   };
 }

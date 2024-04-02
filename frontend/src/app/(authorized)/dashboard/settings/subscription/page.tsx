@@ -90,9 +90,9 @@ export default async function page() {
           <div className="flex flex-row gap-4">
             <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
               <div className="flex flex-col text-base font-medium text-gray-500">
-                {"Pro Plan Monthly"}
+                {subscription?.product.full_plan_name}
                 <div className="text-xl font-semibold text-black">
-                  {"19,99€ / Month"}
+                  {subscription?.product.full_price_name}
                 </div>
               </div>
               <div
