@@ -1,6 +1,6 @@
 "use client";
 import { getCookie } from "cookies-next";
-import { createContext, useLayoutEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 interface IUser {
   username: string;
@@ -30,11 +30,12 @@ export function AuthProvider({
 
     if (response.ok) {
       const user: IUser = await response.json();
+      console.log(user);
       setUser(user);
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getUser();
     return () => {};
   }, []);
