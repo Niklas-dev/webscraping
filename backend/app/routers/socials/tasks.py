@@ -69,4 +69,4 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     user.remaining_post_creations = remaining_creations - 1
     db.commit()
-    return {"detail": "successfully created post idea", "post_tite": post.title}
+    return {"detail": "successfully created post idea", "post_title": post.title}
