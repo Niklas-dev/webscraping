@@ -9,7 +9,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="h-screen w-screen  flex flex-row">
+    <section className="h-screen w-screen  flex flex-row ">
       <DashboardNavBar />
       <div className="flex flex-col w-full h-full overflow-x-hidden">
         <nav className="flex flex-row justify-end py-4 px-10 drop-shadow-sm relative z-10 ">
