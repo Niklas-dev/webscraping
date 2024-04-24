@@ -38,3 +38,13 @@ export interface ISubscription {
     full_price_name: string;
   };
 }
+
+export interface IPostIdea {
+  id: number;
+  is_finished: boolean;
+  video_description: string;
+  user_id: number;
+  title: string;
+  description: string;
+  hashtags: string | null;
+}
