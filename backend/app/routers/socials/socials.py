@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, WebSocket
 from starlette import status
 
 from celery_setup import celery_app
+from .models import UserPostIdea
 from .tasks import test_tasks
 from .services import create_new_post
 from .validators import CreatePostIdeaRequest
@@ -46,7 +47,8 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
 
 
 @router.post("/create-new-post-idea")
-async def create_new_post_idea(user: user_dependency, db: db_dependency, create_post_idea_request: CreatePostIdeaRequest):
+async def create_new_post_idea(user: user_dependency, db: db_dependency,
+                               create_post_idea_request: CreatePostIdeaRequest):
     if user.subscription_status != "active":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No active subscription")
 
@@ -56,3 +58,9 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency, create_
     result = create_new_post(niche=create_post_idea_request.niche, description=create_post_idea_request.description,
                              extra=create_post_idea_request.extra, user_id=user.id, db=db)
     return {"task_id": result.id, "detail": "You post idea is being generated."}
+
+
+@router.get("/posts")
+async def create_new_post_idea(user: user_dependency, db: db_dependency):
+    posts = db.query(UserPostIdea).all()
+    return {"posts": posts}
