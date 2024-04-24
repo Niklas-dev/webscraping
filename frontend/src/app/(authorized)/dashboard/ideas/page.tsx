@@ -1,24 +1,12 @@
+import PostIdeaCard from "@/components/PostIdeaCard";
+import { IPostIdea } from "@/shared/interfaces";
+import { getRandomStringFromArray } from "@/utils/utils";
 import { cookies } from "next/headers";
 
-interface PostIdea {
-  id: number;
-  is_finished: boolean;
-  video_description: string;
-  user_id: number;
-  title: string;
-  description: string;
-  hashtags: string | null;
-}
 export default async function Page() {
   const cookieStore = cookies();
-  function getRandomStringFromArray(stringArray: string[]) {
-    if (stringArray.length === 0) {
-      throw new Error("You must provide an array of strings");
-    }
-    const randomIndex = Math.floor(Math.random() * stringArray.length);
-    return stringArray[randomIndex];
-  }
-  const getPosts = async (): Promise<PostIdea[] | null> => {
+
+  const getPosts = async (): Promise<IPostIdea[] | null> => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts`,
       {
@@ -53,14 +41,7 @@ export default async function Page() {
       <div className="flex flex-row flex-wrap gap-8  min-h-0 overflow-auto relative pt-6">
         {posts!.map((post) => {
           if (post.is_finished) {
-            return (
-              <div
-                key={post.id}
-                className="h-96 w-[30rem] bg-gray-300 rounded-xl flex flex-col justify-center items-center"
-              >
-                {post.title}
-              </div>
-            );
+            return <PostIdeaCard key={post.id} post={post} />;
           } else {
             return (
               <div
