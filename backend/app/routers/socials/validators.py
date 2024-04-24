@@ -9,6 +9,8 @@ class PostIdea(BaseModel):
     video_description: str
 
 
+
+
 class CreatePostIdeaRequest(BaseModel):
     niche: str
     description: str
