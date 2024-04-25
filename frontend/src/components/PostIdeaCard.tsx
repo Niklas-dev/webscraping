@@ -11,9 +11,24 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
       <div className="p-1.5 flex flex-row justify-center">
         <div className="h-4 w-4 bg-black rounded-full"></div>
       </div>
-      <div className="bg-white h-full w-full rounded-xl p-2">
-        <h3>{post.title}</h3>
-        <p>{post.description}</p>
+      <div className="bg-white h-full w-full rounded-xl p-2 flex flex-col justify-between">
+        <div>
+          {" "}
+          <h3>{post.title}</h3>
+          <p>{post.description}</p>
+        </div>
+        <div>
+          <div className="flex flex-row items-center gap-2">
+            <div className="h-9 w-9 bg-gray-300 rounded-full"></div>
+            <p className="font-semibold">A Cool Person</p>
+          </div>
+          <div className="mt-1">
+            <p className="truncate w-11/12 font-medium">
+              {post.video_description}
+            </p>
+            <p className="truncate w-11/12 font-medium">{post.hashtags}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
