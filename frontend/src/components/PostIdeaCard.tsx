@@ -14,10 +14,10 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
   return (
     <div
       key={post.id}
-      className="h-[35rem] w-[21rem] bg-gray-300 rounded-xl flex flex-col  px-2 pb-2 group/card hover:-translate-y-2 transition-all cursor cursor-pointer text-white "
+      className="h-[35rem] w-[19rem] bg-gray-300 rounded-xl flex flex-col  px-2 pb-2 group/card hover:-translate-y-2 transition-all cursor cursor-pointer text-white "
     >
       <div className="p-1.5 group-hover/card:-translate-y-1 transition-all flex flex-row justify-center">
-        <div className="h-4 w-4 bg-black rounded-full z-20"></div>
+        <div className="h-4 w-4 bg-gray-900 rounded-full z-20"></div>
       </div>
       <div className="bg-gradient-to-tr from-[#170E13] to-[#7A7ADB] h-full w-full rounded-xl  flex flex-col justify-between relative group-hover/card:-translate-y-2 transition-all">
         <div className="absolute bottom-12 right-4">

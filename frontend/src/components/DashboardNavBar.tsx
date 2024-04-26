@@ -36,7 +36,7 @@ export default function DashboardNavBar() {
             <SideNavElement route="/dashboard/ideas" name="Ideas">
               <BiBulb />
             </SideNavElement>
-            <SideNavElement route="/dashboard/trending" name="Trending">
+            <SideNavElement route="/dashboard/trending" name="Trending (Soon)">
               <BiTrendingUp />
             </SideNavElement>
             <SideNavElement
