@@ -9,6 +9,7 @@ class UserPostIdea(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     is_finished = Column(Boolean, default=False)
+    is_liked = Column(Boolean, default=False)
     title = Column(String, nullable=True)
     description = Column(String, nullable=True)
     video_description = Column(String, nullable=True)

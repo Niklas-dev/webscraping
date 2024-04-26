@@ -2,14 +2,13 @@ import asyncio
 
 from celery.result import AsyncResult
 from fastapi import APIRouter, HTTPException, WebSocket
-from sqlalchemy import case
 from starlette import status
 
 from celery_setup import celery_app
 from .models import UserPostIdea
 from .tasks import test_tasks
 from .services import create_new_post
-from .validators import CreatePostIdeaRequest
+from .validators import CreatePostIdeaRequest, ChangeLikePostIdeaRequest
 from ..auth.services import user_dependency
 from ...db.database import db_dependency
 
@@ -66,3 +65,15 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency):
     posts = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id).order_by(UserPostIdea.is_finished == True,
                                                                                     UserPostIdea.id).all()
     return {"posts": posts}
+
+
+@router.post("/change-like-post-idea")
+async def create_new_post_idea(user: user_dependency, db: db_dependency,
+                               change_like_post_idea_request: ChangeLikePostIdeaRequest):
+    post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.id == change_like_post_idea_request.id).first()
+
+    post.is_liked = change_like_post_idea_request.is_liked
+
+    db.commit()
+
+    return {"detail": "Post like updated.", "post": post}
