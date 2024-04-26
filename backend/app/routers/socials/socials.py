@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 from celery.result import AsyncResult
 from fastapi import APIRouter, HTTPException, WebSocket
@@ -70,10 +71,9 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency):
 @router.post("/change-like-post-idea")
 async def create_new_post_idea(user: user_dependency, db: db_dependency,
                                change_like_post_idea_request: ChangeLikePostIdeaRequest):
-    post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.id == change_like_post_idea_request.id).first()
-
+    post = db.query(UserPostIdea).filter(UserPostIdea.id == change_like_post_idea_request.id).first()
     post.is_liked = change_like_post_idea_request.is_liked
-
     db.commit()
+    db.refresh(post)
 
-    return {"detail": "Post like updated.", "post": post}
+    return {"post": post}
