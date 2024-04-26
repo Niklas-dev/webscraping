@@ -33,8 +33,6 @@ export default async function Page() {
 
   const posts = await getPosts();
 
-  console.log(posts);
-
   return (
     <div className="px-8 min-h-0 flex flex-col">
       <h2 className="text-3xl font-semibold">Your cool ideas ❄️</h2>

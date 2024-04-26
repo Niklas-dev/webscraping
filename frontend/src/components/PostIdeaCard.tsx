@@ -1,6 +1,9 @@
-import { IPostIdea } from "@/shared/interfaces";
+"use client";
 
-import React from "react";
+import { IPostIdea } from "@/shared/interfaces";
+import { getCookie } from "cookies-next";
+
+import React, { useState } from "react";
 import {
   BiComment,
   BiDotsHorizontal,
@@ -11,6 +14,36 @@ import {
 import { FaHeart } from "react-icons/fa";
 
 export default function PostIdeaCard({ post }: { post: IPostIdea }) {
+  const [postState, setPostState] = useState<IPostIdea>(post);
+
+  const updatePostLike = async (newLikeValue: boolean) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/socials/change-like-post-idea`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+        body: JSON.stringify({
+          id: postState.id,
+          is_liked: newLikeValue,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    console.log(data);
+    const post: IPostIdea = data["post"];
+    console.log(post);
+    setPostState(post);
+  };
+
   return (
     <div
       key={post.id}
@@ -22,13 +55,16 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
       <div className="bg-gradient-to-tr from-[#170E13] to-[#7A7ADB] h-full w-full rounded-xl  flex flex-col justify-between relative group-hover/card:-translate-y-2 transition-all">
         <div className="absolute bottom-12 right-4">
           <div className="flex flex-col items-center gap-2">
-            <BiHeart size="25px" />
+            <BiHeart
+              onClick={async () => await updatePostLike(!postState.is_liked)}
+              size="25px"
+            />
             <BiDotsVerticalRounded size="25px" />
           </div>
         </div>
         <div></div>
         <div className="flex flex-row justify-center p-2 ">
-          <h3>&quot;{post.title}&quot;</h3>
+          <h3>&quot;{postState.title}&quot;</h3>
         </div>
         <div className="bg-gradient-to-b from-transparent to-black p-2 h-fit flex flex-col justify-end rounded-xl ">
           <div className="flex flex-row items-center gap-2">
@@ -37,9 +73,9 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
           </div>
           <div className="mt-1 ">
             <p className="truncate w-11/12 font-medium">
-              {post.video_description}
+              {postState.video_description}
             </p>
-            <p className="truncate w-11/12 font-medium">{post.hashtags}</p>
+            <p className="truncate w-11/12 font-medium">{postState.hashtags}</p>
           </div>
         </div>
       </div>

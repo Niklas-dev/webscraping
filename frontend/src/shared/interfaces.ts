@@ -42,6 +42,7 @@ export interface ISubscription {
 export interface IPostIdea {
   id: number;
   is_finished: boolean;
+  is_liked: boolean;
   video_description: string;
   user_id: number;
   title: string;
