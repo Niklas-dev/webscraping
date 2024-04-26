@@ -55,10 +55,19 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
       <div className="bg-gradient-to-tr from-[#170E13] to-[#7A7ADB] h-full w-full rounded-xl  flex flex-col justify-between relative group-hover/card:-translate-y-2 transition-all">
         <div className="absolute bottom-12 right-4">
           <div className="flex flex-col items-center gap-2">
-            <BiHeart
-              onClick={async () => await updatePostLike(!postState.is_liked)}
-              size="25px"
-            />
+            {postState.is_liked ? (
+              <FaHeart
+                color="red"
+                onClick={async () => await updatePostLike(!postState.is_liked)}
+                size="25px"
+              />
+            ) : (
+              <BiHeart
+                onClick={async () => await updatePostLike(!postState.is_liked)}
+                size="25px"
+              />
+            )}
+
             <BiDotsVerticalRounded size="25px" />
           </div>
         </div>
