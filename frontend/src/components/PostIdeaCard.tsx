@@ -17,6 +17,7 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
   const [postState, setPostState] = useState<IPostIdea>(post);
 
   const updatePostLike = async (newLikeValue: boolean) => {
+    setPostState({ ...postState, is_liked: !postState.is_liked });
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/socials/change-like-post-idea`,
       {
@@ -38,9 +39,8 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
     }
 
     const data = await response.json();
-    console.log(data);
     const post: IPostIdea = data["post"];
-    console.log(post);
+
     setPostState(post);
   };
 
