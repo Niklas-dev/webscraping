@@ -4,6 +4,7 @@ import { IPostIdea } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
 
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import {
   BiComment,
   BiDotsHorizontal,
@@ -18,6 +19,16 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
 
   const updatePostLike = async (newLikeValue: boolean) => {
     setPostState({ ...postState, is_liked: !postState.is_liked });
+
+    toast.success("Post Idea like status changed", {
+      icon: "❤️",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/socials/change-like-post-idea`,
       {
@@ -35,6 +46,14 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
     );
 
     if (!response.ok) {
+      toast.error("Failed to update post idea.", {
+        icon: "🤔",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
       return null;
     }
 
@@ -57,7 +76,6 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
           <div className="flex flex-col items-center gap-2">
             {postState.is_liked ? (
               <FaHeart
-                color="red"
                 onClick={async () => await updatePostLike(!postState.is_liked)}
                 size="25px"
               />
