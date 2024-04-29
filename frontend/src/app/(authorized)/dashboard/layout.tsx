@@ -14,10 +14,13 @@ export default function DashboardLayout({
       <div className="flex flex-col w-full h-full overflow-x-hidden">
         <nav className="flex flex-row justify-end py-4 px-10 drop-shadow-sm relative z-10 ">
           <div className="flex flex-row items-center gap-4">
-            <button className="h-10 w-fit px-4 rounded-lg flex items-center justify-center border border-gray-300 gap-2 text-lg outline-none transition-colors hover:bg-gray-100">
+            <Link
+              href={"/dashboard/create-post-idea"}
+              className="h-10 w-fit px-4 rounded-lg flex items-center justify-center border border-gray-300 gap-2 text-lg outline-none transition-colors hover:bg-gray-100"
+            >
               <FaPlus size={"1rem"} />
               <span className="hidden md:flex">Create Post Idea</span>
-            </button>
+            </Link>
             <div className="flex flex-row items-center gap-2">
               <Link href={"/dashboard/settings/account"}>
                 <FaUserCircle
