@@ -1,13 +1,15 @@
+"use client";
 import LoadingCard from "@/components/LoadingCard";
 import PostIdeaCard from "@/components/PostIdeaCard";
 import { IPostIdea } from "@/shared/interfaces";
-import { getRandomStringFromArray } from "@/utils/utils";
-import { cookies } from "next/headers";
+import { getCookie } from "cookies-next";
 
-export default async function Page() {
-  const cookieStore = cookies();
+import { useEffect, useState } from "react";
 
-  const getPosts = async (): Promise<IPostIdea[] | null> => {
+export default function Page() {
+  const [posts, setPosts] = useState<IPostIdea[]>([]);
+
+  const getPosts = async () => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts`,
       {
@@ -15,7 +17,7 @@ export default async function Page() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: `Bearer ${cookieStore.get("access_token")!.value}`,
+          Authorization: `Bearer ${getCookie("access_token")}`,
         },
       }
     );
@@ -27,11 +29,15 @@ export default async function Page() {
     const data = await response.json();
 
     const posts = data["posts"];
-
-    return posts;
+    setPosts(posts);
   };
 
-  const posts = await getPosts();
+  useEffect(() => {
+    getPosts();
+    const interval = setInterval(getPosts, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="px-8 min-h-0 flex flex-col">
