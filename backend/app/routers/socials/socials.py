@@ -67,6 +67,13 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency):
     return {"posts": posts}
 
 
+@router.get("/liked-posts")
+async def create_new_post_idea(user: user_dependency, db: db_dependency):
+    liked_posts = (db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_liked == True)
+                   .order_by(UserPostIdea.created_at).all())
+    return {"liked_posts": liked_posts}
+
+
 @router.post("/change-like-post-idea")
 async def create_new_post_idea(user: user_dependency, db: db_dependency,
                                change_like_post_idea_request: ChangeLikePostIdeaRequest):
