@@ -2,7 +2,10 @@
 
 import RichTextFormInput from "@/components/RichTextFormInput";
 import TextFormInput from "@/components/TextFormInput";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -10,6 +13,49 @@ export default function Page() {
     description: "",
     extra: "",
   });
+  const router = useRouter();
+
+  const createNewPostIdea = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/socials/create-new-post-idea`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+        body: JSON.stringify(formData),
+      }
+    );
+
+    if (!response.ok) {
+      toast.error("Failed to create post idea.", {
+        icon: "🤔",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return null;
+    }
+
+    const data = await response.json();
+    const info = data["detail"];
+
+    toast.success(info, {
+      icon: "❤️",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+
+    router.push("/dashboard/ideas");
+  };
+
   return (
     <div className="px-8">
       <h2 className="text-3xl font-semibold">Create your next big idea</h2>
@@ -42,7 +88,10 @@ export default function Page() {
           }
           value={formData.extra}
         />
-        <button className="bg-[#1b1b1b] hover:bg-[#252525] text-white px-6 py-2 rounded-xl text-lg font-semibold">
+        <button
+          onClick={() => createNewPostIdea()}
+          className="bg-[#1b1b1b] hover:bg-[#252525] text-white px-6 py-2 rounded-xl text-lg font-semibold"
+        >
           Create Your Idea Now
         </button>
       </div>
