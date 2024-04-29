@@ -1,7 +1,8 @@
 from sqlalchemy.orm import relationship
 
 from ...db.database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
+from sqlalchemy.sql import func
 
 
 class UserPostIdea(Base):
@@ -14,6 +15,7 @@ class UserPostIdea(Base):
     description = Column(String, nullable=True)
     video_description = Column(String, nullable=True)
     hashtags = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=func.now())
 
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="user_post_ideas")
