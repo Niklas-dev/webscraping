@@ -6,6 +6,7 @@ import {
   BiCog,
   BiCreditCard,
   BiFolder,
+  BiHeart,
   BiHome,
   BiMoney,
   BiSquareRounded,
@@ -39,11 +40,8 @@ export default function DashboardNavBar() {
             <SideNavElement route="/dashboard/trending" name="Trending (Soon)">
               <BiTrendingUp />
             </SideNavElement>
-            <SideNavElement
-              route="/dashboard/archived-ideas"
-              name="Archived Ideas"
-            >
-              <BiFolder />
+            <SideNavElement route="/dashboard/liked-ideas" name="Liked Ideas">
+              <BiHeart />
             </SideNavElement>
           </div>
           <h4 className="font-medium text-gray-400 mt-12">SETTINGS</h4>

@@ -90,7 +90,7 @@ export default function PostIdeaCard({ post }: { post: IPostIdea }) {
           </div>
         </div>
         <div></div>
-        <div className="flex flex-row justify-center p-2 ">
+        <div className="flex flex-row justify-center p-2 text-center">
           <h3>&quot;{postState.title}&quot;</h3>
         </div>
         <div className="bg-gradient-to-b from-transparent to-black p-2 h-fit flex flex-col justify-end rounded-xl ">
