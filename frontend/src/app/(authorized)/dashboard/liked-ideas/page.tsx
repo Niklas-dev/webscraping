@@ -8,6 +8,7 @@ export default async function page() {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/socials/liked-posts`,
       {
+        cache: "no-cache",
         method: "GET",
         headers: {
           "Content-Type": "application/json",
