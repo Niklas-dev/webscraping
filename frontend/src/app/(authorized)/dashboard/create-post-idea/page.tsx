@@ -73,7 +73,7 @@ export default function Page() {
         <RichTextFormInput
           id="description"
           label="Description"
-          placeholder="Desribe closer what you want to your post idea to be about. Leave blank if you have no idea."
+          placeholder="Describe closer what you want to your post idea to be about. Leave blank if you have no idea."
           onChange={(value) =>
             setFormData((prevData) => ({ ...prevData, description: value }))
           }
