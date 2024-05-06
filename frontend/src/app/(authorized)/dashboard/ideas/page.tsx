@@ -72,7 +72,13 @@ export default function Page() {
               <>
                 {posts!.map((post) => {
                   if (post.is_finished) {
-                    return <PostIdeaCard key={post.id} post={post} />;
+                    return (
+                      <PostIdeaCard
+                        clickCallback={(value) => null}
+                        key={post.id}
+                        post={post}
+                      />
+                    );
                   } else {
                     return <LoadingCard key={post.id} />;
                   }

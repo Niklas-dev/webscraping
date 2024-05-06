@@ -14,11 +14,18 @@ import {
 } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 
-export default function PostIdeaCard({ post }: { post: IPostIdea }) {
+export default function PostIdeaCard({
+  post,
+  clickCallback,
+}: {
+  post: IPostIdea;
+  clickCallback: (value: boolean) => void;
+}) {
   const [postState, setPostState] = useState<IPostIdea>(post);
 
   const updatePostLike = async (newLikeValue: boolean) => {
     setPostState({ ...postState, is_liked: !postState.is_liked });
+    clickCallback(newLikeValue);
 
     toast.success("Post Idea like status changed", {
       icon: "❤️",
