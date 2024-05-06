@@ -42,7 +42,7 @@ export default function Page() {
   }, [refetchState]);
   return (
     <div className="px-8">
-      <h2 className="text-3xl font-semibold">Your old ideas ⌛</h2>
+      <h2 className="text-3xl font-semibold">Your liked ideas ❤️</h2>
       <div className="h-[2px] w-full bg-gray-200 mt-2 "></div>
       <div className="flex flex-row flex-wrap gap-8  min-h-0 overflow-auto relative pt-6">
         {likedPosts!.length >= 1 ? (
