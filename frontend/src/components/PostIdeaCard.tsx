@@ -2,6 +2,7 @@
 
 import { IPostIdea } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
+import Link from "next/link";
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -71,7 +72,8 @@ export default function PostIdeaCard({
   };
 
   return (
-    <div
+    <Link
+      href={`/dashboard/ideas/${post.id}`}
       key={post.id}
       className="h-[35rem] w-[19rem] bg-gray-300 rounded-xl flex flex-col  px-2 pb-2 group/card hover:-translate-y-2 transition-all cursor cursor-pointer text-white "
     >
@@ -113,6 +115,6 @@ export default function PostIdeaCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

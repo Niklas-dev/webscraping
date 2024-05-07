@@ -4,13 +4,13 @@ import { useParams, useRouter } from "next/navigation";
 import { IPostIdea } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
 export default function Page() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();
 
   const [post, setPost] = useState<IPostIdea | null>(null);
 
   const getPost = async (id: string): Promise<IPostIdea[] | null> => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts/30`,
+      `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts/${params.id}`,
       {
         cache: "no-store",
         method: "GET",
