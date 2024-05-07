@@ -24,7 +24,7 @@ export default function RichTextFormInput({
       <textarea
         id={id}
         rows={4}
-        className="block p-2.5 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
+        className="block p-2.5 w-full text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-none"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

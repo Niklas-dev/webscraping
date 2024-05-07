@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { IPostIdea } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
+import TextFormInput from "@/components/TextFormInput";
+import RichTextFormInput from "@/components/RichTextFormInput";
+import IdeaInfoArea from "@/components/IdeaInfoArea";
 export default function Page() {
   const params = useParams<{ id: string }>();
 
@@ -10,7 +13,7 @@ export default function Page() {
 
   const getPost = async (id: string): Promise<IPostIdea[] | null> => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts/${params.id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts/${id}`,
       {
         cache: "no-store",
         method: "GET",
@@ -36,7 +39,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    getPost("1");
+    getPost(params.id);
 
     return () => {};
   }, []);
@@ -45,8 +48,26 @@ export default function Page() {
     <div className="px-8 min-h-0 flex flex-col">
       <h2 className="text-3xl font-semibold">Your next post idea</h2>
       <div className="h-[2px] w-full bg-gray-200 mt-2 shadow-2xl"></div>
-      <div className="flex flex-row flex-wrap gap-8  min-h-0 overflow-auto relative pt-6"></div>
-      {post?.title!}
+      <div className="flex flex-row flex-wrap gap-8  min-h-0 overflow-auto relative pt-6">
+        <div className="flex flex-col gap-4 w-1/2">
+          <IdeaInfoArea title="Title" content={post?.title!} />
+          <IdeaInfoArea title="Hashtags" content={post?.hashtags ?? "None"} />
+          <IdeaInfoArea
+            title="Video Descripition"
+            content={post?.video_description!}
+          />
+          <IdeaInfoArea title="Idea Description" content={post?.description!} />
+        </div>
+        <div className="flex flex-col w-[48%]">
+          <RichTextFormInput
+            id="script"
+            onChange={() => null}
+            value={post?.title!}
+            placeholder="Test"
+            label="What you need to do "
+          />
+        </div>
+      </div>
     </div>
   );
 }
