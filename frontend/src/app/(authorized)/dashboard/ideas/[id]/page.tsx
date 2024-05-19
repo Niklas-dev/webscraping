@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { IPostIdea } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
@@ -38,7 +38,7 @@ export default function Page() {
     return post;
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getPost(params.id);
 
     return () => {};

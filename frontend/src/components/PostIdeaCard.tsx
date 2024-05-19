@@ -3,6 +3,7 @@
 import { IPostIdea } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -22,6 +23,7 @@ export default function PostIdeaCard({
   post: IPostIdea;
   clickCallback: (value: boolean) => void;
 }) {
+  const router = useRouter();
   const [postState, setPostState] = useState<IPostIdea>(post);
 
   const updatePostLike = async (newLikeValue: boolean) => {
@@ -72,8 +74,11 @@ export default function PostIdeaCard({
   };
 
   return (
-    <Link
-      href={`/dashboard/ideas/${post.id}`}
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        router.push(`/dashboard/ideas/${post.id}`);
+      }}
       key={post.id}
       className="h-[35rem] w-[19rem] bg-gray-300 rounded-xl flex flex-col  px-2 pb-2 group/card hover:-translate-y-2 transition-all cursor cursor-pointer text-white "
     >
@@ -82,17 +87,27 @@ export default function PostIdeaCard({
       </div>
       <div className="bg-gradient-to-tr from-[#170E13] to-[#7A7ADB] h-full w-full rounded-xl  flex flex-col justify-between relative group-hover/card:-translate-y-2 transition-all">
         <div className="absolute bottom-12 right-4">
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-2 z-10 ">
             {postState.is_liked ? (
-              <FaHeart
-                onClick={async () => await updatePostLike(!postState.is_liked)}
-                size="25px"
-              />
+              <button>
+                <FaHeart
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await updatePostLike(!postState.is_liked);
+                  }}
+                  size="25px"
+                />
+              </button>
             ) : (
-              <BiHeart
-                onClick={async () => await updatePostLike(!postState.is_liked)}
-                size="25px"
-              />
+              <button>
+                <BiHeart
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await updatePostLike(!postState.is_liked);
+                  }}
+                  size="25px"
+                />
+              </button>
             )}
 
             <BiDotsVerticalRounded size="25px" />
@@ -115,6 +130,6 @@ export default function PostIdeaCard({
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
