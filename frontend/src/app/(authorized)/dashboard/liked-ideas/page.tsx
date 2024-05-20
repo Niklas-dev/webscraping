@@ -76,7 +76,9 @@ export default function Page() {
                   if (post.is_finished) {
                     return (
                       <PostIdeaCard
-                        clickCallback={(value) => null}
+                        clickCallback={(value) =>
+                          setRefetchState((_prev) => !_prev)
+                        }
                         key={post.id}
                         post={post}
                       />
