@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaArrowRight, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 
 export default function page() {
@@ -8,7 +9,10 @@ export default function page() {
       </h2>
       <div className="h-[2px] w-full bg-gray-200 mt-2 "></div>
       <div className="flex flex-row flex-wrap gap-8 pt-4 ">
-        <div className="mt-2 h-96 w-[30rem] bg-gradient-to-tr from-[#3c1053] to-[#ad5389] rounded-xl flex flex-col justify-end p-8 drop-shadow-2xl relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300">
+        <Link
+          href={"/dashboard/create-post-idea?type=reel"}
+          className="mt-2 h-96 w-[30rem] bg-gradient-to-tr from-[#3c1053] to-[#ad5389] rounded-xl flex flex-col justify-end p-8 drop-shadow-2xl relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300"
+        >
           <FaInstagram
             className="absolute top-4 left-4 group-hover/card:translate-x-1 group-hover/card:translate-y-1 transition-all"
             color="white"
@@ -22,8 +26,11 @@ export default function page() {
               <FaArrowRight size={25} color="black" />
             </div>
           </div>
-        </div>
-        <div className="h-96 w-[30rem] bg-gradient-to-tr from-[#89216B] to-[#DA4453] rounded-xl flex flex-col justify-end p-8 relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300">
+        </Link>
+        <Link
+          href={"/dashboard/create-post-idea?type=tiktok"}
+          className="h-96 w-[30rem] bg-gradient-to-tr from-[#89216B] to-[#DA4453] rounded-xl flex flex-col justify-end p-8 relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300"
+        >
           <FaTiktok
             className="absolute top-4 left-4 group-hover/card:translate-x-1 group-hover/card:translate-y-1 transition-all"
             color="white"
@@ -37,8 +44,11 @@ export default function page() {
               <FaArrowRight size={25} color="black" />
             </div>
           </div>
-        </div>
-        <div className="h-96 w-[30rem] bg-gradient-to-tr from-[#FF416C] to-[#FF4B2B] rounded-xl flex flex-col justify-end p-8 relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300">
+        </Link>
+        <Link
+          href={"/dashboard/create-post-idea?type=short"}
+          className="h-96 w-[30rem] bg-gradient-to-tr from-[#FF416C] to-[#FF4B2B] rounded-xl flex flex-col justify-end p-8 relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300"
+        >
           <FaYoutube
             className="absolute top-4 left-4 group-hover/card:translate-x-1 group-hover/card:translate-y-1 transition-all"
             color="white"
@@ -52,8 +62,11 @@ export default function page() {
               <FaArrowRight size={25} color="black" />
             </div>
           </div>
-        </div>
-        <div className="h-96 w-[30rem] bg-gradient-to-tr from-[#373B44] to-[#4286f4] rounded-xl flex flex-col justify-end p-8 relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300">
+        </Link>
+        <Link
+          href={"/dashboard/create-post-idea?type=vid"}
+          className="h-96 w-[30rem] bg-gradient-to-tr from-[#373B44] to-[#4286f4] rounded-xl flex flex-col justify-end p-8 relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300"
+        >
           <FaYoutube
             className="absolute top-4 left-4 group-hover/card:translate-x-1 group-hover/card:translate-y-1 transition-all"
             color="white"
@@ -67,7 +80,7 @@ export default function page() {
               <FaArrowRight size={25} color="black" />
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
