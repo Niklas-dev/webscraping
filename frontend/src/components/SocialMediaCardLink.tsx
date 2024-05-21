@@ -20,7 +20,7 @@ export default function SocialMediaCardLink({
   return (
     <Link
       href={href}
-      className={`mt-2 h-96 w-[30rem] bg-gradient-to-tr from-[${from_color}] to-[${to_color}] rounded-xl flex flex-col justify-end p-8 drop-shadow-2xl relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300`}
+      className={`mt-2 h-96 w-[30rem] bg-gradient-to-tr ${from_color} ${to_color} rounded-xl flex flex-col justify-end p-8 drop-shadow-2xl relative group/card cursor-pointer hover:shadow-2xl transition-all duration-300`}
     >
       {children}
       <div className="flex flex-row items-center justify-between">

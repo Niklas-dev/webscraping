@@ -12,8 +12,8 @@ export default function page() {
       <div className="flex flex-row flex-wrap gap-8 pt-4 ">
         <SocialMediaCardLink
           href="/dashboard/create-post-idea?type=reel"
-          from_color="#3c1053"
-          to_color="#ad5389"
+          from_color="from-[#3c1053]"
+          to_color="to-[#ad5389]"
           pre_word="Awesome"
           post_type="Instagram Reel"
         >
@@ -25,8 +25,8 @@ export default function page() {
         </SocialMediaCardLink>
         <SocialMediaCardLink
           href="/dashboard/create-post-idea?type=tiktok"
-          from_color="#89216B"
-          to_color="#DA4453"
+          from_color="from-[#89216B]"
+          to_color="to-[#DA4453]"
           pre_word="Stunning"
           post_type="TikTok"
         >
@@ -39,8 +39,8 @@ export default function page() {
 
         <SocialMediaCardLink
           href="/dashboard/create-post-idea?type=short"
-          from_color="#FF416C"
-          to_color="#FF4B2B"
+          from_color="from-[#FF416C]"
+          to_color="to-[#FF4B2B]"
           pre_word="Breathtaking"
           post_type="Youtube Short"
         >
@@ -53,8 +53,8 @@ export default function page() {
 
         <SocialMediaCardLink
           href="/dashboard/create-post-idea?type=vid"
-          from_color="#373B44"
-          to_color="#4286f4"
+          from_color="from-[#373B44]"
+          to_color="to-[#4286f4]"
           pre_word="Awesome"
           post_type="Youtube Video"
         >
