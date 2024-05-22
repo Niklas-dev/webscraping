@@ -1,10 +1,11 @@
 "use client";
 
+import PostTypeSelection from "@/components/PostTypeSelection";
 import RichTextFormInput from "@/components/RichTextFormInput";
 import SocialMediaCardLink from "@/components/SocialMediaCardLink";
 import TextFormInput from "@/components/TextFormInput";
 import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaInstagram } from "react-icons/fa";
@@ -16,6 +17,10 @@ export default function Page() {
     extra: "",
   });
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const post_type = searchParams.get("post_type");
 
   const createNewPostIdea = async () => {
     const response = await fetch(
@@ -100,19 +105,7 @@ export default function Page() {
             </button>
           </div>
           <div className="w-fit">
-            <SocialMediaCardLink
-              href="/dashboard/create-post-idea?type=reel"
-              from_color="from-[#3c1053]"
-              to_color="to-[#ad5389]"
-              pre_word="Awesome"
-              post_type="Instagram Reel"
-            >
-              <FaInstagram
-                className="absolute top-4 left-4 group-hover/card:translate-x-1 group-hover/card:translate-y-1 transition-all"
-                color="white"
-                size={35}
-              />
-            </SocialMediaCardLink>
+            <PostTypeSelection post_type={post_type!} />
           </div>
         </div>
       </div>
