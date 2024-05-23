@@ -15,7 +15,7 @@ export function AuthProvider({
   children: React.ReactNode[] | React.ReactNode;
 }) {
   const [user, setUser] = useState<IUser | null>(null);
-
+  const access_token = getCookie("access_token");
   const getUser = async () => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/auth/get-user`,
@@ -23,7 +23,7 @@ export function AuthProvider({
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${getCookie("access_token")}`,
+          Authorization: `Bearer ${access_token}`,
         },
       }
     );
@@ -38,7 +38,7 @@ export function AuthProvider({
   useEffect(() => {
     getUser();
     return () => {};
-  }, []);
+  }, [access_token]);
 
   return (
     <>
