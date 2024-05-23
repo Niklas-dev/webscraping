@@ -1,6 +1,6 @@
 "use client";
 import { getCookie } from "cookies-next";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useLayoutEffect, useState } from "react";
 
 interface IUser {
   username: string;
@@ -35,7 +35,7 @@ export function AuthProvider({
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getUser();
     return () => {};
   }, [access_token]);
