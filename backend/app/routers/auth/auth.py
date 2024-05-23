@@ -100,9 +100,10 @@ async def refresh_access_token(db: db_dependency, refresh_token_request: Refresh
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token is expired.")
 
     user = decode_token(token)
-    print(f"Refreshed token for {user.username}")
+    print(user)
+    print(f"Refreshed token for {user["sub"]}")
 
-    access_token = create_access_token(user.username, user.id, timedelta(days=7))
-    refresh_token = create_refresh_token(user.username, user.id, timedelta(days=14))
+    access_token = create_access_token(user["sub"], user["id"], timedelta(days=7))
+    refresh_token = create_refresh_token(user["sub"], user["id"], timedelta(days=14))
 
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
