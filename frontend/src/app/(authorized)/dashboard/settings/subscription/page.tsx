@@ -56,7 +56,7 @@ export default async function page() {
   const subscription = await getCurrentUserPlan();
 
   return (
-    <div className="p-4">
+    <div className="px-8">
       <div className="w-full h-full">
         <div className="flex flex-row justify-between items-center mt-20">
           <div>
