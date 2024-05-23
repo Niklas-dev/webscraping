@@ -95,6 +95,28 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
 
+@router.post("/create-checkout-session-onetime")
+def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[
+                {
+                    "price": create_checkout_request.price_id,
+                    "quantity": 1,
+                }
+            ],
+            metadata={"product_id": "1"},
+            mode="payment",
+            success_url=FRONTEND_URL + "payments/success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=FRONTEND_URL + "payments/cancel",
+        )
+        return checkout_session.url
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+
 @router.post("/webhook")
 async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=Header(None)):
     webhook_secret = os.getenv("WEBHOOK_SECRET")
