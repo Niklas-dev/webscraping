@@ -10,7 +10,7 @@ export default function ActionButton({ className }: { className: string }) {
   const router = useRouter();
 
   const onClick = () => {
-    if (user) {
+    if (user.username) {
       router.push("/dashboard");
     } else {
       router.push("/login");
@@ -18,12 +18,12 @@ export default function ActionButton({ className }: { className: string }) {
   };
   return (
     <>
-      {user ? (
+      {!user.loading ? (
         <button
           onClick={() => onClick()}
           className={`bg-white text-black rounded-lg w-32 h-10 text-xl flex justify-center items-center font-bold hover:scale-105 ${className}`}
         >
-          {user ? "Continue" : "Get Started"}
+          {user.username ? "Continue" : "Get Started"}
         </button>
       ) : (
         <button
