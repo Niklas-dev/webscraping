@@ -103,7 +103,7 @@ async def refresh_access_token(db: db_dependency, refresh_token_request: Refresh
     print(user)
     print(f"Refreshed token for {user["sub"]}")
 
-    access_token = create_access_token(user["sub"], user["id"], timedelta(days=7))
-    refresh_token = create_refresh_token(user["sub"], user["id"], timedelta(days=14))
+    access_token = create_access_token(user["sub"], user["id"], timedelta(days=app_settings.ACCESS_TOKEN_EXPIRATION_DAYS))
+    refresh_token = create_refresh_token(user["sub"], user["id"], timedelta(days=app_settings.REFRESH_TOKEN_EXPIRATION_DAYS))
 
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
