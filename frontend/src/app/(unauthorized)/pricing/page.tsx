@@ -1,3 +1,4 @@
+import CreditsPricingTable from "@/components/CreditsPricingTable";
 import NavBar from "@/components/NavBar";
 import PricingTable from "@/components/PricingTable";
 
@@ -16,6 +17,12 @@ export default function page() {
         </p>
       </div>
       <PricingTable />
+      <div className="w-full flex justify-center">
+        <h3 className="font-semibold text-xl">
+          or buy direct idea creation credits
+        </h3>
+      </div>
+      <CreditsPricingTable />
     </div>
   );
 }

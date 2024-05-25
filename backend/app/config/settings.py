@@ -12,6 +12,7 @@ class Settings:
         self.CORS_ORIGINS: list[str] = ["*"]
         self.ACCESS_TOKEN_EXPIRATION_DAYS: int = 7
         self.REFRESH_TOKEN_EXPIRATION_DAYS: int = 14
+        self.GOOGLE_REDIRECT_URI: str = ""
 
 
 app_settings = Settings()
