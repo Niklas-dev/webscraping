@@ -36,6 +36,7 @@ class Product(BaseModel):
 
 class CreateCheckoutRequest(BaseModel):
     price_id: str
+    product_id: str
 
 
 class Subscription(BaseModel):

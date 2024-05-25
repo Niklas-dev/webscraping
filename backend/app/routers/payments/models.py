@@ -17,3 +17,14 @@ class Plan(Base):
     price = Column(String, unique=False, nullable=False)
     weekly_uses = Column(Integer, default=0)
 
+
+class TokenPackage(Base):
+    __tablename__ = "token_packages"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    product_name = Column(String, unique=True, nullable=False)
+    product_id = Column(String, unique=True, nullable=False)
+    price_id = Column(String, unique=True, nullable=False)
+    price = Column(String, unique=False, nullable=False)
+    uses_amount = Column(Integer, default=0)
+

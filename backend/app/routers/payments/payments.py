@@ -97,17 +97,17 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
 
 @router.post("/create-checkout-session-onetime")
 def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
-
     try:
         checkout_session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
+            payment_method_types=["card", "paypal"],
+            client_reference_id=user.id,
             line_items=[
                 {
                     "price": create_checkout_request.price_id,
                     "quantity": 1,
                 }
             ],
-            metadata={"product_id": "1"},
+            metadata={"product_id": create_checkout_request.product_id},
             mode="payment",
             success_url=FRONTEND_URL + "payments/success?session_id={CHECKOUT_SESSION_ID}",
             cancel_url=FRONTEND_URL + "payments/cancel",
@@ -142,45 +142,48 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid session.")
 
     if event["type"] == "checkout.session.completed":
+        if session["mode"] == "subscription":
+            user = get_user_by_customer_id(session.customer, db)
 
-        user = get_user_by_customer_id(session.customer, db)
+            if not user:
+                user = get_user_by_id(session.client_reference_id, db)
 
-        if not user:
-            user = get_user_by_id(session.client_reference_id, db)
+            subscription = stripe.Subscription.list(customer=session.customer).data[0]
 
-        subscription = stripe.Subscription.list(customer=session.customer).data[0]
+            if user.subscription_id and user.subscription_status == "active":
+                try:
+                    stripe.Subscription.modify(
+                        user.subscription_id,
+                        cancel_at_period_end=True,
+                    )
 
-        if user.subscription_id and user.subscription_status == "active":
-            try:
-                stripe.Subscription.modify(
-                    user.subscription_id,
-                    cancel_at_period_end=True,
-                )
+                except InvalidRequestError as e:
+                    print("Old subscription has already been canceled.")
+                    return "Old subscription has already been canceled."
 
-            except InvalidRequestError as e:
-                print("Old subscription has already been canceled.")
-                return "Old subscription has already been canceled."
+                return "User already has an active subscription, old will be canceled."
 
-            return "User already has an active subscription, old will be canceled."
+            user.customer_id = session.customer
+            user.subscription_id = session.subscription
+            user.subscription_status = subscription.status
+            user.subscription_last_renew = subscription.current_period_start
+            user.subscription_next_renew = subscription.current_period_end
 
-        user.customer_id = session.customer
-        user.subscription_id = session.subscription
-        user.subscription_status = subscription.status
-        user.subscription_last_renew = subscription.current_period_start
-        user.subscription_next_renew = subscription.current_period_end
+            plan_id = subscription["items"].data[0].price.product
 
-        plan_id = subscription["items"].data[0].price.product
-        print(plan_id)
-        if not plan_id:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Plan not found.")
+            if not plan_id:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Plan not found.")
 
-        plan = db.query(Plan).filter(Plan.product_id == plan_id).first()
-        print("test")
-        print(plan)
-        user.plan_id = plan.id
-        user.remaining_post_creations = plan.weekly_uses
+            plan = db.query(Plan).filter(Plan.product_id == plan_id).first()
 
-        db.commit()
+            user.plan_id = plan.id
+            user.remaining_post_creations = plan.weekly_uses
+
+            db.commit()
+        elif session["mode"] == "payment":
+            product_id = session["metadata"]["product_id"]
+            print(product_id)
+            pass
 
     if event["type"] == "invoice.paid":
         pass

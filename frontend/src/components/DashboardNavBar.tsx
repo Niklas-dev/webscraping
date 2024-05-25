@@ -21,7 +21,7 @@ import { Turn as Hamburger } from "hamburger-react";
 import { useState } from "react";
 
 export default function DashboardNavBar() {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(true);
   return (
     <div className={`${isOpen ? "" : "pr-8"}`}>
       <div className="absolute z-20 p-2">
