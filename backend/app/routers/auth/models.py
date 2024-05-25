@@ -14,6 +14,7 @@ class User(Base):
     hashed_password = Column(String)
 
     remaining_post_creations = Column(Integer, default=0)
+    remaining_post_creations_onetime_paid = Column(Integer, default=0)
     created_posts_all_time = Column(Integer, default=0)
 
     customer_id = Column(String(255), nullable=True)
