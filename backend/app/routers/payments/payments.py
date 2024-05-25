@@ -1,7 +1,7 @@
 import os
 from fastapi import APIRouter, Request, HTTPException, Header
 import stripe
-from sqlalchemy import desc, asc
+from sqlalchemy import asc
 from sqlalchemy.orm import defer
 from starlette import status
 from stripe import InvalidRequestError

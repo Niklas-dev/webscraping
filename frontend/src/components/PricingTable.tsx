@@ -77,8 +77,9 @@ export default function PricingTable() {
   }, []);
 
   const onPlanClick = async (product: string, currentSub: ISubscription) => {
-    if (!user) {
-      router.push("login");
+    if (!user.username) {
+      console.log("login pls");
+      router.push("/login");
     }
     if (product === currentSub.product.product_name) {
       toast.error("You are already subscribed to this plan.", {
@@ -89,7 +90,7 @@ export default function PricingTable() {
           color: "#fff",
         },
       });
-      return null;
+      return;
     }
 
     const response = await fetch(
@@ -98,14 +99,18 @@ export default function PricingTable() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
           Authorization: `Bearer ${getCookie("access_token")}`,
         },
+        body: JSON.stringify({
+          product_id: "prod_PSadtKPNwNOW6O",
+          price_id: "price_1OdfSDGpk89JeyEsBnVx5cxc",
+        }),
       }
     );
 
     if (!response.ok) {
       const error: { detail: string } = await response.json();
+      console.log(error);
       toast.error(error.detail, {
         icon: "👏",
         style: {
@@ -114,7 +119,7 @@ export default function PricingTable() {
           color: "#fff",
         },
       });
-      return null;
+      return;
     }
 
     const data: string = await response.json();
