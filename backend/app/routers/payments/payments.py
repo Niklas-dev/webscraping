@@ -8,7 +8,7 @@ from stripe import InvalidRequestError
 from app.db.database import db_dependency
 from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
-from .models import Plan
+from .models import Plan, TokenPackage
 from .validators import Subscription, Product, CreateCheckoutRequest
 from ...config.settings import app_settings
 from datetime import datetime, UTC
@@ -143,10 +143,8 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
 
     if event["type"] == "checkout.session.completed":
         if session["mode"] == "subscription":
-            user = get_user_by_customer_id(session.customer, db)
 
-            if not user:
-                user = get_user_by_id(session.client_reference_id, db)
+            user = get_user_by_id(session.client_reference_id, db)
 
             subscription = stripe.Subscription.list(customer=session.customer).data[0]
 
@@ -183,7 +181,14 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
         elif session["mode"] == "payment":
             product_id = session["metadata"]["product_id"]
             print(product_id)
-            pass
+
+            token_package: TokenPackage = db.query(TokenPackage).filter(TokenPackage.product_id == product_id).first()
+
+            user = get_user_by_id(session.client_reference_id, db)
+
+            user.remaining_post_creations_onetime_paid = user.remaining_post_creations_onetime_paid + token_package.uses_amount
+
+            db.commit()
 
     if event["type"] == "invoice.paid":
         pass
