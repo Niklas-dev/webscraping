@@ -76,12 +76,16 @@ export default function PricingTable() {
     return () => {};
   }, []);
 
-  const onPlanClick = async (product: string, currentSub: ISubscription) => {
+  const onPlanClick = async (
+    product: string,
+    price_id: string,
+    currentSub: ISubscription | undefined
+  ) => {
     if (!user.username) {
       console.log("login pls");
       router.push("/login");
     }
-    if (product === currentSub.product.product_name) {
+    if (product === currentSub?.product.product_name) {
       toast.error("You are already subscribed to this plan.", {
         icon: "👏",
         style: {
@@ -103,7 +107,7 @@ export default function PricingTable() {
         },
         body: JSON.stringify({
           product_id: "prod_PSadtKPNwNOW6O",
-          price_id: "price_1OdfSDGpk89JeyEsBnVx5cxc",
+          price_id: price_id,
         }),
       }
     );
@@ -123,6 +127,8 @@ export default function PricingTable() {
     }
 
     const data: string = await response.json();
+    console.log(data);
+    window.open(data, "_blank");
   };
 
   return (
@@ -142,7 +148,9 @@ export default function PricingTable() {
         </div>
 
         <button
-          onClick={() => onPlanClick("Prod1", subscription!)}
+          onClick={() =>
+            onPlanClick("Prod1", "price_1OdfSDGpk89JeyEsBnVx5cxc", subscription)
+          }
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
             subscription?.product.product_name === "Prod1"
               ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
@@ -191,7 +199,9 @@ export default function PricingTable() {
           € <p className="text-5xl font-semibold">199,99</p>
         </div>
         <button
-          onClick={() => onPlanClick("Prod3", subscription!)}
+          onClick={() =>
+            onPlanClick("Prod3", "price_1OdfTdGpk89JeyEsyUNAQiPc", subscription)
+          }
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
             subscription?.product.product_name === "Prod3"
               ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
@@ -246,7 +256,9 @@ export default function PricingTable() {
           € <p className="text-5xl font-semibold">19,99</p>
         </div>
         <button
-          onClick={() => onPlanClick("Prod2", subscription!)}
+          onClick={() =>
+            onPlanClick("Prod2", "price_1Obq5xGpk89JeyEsqb8Twsx3", subscription)
+          }
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all ${
             subscription?.product.product_name === "Prod2"
               ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"

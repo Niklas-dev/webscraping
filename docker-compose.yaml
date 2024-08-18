@@ -70,7 +70,7 @@ services:
 
   stripe-cli:
     image: stripe/stripe-cli
-    command: listen --api-key sk_test_51Obq2MGpk89JeyEsOLGE66rs3pbgFuqclsfDJOjF8R7fewtXee5oNnV2pKBbGlWYlBKYsGWpUtsjHADjKnOLx9E300yqpMIf4g --forward-to 192.168.178.50:80/payments/webhook
+    command: listen --api-key sk_test_51Obq2MGpk89JeyEsOLGE66rs3pbgFuqclsfDJOjF8R7fewtXee5oNnV2pKBbGlWYlBKYsGWpUtsjHADjKnOLx9E300yqpMIf4g --forward-to localhost/payments/webhook
     restart: unless-stopped
 
 

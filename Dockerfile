@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.12.4
 WORKDIR /backend
 COPY backend/requirements.txt requirements.txt
 RUN pip3 install --upgrade pip

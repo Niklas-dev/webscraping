@@ -87,44 +87,50 @@ export default async function page() {
               Change Plan
             </Link>
           </div>
-          <div className="flex flex-row gap-4">
-            <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
-              <div className="flex flex-col text-base font-medium text-gray-500">
-                {subscription?.product.full_plan_name}
-                <div className="text-xl font-semibold text-black">
-                  {subscription?.product.full_price_name}
+          {subscription ? (
+            <div className="flex flex-row gap-4">
+              <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
+                <div className="flex flex-col text-base font-medium text-gray-500">
+                  {subscription?.product.full_plan_name}
+                  <div className="text-xl font-semibold text-black">
+                    {subscription?.product.full_price_name}
+                  </div>
+                </div>
+                <div
+                  className={`bg-opacity-55 px-5 py-1.5 rounded-full text-black font-semibold ${
+                    subscription?.status! === "active"
+                      ? "bg-green-600 text-green-900"
+                      : "bg-red-600"
+                  }`}
+                >
+                  {capitalizeFirstChar(subscription?.status!)}
                 </div>
               </div>
-              <div
-                className={`bg-opacity-55 px-5 py-1.5 rounded-full text-black font-semibold ${
-                  subscription?.status! === "active"
-                    ? "bg-green-600 text-green-900"
-                    : "bg-red-600"
-                }`}
-              >
-                {capitalizeFirstChar(subscription?.status!)}
-              </div>
-            </div>
-            <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
-              <div className="flex flex-col text-base font-medium text-gray-500">
-                Last renew
-                <div className="text-xl font-semibold text-black">
-                  {subscription?.current_period_start}
+              <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
+                <div className="flex flex-col text-base font-medium text-gray-500">
+                  Last renew
+                  <div className="text-xl font-semibold text-black">
+                    {subscription?.current_period_start}
+                  </div>
+                </div>
+                <div className="border-2 border-gray-300 bg-opacity-55 px-5 py-1.5 rounded-full text-gray-500  font-semibold">
+                  Renewed
                 </div>
               </div>
-              <div className="border-2 border-gray-300 bg-opacity-55 px-5 py-1.5 rounded-full text-gray-500  font-semibold">
-                Renewed
-              </div>
-            </div>
-            <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
-              <div className="flex flex-col text-base font-medium text-gray-500">
-                Renew at
-                <div className="text-xl font-semibold text-black">
-                  {subscription?.current_period_end}
+              <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
+                <div className="flex flex-col text-base font-medium text-gray-500">
+                  {subscription?.cancel_at_period_end
+                    ? "Subscription ending at"
+                    : "Renew at"}
+                  <div className="text-xl font-semibold text-black">
+                    {subscription?.current_period_end}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div>No subscription</div>
+          )}
         </div>
       </div>
     </div>
