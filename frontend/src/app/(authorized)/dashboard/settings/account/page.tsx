@@ -1,4 +1,4 @@
-export default function page() {
+export default function Page() {
   return (
     <div className="px-8">
       <div className="w-full h-full">
@@ -10,7 +10,7 @@ export default function page() {
         </div>
 
         <div className="mt-10">
-          <div className="h-[2px] w-full bg-gray-200 mb-2"></div>
+          <div className="h-[2px] w-full bg-gray-200 mb-2 "></div>
         </div>
       </div>
     </div>

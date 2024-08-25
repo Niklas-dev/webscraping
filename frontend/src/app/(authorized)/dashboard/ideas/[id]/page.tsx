@@ -81,17 +81,13 @@ export default function Page() {
               />
               <IdeaInfoArea
                 title="Video Descripition"
-                content={post?.video_description!}
-              />
-              <IdeaInfoArea
-                title="Idea Description"
                 content={post?.description!}
               />
             </div>
             <div className="flex flex-col ">
               <IdeaInfoArea
                 title="How to create your idea"
-                content={post?.description!}
+                content={post?.video_creation_instructions!}
               />
             </div>
           </>

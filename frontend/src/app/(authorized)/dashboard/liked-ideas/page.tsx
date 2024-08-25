@@ -90,7 +90,7 @@ export default function Page() {
               </>
             ) : (
               <div>
-                <p>No Posts created yet</p>
+                <p>No Posts liked yet</p>
               </div>
             )}
           </>

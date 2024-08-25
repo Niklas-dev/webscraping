@@ -43,9 +43,26 @@ export interface IPostIdea {
   id: number;
   is_finished: boolean;
   is_liked: boolean;
-  video_description: string;
   user_id: number;
   title: string;
   description: string;
+  video_creation_instructions: string;
   hashtags: string | null;
+}
+
+export interface IFullUserData {
+  email: string | null;
+  remaining_post_creations: number;
+  created_posts_all_time: number;
+  customer_id: string | null;
+  plan_id: string | null;
+  subscription_id: string | null;
+  subscription_last_renew: string | null;
+  niche_preference: string | null;
+  username: string;
+  id: number;
+  remaining_post_creations_onetime_paid: number;
+  subscription_status: string | null;
+  subscription_next_renew: string | null;
+  extra_preference: string | null;
 }

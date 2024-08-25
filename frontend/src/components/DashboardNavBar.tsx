@@ -23,7 +23,7 @@ import { useState } from "react";
 export default function DashboardNavBar() {
   const [isOpen, setOpen] = useState(true);
   return (
-    <div className={`${isOpen ? "" : "pr-8"}`}>
+    <div className={` ${isOpen ? "absolute md:relative z-20 " : "  "}`}>
       <div className="absolute z-20 p-2">
         <Hamburger size={30} toggled={isOpen} toggle={setOpen} />
       </div>
