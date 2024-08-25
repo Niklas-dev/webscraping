@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -21,3 +23,9 @@ class GoogleUser(BaseModel):
 
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
+
+
+class UserUpdateRequest(BaseModel):
+    niche_preference: Optional[str] = None
+    extra_preference: Optional[str] = None
+    age: Optional[int] = None

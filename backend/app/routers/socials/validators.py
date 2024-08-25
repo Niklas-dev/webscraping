@@ -7,7 +7,7 @@ class PostIdea(BaseModel):
     description: str
     hashtags: str
     video_description: str
-    video_instructions: str
+    video_creation_instructions: str
 
 
 class CreatePostIdeaRequest(BaseModel):

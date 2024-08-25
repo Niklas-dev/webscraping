@@ -16,7 +16,7 @@ from ..auth.models import User
 
 chat_model = ChatGroq(
             temperature=0,
-            model="gemma-7b-it",
+            model="llama3-8b-8192",
         )
 ''' 
 
@@ -48,10 +48,12 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
             "title that's generally just shows the post idea, a video description to be shown under the post, "
             "hashtags that fit the video, a video description so the user of the app gets an idea of the presented "
             "post idea and a deep video instructions that shows how you can execute the idea and produce this post "
-            "idea."
+            "idea. Make sure the instruction contains information that can be used and maybe step by step steps to "
+            "create the video it should be longer and in depth. Also make sure the ideas are unique but also appeal "
+            "to a large audience"
             "The user is gonna give you the niche, description and extra information in this order."
             ""
-            "The output JSON object must use this schema: {schema}"
+            "The output JSON object must use this schema: {schema} "
 
 
         )
@@ -64,7 +66,9 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
     formatted_prompt = chat_prompt.format_messages(niche=niche, description=description, extra=extra,
                                                    schema=json.dumps(PostIdea.model_json_schema(), indent=2))
     result = chat_model.invoke(formatted_prompt)
+    logging.warning(result.content)
     cleaned_json = result.content.replace('```json', '').replace('```', '').strip()
+
     json_result = json.loads(cleaned_json)
     logging.warning(json_result)
     post = PostIdea(**json_result["properties"])
@@ -72,7 +76,7 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     create_user_post_idea_model.title = post.title
     create_user_post_idea_model.description = post.description
-    create_user_post_idea_model.video_description = post.video_description
+    create_user_post_idea_model.video_creation_instructions = post.video_creation_instructions
     create_user_post_idea_model.hashtags = post.hashtags
 
     create_user_post_idea_model.is_finished = True

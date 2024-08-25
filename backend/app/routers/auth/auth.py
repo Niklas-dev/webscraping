@@ -8,7 +8,7 @@ from typing import Annotated
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
 from .models import User
-from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest
+from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest, UserUpdateRequest
 from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
     create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token, user_dependency
 from ...config.settings import app_settings
@@ -55,8 +55,10 @@ async def auth_google(request: Request, db: db_dependency):
         print("Creating user")
         user = create_user_from_google_info(google_user, db)
 
-    access_token = create_access_token(user.username, user.id, timedelta(days=app_settings.ACCESS_TOKEN_EXPIRATION_DAYS))
-    refresh_token = create_refresh_token(user.username, user.id, timedelta(days=app_settings.REFRESH_TOKEN_EXPIRATION_DAYS))
+    access_token = create_access_token(user.username, user.id,
+                                       timedelta(days=app_settings.ACCESS_TOKEN_EXPIRATION_DAYS))
+    refresh_token = create_refresh_token(user.username, user.id,
+                                         timedelta(days=app_settings.REFRESH_TOKEN_EXPIRATION_DAYS))
 
     return RedirectResponse(f"{FRONTEND_URL}/auth?access_token={access_token}&refresh_token={refresh_token}")
 
@@ -86,8 +88,10 @@ async def login_for_access_token(db: db_dependency, form_data: Annotated[OAuth2P
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
 
-    access_token = create_access_token(user.username, user.id, timedelta(days=app_settings.ACCESS_TOKEN_EXPIRATION_DAYS))
-    refresh_token = create_refresh_token(user.username, user.id, timedelta(days=app_settings.REFRESH_TOKEN_EXPIRATION_DAYS))
+    access_token = create_access_token(user.username, user.id,
+                                       timedelta(days=app_settings.ACCESS_TOKEN_EXPIRATION_DAYS))
+    refresh_token = create_refresh_token(user.username, user.id,
+                                         timedelta(days=app_settings.REFRESH_TOKEN_EXPIRATION_DAYS))
 
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
 
@@ -109,3 +113,34 @@ async def refresh_access_token(db: db_dependency, refresh_token_request: Refresh
         days=app_settings.REFRESH_TOKEN_EXPIRATION_DAYS))
 
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+
+
+@router.patch("/update-user", response_model=UserUpdateRequest)
+def update_user(user: user_dependency, db: db_dependency, user_update_request: UserUpdateRequest):
+    # Get the user from the database
+    user = db.query(User).filter(User.id == user.id).first()
+    print(user)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Example of restricted fields that should not be updated
+    restricted_fields = ['id', 'created_at', 'is_admin']
+
+    # Convert the user_update to a dictionary, excluding unset fields
+    update_data = user_update_request.dict(exclude_unset=True)
+
+    # Check if any restricted fields are in the update request
+    for field in restricted_fields:
+        if field in update_data:
+            raise HTTPException(status_code=400, detail=f"Field '{field}' cannot be updated.")
+
+    # Update only the fields that are allowed and provided
+    print(update_data.items())
+    for key, value in update_data.items():
+        setattr(user, key, value)
+    print(user.niche_preference)
+    # Commit the changes to the database
+    db.commit()
+    db.refresh(user)
+
+    return user

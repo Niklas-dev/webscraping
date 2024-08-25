@@ -13,8 +13,8 @@ class UserPostIdea(Base):
     is_liked = Column(Boolean, default=False)
     title = Column(String, nullable=True)
     description = Column(String, nullable=True)
-    video_description = Column(String, nullable=True)
     hashtags = Column(String, nullable=True)
+    video_creation_instructions = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
 
     user_id = Column(Integer, ForeignKey("users.id"))

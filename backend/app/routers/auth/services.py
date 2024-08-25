@@ -71,7 +71,7 @@ def decode_token(token):
     return jwt.decode(token, app_settings.SECRET_KEY, algorithms=ALGORITHM)
 
 
-def get_current_user(token: Annotated[str, Depends(oauth_bearer)], db: db_dependency):
+def get_current_user(token: Annotated[str, Depends(oauth_bearer)], db: db_dependency) -> User:
     try:
         payload = jwt.decode(token, app_settings.SECRET_KEY, algorithms=ALGORITHM)
         username: str = payload.get("sub")
@@ -79,7 +79,6 @@ def get_current_user(token: Annotated[str, Depends(oauth_bearer)], db: db_depend
 
         user: User = db.query(User).filter(User.username == str(username)).options(
             defer(User.hashed_password), defer(User.google_sub)).first()
-
 
         if username is None or user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")

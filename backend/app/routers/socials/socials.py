@@ -69,7 +69,7 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency):
 
 @router.get("/posts/{idea_id}")
 async def create_new_post_idea(user: user_dependency, db: db_dependency, idea_id: int):
-    post = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.id == idea_id).order_by(UserPostIdea.is_finished == True,
+    post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.id == idea_id).order_by(UserPostIdea.is_finished == True,
                                                                                     UserPostIdea.created_at).first()
     return {"post": post}
 
