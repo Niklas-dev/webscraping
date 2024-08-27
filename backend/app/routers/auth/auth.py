@@ -124,7 +124,7 @@ def update_user(user: user_dependency, db: db_dependency, user_update_request: U
         raise HTTPException(status_code=404, detail="User not found")
 
     # Example of restricted fields that should not be updated
-    restricted_fields = ['id', 'created_at', 'is_admin']
+    restricted_fields = ['id', 'created_at', 'is_admin', 'hashed_password', 'google_sub']
 
     # Convert the user_update to a dictionary, excluding unset fields
     update_data = user_update_request.dict(exclude_unset=True)
