@@ -129,8 +129,50 @@ export default async function page() {
               </div>
             </div>
           ) : (
-            <div>No subscription</div>
+            <div className="flex flex-col gap-4">
+              <p className="text-lg">
+                No subscription. Start you new subscription now and <b>grow</b>{" "}
+                your channels.
+              </p>
+
+              <Link
+                className="bg-[#1b1b1b] hover:bg-[#252525] p-2.5 px-8 w-fit h-fit font-bold text-xl rounded-lg text-white"
+                href={"/pricing"}
+              >
+                Start now
+              </Link>
+            </div>
           )}
+        </div>
+        <div className="mt-10">
+          <div>
+            <h3 className="text-3xl font-bold ">Credits</h3>
+            <p className="text-gray-500 text-lg">
+              Check your aviable credits or buy more.
+            </p>
+          </div>
+          <div className="flex flex-row gap-4">
+            <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
+              <div className="flex flex-col text-base font-medium text-gray-500">
+                Your monthly credits (subscription)
+                <div className="text-xl font-semibold text-black">0</div>
+              </div>
+            </div>
+            <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
+              <div className="flex flex-col text-base font-medium text-gray-500">
+                Your additonal credits (one time)
+                <div className="text-xl font-semibold text-black">0</div>
+              </div>
+            </div>
+            <Link
+              href={"/pricing#credits"}
+              className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-center shadow-sm group cursor-pointer"
+            >
+              <div className="flex flex-col   text-gray-700 font-bold text-xl  group-hover:text-lg transition-all">
+                Buy more credits
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

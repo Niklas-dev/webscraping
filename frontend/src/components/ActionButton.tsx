@@ -21,7 +21,7 @@ export default function ActionButton({ className }: { className: string }) {
       {!user.loading ? (
         <button
           onClick={() => onClick()}
-          className={`bg-white text-black rounded-lg w-32 h-10 text-xl flex justify-center items-center font-bold hover:scale-105 ${className}`}
+          className={`bg-white text-black rounded-lg w-36 h-12 text-2xl flex justify-center items-center font-bold hover:scale-105 transition-transform ${className}`}
         >
           {user.username ? "Continue" : "Get Started"}
         </button>

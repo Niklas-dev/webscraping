@@ -124,7 +124,7 @@ export default function PostIdeaCard({
           </div>
           <div className="mt-1 ">
             <p className="truncate w-11/12 font-medium">
-              {postState.video_description}
+              {postState.description}
             </p>
             <p className="truncate w-11/12 font-medium">{postState.hashtags}</p>
           </div>

@@ -10,6 +10,7 @@ html {
   margin: 0;
   padding: 0;
   overflow: auto;
+  scroll-behavior: smooth;
 }
 
 .fade-in-element {

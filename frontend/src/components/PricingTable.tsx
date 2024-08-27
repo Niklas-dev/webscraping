@@ -128,7 +128,7 @@ export default function PricingTable() {
 
     const data: string = await response.json();
     console.log(data);
-    window.open(data, "_blank");
+    window.open(data, "_self");
   };
 
   return (
@@ -139,7 +139,7 @@ export default function PricingTable() {
         <div className="blur-[120px] bg-red-600 h-56 w-56 top-0 left-0 bg-opacity-50"></div>
       </div>
       <div className="h-fit w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2 ring-blue-500 transition-all">
-        <h3 className="text-blue-500 text-2xl font-medium">Basic</h3>
+        <h3 className="text-blue-500 text-2xl font-medium">Basic - Monthly</h3>
         <p className="text-gray-300 mt-2">
           Basic Plan - Just perfect for getting started.
         </p>
@@ -219,12 +219,7 @@ export default function PricingTable() {
             </div>{" "}
             15% cheaper per month
           </li>
-          <li className="flex flex-row gap-2 text-[#e6e6e6]">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-white  ">
-              <FaCheck color="#e6e6e6" size={"12.5px"} />
-            </div>{" "}
-            14 Day Free Test Trial
-          </li>
+
           <li className="flex flex-row gap-2 text-[#e6e6e6]">
             <div className=" w-fit h-fit p-0.5 rounded-full border border-white">
               <FaCheck color="#e6e6e6" size={"12.5px"} />

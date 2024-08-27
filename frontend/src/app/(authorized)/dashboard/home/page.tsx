@@ -4,7 +4,7 @@ import { FaArrowRight, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 
 export default function page() {
   return (
-    <div className="px-8">
+    <div className="px-8 pb-8">
       <h2 className="text-3xl font-semibold">
         Get started with your next awesome post ✨
       </h2>

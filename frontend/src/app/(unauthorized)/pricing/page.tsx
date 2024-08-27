@@ -17,9 +17,9 @@ export default function page() {
         </p>
       </div>
       <PricingTable />
-      <div className="w-full flex justify-center">
-        <h3 className="font-semibold text-xl">
-          or buy direct idea creation credits
+      <div id="credits" className="w-full flex justify-center">
+        <h3 className="font-semibold text-2xl text-center px-4">
+          or buy direct idea creation credits without starting a subscription.
         </h3>
       </div>
       <CreditsPricingTable />
