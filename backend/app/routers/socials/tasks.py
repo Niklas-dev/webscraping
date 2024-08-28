@@ -14,14 +14,16 @@ from .models import UserPostIdea
 from .validators import PostIdea
 from ..auth.models import User
 
+
+
+chat_model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
+                        model_name="gpt-4o-mini")
+''' 
+
 chat_model = ChatGroq(
             temperature=0,
             model="llama3-8b-8192",
         )
-''' 
-
-chat_model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
-                        model_name="gpt-3.5-turbo")
 
 '''
 
@@ -71,7 +73,7 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     json_result = json.loads(cleaned_json)
     logging.warning(json_result)
-    post = PostIdea(**json_result["properties"])
+    post = PostIdea(**json_result)
     print(post.hashtags)
 
     create_user_post_idea_model.title = post.title
