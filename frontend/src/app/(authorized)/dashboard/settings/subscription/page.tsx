@@ -1,4 +1,4 @@
-import { ISubscription } from "@/shared/interfaces";
+import { ISubscription, IUserSubResponse } from "@/shared/interfaces";
 import { capitalizeFirstChar } from "@/utils/utils";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -24,7 +24,7 @@ export default async function page() {
       return null;
     }
 
-    const data: ISubscription = await response.json();
+    const data: IUserSubResponse = await response.json();
 
     console.log(data);
 
@@ -53,7 +53,7 @@ export default async function page() {
   };
 
   const url = await getBillingPortal();
-  const subscription = await getCurrentUserPlan();
+  const userSubResponse = await getCurrentUserPlan();
 
   return (
     <div className="px-8">
@@ -87,30 +87,30 @@ export default async function page() {
               Change Plan
             </Link>
           </div>
-          {subscription ? (
+          {userSubResponse?.subscription ? (
             <div className="flex flex-row gap-4">
               <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
                 <div className="flex flex-col text-base font-medium text-gray-500">
-                  {subscription?.product.full_plan_name}
+                  {userSubResponse?.subscription?.product.full_plan_name}
                   <div className="text-xl font-semibold text-black">
-                    {subscription?.product.full_price_name}
+                    {userSubResponse?.subscription?.product.full_price_name}
                   </div>
                 </div>
                 <div
                   className={`bg-opacity-55 px-5 py-1.5 rounded-full text-black font-semibold ${
-                    subscription?.status! === "active"
+                    userSubResponse?.subscription?.status! === "active"
                       ? "bg-green-600 text-green-900"
                       : "bg-red-600"
                   }`}
                 >
-                  {capitalizeFirstChar(subscription?.status!)}
+                  {capitalizeFirstChar(userSubResponse!.subscription?.status!)}
                 </div>
               </div>
               <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
                 <div className="flex flex-col text-base font-medium text-gray-500">
                   Last renew
                   <div className="text-xl font-semibold text-black">
-                    {subscription?.current_period_start}
+                    {userSubResponse?.subscription?.current_period_start}
                   </div>
                 </div>
                 <div className="border-2 border-gray-300 bg-opacity-55 px-5 py-1.5 rounded-full text-gray-500  font-semibold">
@@ -119,11 +119,11 @@ export default async function page() {
               </div>
               <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
                 <div className="flex flex-col text-base font-medium text-gray-500">
-                  {subscription?.cancel_at_period_end
+                  {userSubResponse?.subscription?.cancel_at_period_end
                     ? "Subscription ending at"
                     : "Renew at"}
                   <div className="text-xl font-semibold text-black">
-                    {subscription?.current_period_end}
+                    {userSubResponse?.subscription?.current_period_end}
                   </div>
                 </div>
               </div>
@@ -155,13 +155,20 @@ export default async function page() {
             <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
               <div className="flex flex-col text-base font-medium text-gray-500">
                 Your monthly credits (subscription)
-                <div className="text-xl font-semibold text-black">0</div>
+                <div className="text-xl font-semibold text-black">
+                  {userSubResponse?.credits.remaining_post_creations}
+                </div>
               </div>
             </div>
             <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
               <div className="flex flex-col text-base font-medium text-gray-500">
                 Your additonal credits (one time)
-                <div className="text-xl font-semibold text-black">0</div>
+                <div className="text-xl font-semibold text-black">
+                  {
+                    userSubResponse?.credits
+                      .remaining_post_creations_onetime_paid
+                  }
+                </div>
               </div>
             </div>
             <Link

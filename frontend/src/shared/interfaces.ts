@@ -39,6 +39,14 @@ export interface ISubscription {
   };
 }
 
+export interface IUserSubResponse {
+  credits: {
+    remaining_post_creations: number;
+    remaining_post_creations_onetime_paid: number;
+  };
+  subscription: ISubscription;
+}
+
 export interface IPostIdea {
   id: number;
   is_finished: boolean;

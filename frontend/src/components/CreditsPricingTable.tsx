@@ -7,7 +7,7 @@ import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
-import { ISubscription } from "@/shared/interfaces";
+import { ISubscription, IUserSubResponse } from "@/shared/interfaces";
 interface IPlan {
   product_id: string;
   product_name: string;
@@ -63,11 +63,11 @@ export default function CreditsPricingTable() {
       return null;
     }
 
-    const data: ISubscription = await response.json();
+    const data: IUserSubResponse = await response.json();
 
-    console.log(data);
+    console.log(data?.subscription);
 
-    setSubscription(data);
+    setSubscription(data?.subscription);
   };
 
   useLayoutEffect(() => {
