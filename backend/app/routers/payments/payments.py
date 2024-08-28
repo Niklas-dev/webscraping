@@ -9,7 +9,7 @@ from app.db.database import db_dependency
 from app.routers.auth.models import User
 from app.routers.auth.services import user_dependency
 from .models import Plan, TokenPackage
-from .validators import Subscription, Product, CreateCheckoutRequest
+from .validators import Subscription, Product, CreateCheckoutRequest, Credits
 from ...config.settings import app_settings
 from datetime import datetime, UTC
 
@@ -24,8 +24,14 @@ FRONTEND_URL = app_settings.FRONTEND_URL
 
 @router.get("/get-user-subscription")
 def get_user_subscription(user: user_dependency, db: db_dependency):
+    credit_data = Credits(**{
+        "remaining_post_creations": user.remaining_post_creations,
+        "remaining_post_creations_onetime_paid": user.remaining_post_creations_onetime_paid
+    })
+
     if not user.subscription_id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No subscription available.")
+        return {"subscription": None, "credits": credit_data}
+
 
     subscription = stripe.Subscription.retrieve(user.subscription_id)
 
@@ -49,7 +55,7 @@ def get_user_subscription(user: user_dependency, db: db_dependency):
 
     final_sub = Subscription(**filtered_sub)
 
-    return final_sub
+    return {"subscription": final_sub, "credits": credit_data}
 
 
 @router.get("/get-plans")

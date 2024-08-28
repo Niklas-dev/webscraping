@@ -49,3 +49,8 @@ class Subscription(BaseModel):
     currency: str
     plan: Plan
     product: Product
+
+
+class Credits(BaseModel):
+    remaining_post_creations: int
+    remaining_post_creations_onetime_paid: int
