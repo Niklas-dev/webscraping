@@ -40,7 +40,7 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     create_user_post_idea_model: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.id == post_id).first()
 
-    posts = db.query(UserPostIdea.title).filter(UserPostIdea.user_id == user_id).all()
+    posts = db.query(UserPostIdea.title).filter(UserPostIdea.user_id == user_id, UserPostIdea.is_finished == True).all()
 
     titles = [post.title for post in posts]
 
@@ -75,9 +75,7 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
                                                    schema=json.dumps(PostIdea.model_json_schema(), indent=2))
     result = chat_model.invoke(formatted_prompt)
     logging.warning(result.content)
-    cleaned_json = result.content.replace('```json', '').replace('```', '').strip()
-
-    json_result = json.loads(cleaned_json)
+    json_result = json.loads(result.content)
     logging.warning(json_result)
     post = PostIdea(**json_result)
     print(post.hashtags)
