@@ -40,6 +40,12 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     create_user_post_idea_model: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.id == post_id).first()
 
+    posts = db.query(UserPostIdea.title).filter(UserPostIdea.user_id == user_id).all()
+
+    titles = [post.title for post in posts]
+
+    logging.warning(titles)
+
     template = \
         (
             "You are a social content creator assistant i am using in my saas. You are creating social media post "

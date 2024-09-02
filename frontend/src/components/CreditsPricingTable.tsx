@@ -77,7 +77,7 @@ export default function CreditsPricingTable() {
   }, []);
 
   const onPlanClick = async (
-    product: string,
+    product_id: string,
     price_id: string,
     currentSub: ISubscription | undefined
   ) => {
@@ -85,20 +85,9 @@ export default function CreditsPricingTable() {
       console.log("login pls");
       router.push("/login");
     }
-    if (product === currentSub!.product.product_name) {
-      toast.error("You are already subscribed to this plan.", {
-        icon: "👏",
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-        },
-      });
-      return;
-    }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND}/payments/create-checkout-session`,
+      `${process.env.NEXT_PUBLIC_BACKEND}/payments/create-checkout-session-onetime`,
       {
         method: "POST",
         headers: {
@@ -106,7 +95,7 @@ export default function CreditsPricingTable() {
           Authorization: `Bearer ${getCookie("access_token")}`,
         },
         body: JSON.stringify({
-          product_id: "prod_PSadtKPNwNOW6O",
+          product_id: product_id,
           price_id: price_id,
         }),
       }
@@ -127,6 +116,7 @@ export default function CreditsPricingTable() {
     }
 
     const data: string = await response.json();
+    window.open(data, "_self");
   };
 
   return (
@@ -145,7 +135,11 @@ export default function CreditsPricingTable() {
 
         <button
           onClick={() =>
-            onPlanClick("Prod1", "price_1OdfSDGpk89JeyEsBnVx5cxc", subscription)
+            onPlanClick(
+              "prod_QAgO2lYuIGfGzr",
+              "price_1PKL27Gpk89JeyEs7ANv8Tck",
+              subscription
+            )
           }
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
             subscription?.product.product_name === "Prod1"

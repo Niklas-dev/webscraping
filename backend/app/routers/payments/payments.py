@@ -32,7 +32,6 @@ def get_user_subscription(user: user_dependency, db: db_dependency):
     if not user.subscription_id:
         return {"subscription": None, "credits": credit_data}
 
-
     subscription = stripe.Subscription.retrieve(user.subscription_id)
 
     selected_keys = ["id", "current_period_start", "current_period_end", "status", "created", "cancel_at_period_end",
@@ -192,7 +191,8 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
 
             user = get_user_by_id(session.client_reference_id, db)
 
-            user.remaining_post_creations_onetime_paid = user.remaining_post_creations_onetime_paid + token_package.uses_amount
+            user.remaining_post_creations_onetime_paid = (user.remaining_post_creations_onetime_paid +
+                                                          token_package.uses_amount)
 
             db.commit()
 
