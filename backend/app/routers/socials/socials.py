@@ -2,6 +2,7 @@ import asyncio
 
 from celery.result import AsyncResult
 from fastapi import APIRouter, HTTPException, WebSocket
+from sqlalchemy import desc
 from starlette import status
 
 from celery_setup import celery_app
@@ -63,7 +64,7 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency,
 @router.get("/posts")
 async def create_new_post_idea(user: user_dependency, db: db_dependency):
     posts = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id).order_by(UserPostIdea.is_finished == True,
-                                                                                    UserPostIdea.created_at).all()
+                                                                                    desc(UserPostIdea.created_at)).all()
     return {"posts": posts}
 
 
