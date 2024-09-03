@@ -57,12 +57,16 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
             "hashtags that fit the video, a video description so the user of the app gets an idea of the presented "
             "post idea and a deep video instructions that shows how you can execute the idea and produce this post "
             "idea. Make sure the instruction contains information that can be used and maybe step by step steps to "
-            "create the video it should be longer and in depth. Also make sure the ideas are unique but also appeal "
+            "create the video it should be longer and in depth. The information the user needs for the post must "
+            "been in this like eg. data the user needs to showcase in the video or which imagery to choose or which "
+            "text to display. Also make sure the ideas are unique but also appeal "
             "to a large audience"
             "The user is gonna give you the niche, description, extra information and already created ideas so you "
             "avoid duplicates in this order."
             ""
-            "The output JSON object must use this schema: {schema} "
+            "The output JSON object must use this schema, make sure it is a valid json string so I can load the string "
+            "into an object, it must be plain text and no json``` at the start to avoid issues reading the "
+            "content: {schema} "
 
         )
     human_template = "niche: {niche} description: {description} extra: {extra} already created ideas: {titles_string}"
