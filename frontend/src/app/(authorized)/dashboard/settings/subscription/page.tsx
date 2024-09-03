@@ -78,7 +78,7 @@ export default async function page() {
         <div className="mt-10">
           <div className="h-[2px] w-full bg-gray-200 mb-2"></div>
 
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center justify-between pb-2 lg:pb-0">
             <h3 className="text-lg font-bold text-gray-800">Current Plan</h3>
             <Link
               className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg shadow-sm"
@@ -88,7 +88,7 @@ export default async function page() {
             </Link>
           </div>
           {userSubResponse?.subscription ? (
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-4 flex-wrap">
               <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
                 <div className="flex flex-col text-base font-medium text-gray-500">
                   {userSubResponse?.subscription?.product.full_plan_name}
@@ -151,7 +151,7 @@ export default async function page() {
               Check your aviable credits or buy more.
             </p>
           </div>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 flex-wrap">
             <div className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-between shadow-sm">
               <div className="flex flex-col text-base font-medium text-gray-500">
                 Your monthly credits (subscription)
