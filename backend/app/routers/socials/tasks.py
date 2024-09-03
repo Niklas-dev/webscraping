@@ -14,8 +14,6 @@ from .models import UserPostIdea
 from .validators import PostIdea
 from ..auth.models import User
 
-
-
 chat_model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
                         model_name="gpt-4o-mini")
 ''' 
@@ -40,11 +38,12 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     create_user_post_idea_model: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.id == post_id).first()
 
-    posts = db.query(UserPostIdea.title).filter(UserPostIdea.user_id == user_id, UserPostIdea.is_finished == True).all()
+    posts = db.query(UserPostIdea.title).filter(UserPostIdea.user_id == user_id,
+                                                UserPostIdea.is_finished == True).all()
 
-    titles = [post.title for post in posts]
+    titles_string = ", ".join(post.title for post in posts)
 
-    logging.warning(titles)
+    logging.warning(titles_string)
 
     template = \
         (
@@ -52,27 +51,31 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
             "ideas with the help of you knowledge for a specific niche. Make sure you ideas has the potential to go "
             "viral and liked by the viewers. It should be interesting and maybe helpful for the viewer depending on "
             "the niche. Make sure the ideas are unique and well thought. Think about rending content a provide "
-            "regarding social media post ideas fir instagram, reels, tiktok or youtube shorts. You gonna return a "
+            "regarding social media post ideas fir instagram, reels, tiktok or youtube shorts. The idea must be "
+            "interesting and fit into a 15 sec to 1 minute short form video. You gonna return a"
             "title that's generally just shows the post idea, a video description to be shown under the post, "
             "hashtags that fit the video, a video description so the user of the app gets an idea of the presented "
             "post idea and a deep video instructions that shows how you can execute the idea and produce this post "
             "idea. Make sure the instruction contains information that can be used and maybe step by step steps to "
             "create the video it should be longer and in depth. Also make sure the ideas are unique but also appeal "
             "to a large audience"
-            "The user is gonna give you the niche, description and extra information in this order."
+            "The user is gonna give you the niche, description, extra information and already created ideas so you "
+            "avoid duplicates in this order."
             ""
             "The output JSON object must use this schema: {schema} "
 
-
         )
-    human_template = "niche: {niche} description: {description} extra: {extra}"
+    human_template = "niche: {niche} description: {description} extra: {extra} already created ideas: {titles_string}"
     chat_prompt = ChatPromptTemplate.from_messages([
         ("system", template),
         ("human", human_template)
     ])
 
     formatted_prompt = chat_prompt.format_messages(niche=niche, description=description, extra=extra,
-                                                   schema=json.dumps(PostIdea.model_json_schema(), indent=2))
+                                                   titles_string=titles_string,
+                                                   schema=json.dumps(PostIdea.model_json_schema(),
+                                                                     indent=2
+                                                                     ))
     result = chat_model.invoke(formatted_prompt)
     logging.warning(result.content)
     json_result = json.loads(result.content)
