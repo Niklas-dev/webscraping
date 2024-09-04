@@ -53,12 +53,18 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency,
     if user.subscription_status != "active":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No active subscription")
 
-    if user.remaining_post_creations <= 0:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No post creations remaining.")
+    if user.remaining_post_creations >= 1:
+        result = create_new_post(niche=create_post_idea_request.niche, description=create_post_idea_request.description,
+                                 extra=create_post_idea_request.extra, user_id=user.id, db=db)
+        return {"task_id": result.id, "detail": "You post idea is being generated."}
 
-    result = create_new_post(niche=create_post_idea_request.niche, description=create_post_idea_request.description,
-                             extra=create_post_idea_request.extra, user_id=user.id, db=db)
-    return {"task_id": result.id, "detail": "You post idea is being generated."}
+    elif user.remaining_post_creations_onetime_paid >= 1:
+        result = create_new_post(niche=create_post_idea_request.niche, description=create_post_idea_request.description,
+                                 extra=create_post_idea_request.extra, user_id=user.id, db=db)
+        return {"task_id": result.id, "detail": "You post idea is being generated."}
+
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No credits remaining. "
+                                                                        "Think about upgrading your subscription.")
 
 
 @router.get("/posts")

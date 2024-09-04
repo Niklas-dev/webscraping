@@ -96,7 +96,12 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     user: User = db.query(User).filter(User.id == user_id).first()
     remaining_creations = user.remaining_post_creations
-
-    user.remaining_post_creations = remaining_creations - 1
+    remaining_creations_onetime = user.remaining_post_creations_onetime_paid
+    if remaining_creations <= 0:
+        user.remaining_post_creations_onetime_paid = remaining_creations_onetime - 1
+    elif remaining_creations_onetime >= 0:
+        user.remaining_post_creations = remaining_creations - 1
+    else:
+        raise ValueError("No credits remaining.")
     db.commit()
     return {"detail": "successfully created post idea", "post_title": post.title}
