@@ -39,7 +39,7 @@ export default function Page() {
     );
 
     if (!response.ok) {
-      toast.error("Failed to save preferences.", {
+      toast.error("Failed to load preferences.", {
         icon: "🤔",
         style: {
           borderRadius: "10px",
@@ -76,7 +76,9 @@ export default function Page() {
     );
 
     if (!response.ok) {
-      toast.error("Failed to create post idea.", {
+      const data = await response.json();
+      const info = data["detail"];
+      toast.error(info, {
         icon: "🤔",
         style: {
           borderRadius: "10px",

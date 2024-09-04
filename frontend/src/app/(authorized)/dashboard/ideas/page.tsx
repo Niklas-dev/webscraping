@@ -36,7 +36,7 @@ export default function Page() {
 
   useEffect(() => {
     getPosts();
-    const interval = setInterval(getPosts, 5000);
+    const interval = setInterval(getPosts, 4000);
 
     return () => clearInterval(interval);
   }, []);
