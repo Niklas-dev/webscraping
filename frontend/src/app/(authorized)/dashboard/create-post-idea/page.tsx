@@ -4,23 +4,62 @@ import PostTypeSelection from "@/components/PostTypeSelection";
 import RichTextFormInput from "@/components/RichTextFormInput";
 import SocialMediaCardLink from "@/components/SocialMediaCardLink";
 import TextFormInput from "@/components/TextFormInput";
+import { IFullUserData } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaInstagram } from "react-icons/fa";
 
 export default function Page() {
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     niche: "",
     description: "",
     extra: "",
   });
+
   const router = useRouter();
 
   const searchParams = useSearchParams();
 
   const post_type = searchParams.get("post_type");
+
+  const loadPreferences = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/auth/get-user`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      toast.error("Failed to save preferences.", {
+        icon: "🤔",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return null;
+    }
+
+    const data: IFullUserData = await response.json();
+
+    setFormData({
+      niche: data.niche_preference ?? "",
+      extra: data.extra_preference ?? "",
+      description: "",
+    });
+    setIsLoading(false);
+    console.log(data);
+  };
 
   const createNewPostIdea = async () => {
     const response = await fetch(
@@ -62,6 +101,10 @@ export default function Page() {
 
     router.push("/dashboard/ideas");
   };
+
+  useEffect(() => {
+    loadPreferences();
+  }, []);
 
   return (
     <div className="px-8">
