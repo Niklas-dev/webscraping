@@ -1,5 +1,8 @@
 import logging
 import time
+from typing import List
+
+from pydantic import Field, BaseModel
 
 from app.db.database import SessionLocal
 from celery_setup import celery_app
@@ -16,14 +19,6 @@ from ..auth.models import User
 
 chat_model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"),
                         model_name="gpt-4o-mini")
-''' 
-
-chat_model = ChatGroq(
-            temperature=0,
-            model="llama3-8b-8192",
-        )
-
-'''
 
 
 @celery_app.task()
@@ -62,7 +57,7 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
             "text to display. Also make sure the ideas are unique but also appeal "
             "to a large audience"
             "The user is gonna give you the niche, description, extra information and already created ideas so you "
-            "avoid duplicates in this order."
+            "avoid duplicates in this order. Make sure to use no bold text or markdown in the output JSON object."
             ""
             "The output JSON object must use this schema, make sure it is a valid json string so I can load the string "
             "into an object, it must be plain text and no json``` at the start to avoid issues reading the "
