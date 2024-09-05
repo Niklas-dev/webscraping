@@ -1,13 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 
 
 class PostIdea(BaseModel):
-    title: str
-    description: str
-    hashtags: str
-    video_description: str
-    video_creation_instructions: str
+    title: str = Field(..., description="A brief title showcasing the post idea")
+    description: str = Field(..., description="A description to be shown under the post")
+    hashtags: List[str] = Field(..., description="Relevant hashtags for the video")
+    video_creation_instructions: List[str] = Field(..., description="List of detailed instructions on how to execute "
+                                                                    "the idea and produce the post")
 
 
 class CreatePostIdeaRequest(BaseModel):
