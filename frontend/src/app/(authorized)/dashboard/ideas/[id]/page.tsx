@@ -45,7 +45,13 @@ export default function Page() {
 
     return () => {};
   }, []);
-
+  const hashtags = [
+    "#SaaSTips",
+    "#ProductivityHacks",
+    "#SaaS",
+    "#TechSavvy",
+    "#Efficiency",
+  ];
   return (
     <div className="px-8 min-h-0 flex flex-col">
       <h2 className="text-3xl font-semibold">Your next post idea</h2>
@@ -72,25 +78,70 @@ export default function Page() {
             <span className="sr-only">Loading...</span>
           </div>
         ) : (
-          <>
-            <div className="flex flex-col gap-4 ">
+          <form className="space-y-6">
+            <div>
               <IdeaInfoArea title="Title" content={post?.title!} />
-              <IdeaInfoArea
-                title="Hashtags"
-                content={post?.hashtags ?? "None"}
-              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Hashtags
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {hashtags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center bg-gray-100 text-gray-800 rounded-full px-3 py-1 text-lg"
+                  >
+                    <svg
+                      className="w-3 h-3 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                      />
+                    </svg>
+                    {tag.slice(1)}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
               <IdeaInfoArea
                 title="Video Descripition"
                 content={post?.description!}
               />
             </div>
-            <div className="flex flex-col ">
+
+            <div>
               <IdeaInfoArea
                 title="How to create your idea"
                 content={post?.video_creation_instructions!}
               />
             </div>
-          </>
+
+            <div className="flex justify-between">
+              <button
+                type="button"
+                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Save Draft
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+              >
+                Create Your Idea Now
+              </button>
+            </div>
+          </form>
         )}
       </div>
     </div>
