@@ -42,27 +42,27 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     template = \
         (
-            "You are a social content creator assistant i am using in my saas. You are creating social media post "
-            "ideas with the help of you knowledge for a specific niche. Make sure you ideas has the potential to go "
-            "viral and liked by the viewers. It should be interesting and maybe helpful for the viewer depending on "
-            "the niche. Make sure the ideas are unique and well thought. Think about rending content a provide "
-            "regarding social media post ideas fir instagram, reels, tiktok or youtube shorts. The idea must be "
-            "interesting and fit into a 15 sec to 1 minute short form video. You gonna return a"
-            "title that's generally just shows the post idea, a video description to be shown under the post, "
-            "hashtags that fit the video, a video description so the user of the app gets an idea of the presented "
-            "post idea and a deep video instructions that shows how you can execute the idea and produce this post "
-            "idea. Make sure the instruction contains information that can be used and maybe step by step steps to "
-            "create the video it should be longer and in depth. The information the user needs for the post must "
-            "been in this like eg. data the user needs to showcase in the video or which imagery to choose or which "
-            "text to display. Also make sure the ideas are unique but also appeal "
-            "to a large audience"
-            "The user is gonna give you the niche, description, extra information and already created ideas so you "
-            "avoid duplicates in this order. Make sure to use no bold text or markdown in the output JSON object."
-            ""
-            "The output JSON object must use this schema, make sure it is a valid json string so I can load the string "
-            "into an object, it must be plain text and no json``` at the start to avoid issues reading the "
-            "content: {schema} "
-
+            "You are a social media content assistant for my SaaS. You are required to only answer in the allowed "
+            "scheme to avoid errors in my application."
+            "You will create social media post ideas for the clients. You will provide a title (The title of the post "
+            "just for the client to know what the post is about),"
+            "description (This will the user put below their post as their video description), hashtags (The hashtags "
+            "will help the post to go viral or reach a lot of viewers,"
+            "they must be good and fit the post. they should be lower case and fit into the niche but also adapt for "
+            "a larger viewer audience. Dont forget the # at the start of the actual hashtag), "
+            "and video_creation_instructions (The instructions should help the"
+            "user to create the video for this. You will return the"
+            "instructions in multiple steps, each starting with the number like 1. ..., 2. ..., and so on. You must "
+            "provide the information the user should talk about in the post,"
+            "like data, news, or general information. Make sure the steps are in-depth and contain everything that is "
+            "needed in at least 5 sentences for each step. They must really help the user to create the post so also "
+            "lines the user could say should be in there). The post ideas"
+            "need to be unique, informational, and interesting to the viewers, so that the client will like the "
+            "created idea. The ideas need to fit a niche but also appeal to a larger audience."
+            "I am going to provide you with the niche, description, extra information, and already created post ideas "
+            "of the user, and you will create the post idea based on that."
+            "I will also give you the scheme, which you will use to return the previously named fields as JSON. This "
+            "is the schema: {schema} . When returning, avoid ```json and ``` so I can load the JSON in my code."
         )
     human_template = "niche: {niche} description: {description} extra: {extra} already created ideas: {titles_string}"
     chat_prompt = ChatPromptTemplate.from_messages([
@@ -88,6 +88,8 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
     create_user_post_idea_model.hashtags = post.hashtags
 
     create_user_post_idea_model.is_finished = True
+
+
 
     user: User = db.query(User).filter(User.id == user_id).first()
     remaining_creations = user.remaining_post_creations

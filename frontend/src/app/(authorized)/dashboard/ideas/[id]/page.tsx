@@ -6,11 +6,21 @@ import { getCookie } from "cookies-next";
 import TextFormInput from "@/components/TextFormInput";
 import RichTextFormInput from "@/components/RichTextFormInput";
 import IdeaInfoArea from "@/components/IdeaInfoArea";
+import IdeaInfoAreaInstructions from "@/components/IdeaInfoAreaInstructions";
 export default function Page() {
   const params = useParams<{ id: string }>();
 
   const [post, setPost] = useState<IPostIdea | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const formatHashtags = (hashtags: string): string[] => {
+    // Check if hashtags are not null or empty
+    if (hashtags) {
+      // Remove curly braces and split the string into a list of hashtags
+      const hashtagsStr = hashtags.replace(/^\{|\}$/g, ""); // Remove curly braces using regex
+      return hashtagsStr.split(",").map((hashtag) => hashtag.trim()); // Split by comma and trim extra spaces
+    }
+    return [];
+  };
 
   const getPost = async (id: string): Promise<IPostIdea[] | null> => {
     const response = await fetch(
@@ -45,13 +55,7 @@ export default function Page() {
 
     return () => {};
   }, []);
-  const hashtags = [
-    "#SaaSTips",
-    "#ProductivityHacks",
-    "#SaaS",
-    "#TechSavvy",
-    "#Efficiency",
-  ];
+
   return (
     <div className="px-8 min-h-0 flex flex-col">
       <h2 className="text-3xl font-semibold">Your next post idea</h2>
@@ -88,7 +92,7 @@ export default function Page() {
                 Hashtags
               </label>
               <div className="flex flex-wrap gap-2">
-                {hashtags.map((tag) => (
+                {formatHashtags(post?.hashtags!).map((tag) => (
                   <span
                     key={tag}
                     className="inline-flex items-center bg-gray-100 text-gray-800 rounded-full px-3 py-1 text-lg"
@@ -121,9 +125,9 @@ export default function Page() {
             </div>
 
             <div>
-              <IdeaInfoArea
+              <IdeaInfoAreaInstructions
                 title="How to create your idea"
-                content={post?.video_creation_instructions!}
+                contents={post?.video_creation_instructions!}
               />
             </div>
 
