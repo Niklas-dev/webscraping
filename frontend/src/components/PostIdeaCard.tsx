@@ -73,6 +73,16 @@ export default function PostIdeaCard({
     setPostState(post);
   };
 
+  const formatHashtags = (hashtags: string): string[] => {
+    // Check if hashtags are not null or empty
+    if (hashtags) {
+      // Remove curly braces and split the string into a list of hashtags
+      const hashtagsStr = hashtags.replace(/^\{|\}$/g, ""); // Remove curly braces using regex
+      return hashtagsStr.split(",").map((hashtag) => hashtag.trim()); // Split by comma and trim extra spaces
+    }
+    return [];
+  };
+
   return (
     <div
       onClick={(e) => {
@@ -126,7 +136,13 @@ export default function PostIdeaCard({
             <p className="truncate w-11/12 font-medium">
               {postState.description}
             </p>
-            <p className="truncate w-11/12 font-medium">{postState.hashtags}</p>
+            <div className="truncate font-medium flex flex-row ">
+              {formatHashtags(postState.hashtags!).map((tag) => (
+                <p className="" key={tag}>
+                  {tag}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </div>

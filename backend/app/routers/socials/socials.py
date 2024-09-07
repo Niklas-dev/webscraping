@@ -75,22 +75,34 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency):
 
 
 @router.get("/posts/{idea_id}")
-async def create_new_post_idea(user: user_dependency, db: db_dependency, idea_id: int):
-    post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.id == idea_id).order_by(UserPostIdea.is_finished == True,
-                                                                                    UserPostIdea.created_at).first()
+async def get_new_post_idea(user: user_dependency, db: db_dependency, idea_id: int):
+    post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id,
+                                                       UserPostIdea.id == idea_id).order_by(
+        UserPostIdea.is_finished == True,
+        UserPostIdea.created_at).first()
     return {"post": post}
 
 
+@router.delete("/posts/{idea_id}")
+async def delete_new_post_idea(user: user_dependency, db: db_dependency, idea_id: int):
+    post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id,
+                                                       UserPostIdea.id == idea_id).first()
+    post.is_deleted = True
+
+    db.commit()
+    return {"detail": "Post idea deleted"}
+
+
 @router.get("/liked-posts")
-async def create_new_post_idea(user: user_dependency, db: db_dependency):
+async def get_liked_new_post_idea(user: user_dependency, db: db_dependency):
     liked_posts = (db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_liked == True)
                    .order_by(UserPostIdea.created_at).all())
     return {"liked_posts": liked_posts}
 
 
 @router.post("/change-like-post-idea")
-async def create_new_post_idea(user: user_dependency, db: db_dependency,
-                               change_like_post_idea_request: ChangeLikePostIdeaRequest):
+async def change_like_new_post_idea(user: user_dependency, db: db_dependency,
+                                    change_like_post_idea_request: ChangeLikePostIdeaRequest):
     post = db.query(UserPostIdea).filter(UserPostIdea.id == change_like_post_idea_request.id).first()
     post.is_liked = change_like_post_idea_request.is_liked
     db.commit()
