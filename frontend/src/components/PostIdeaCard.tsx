@@ -13,6 +13,7 @@ import {
   BiDotsVerticalRounded,
   BiHeart,
   BiMenu,
+  BiTrash,
 } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 
@@ -24,6 +25,7 @@ export default function PostIdeaCard({
   clickCallback: (value: boolean) => void;
 }) {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [postState, setPostState] = useState<IPostIdea>(post);
 
   const updatePostLike = async (newLikeValue: boolean) => {
@@ -73,6 +75,44 @@ export default function PostIdeaCard({
     setPostState(post);
   };
 
+  const deleteIdea = async (postId: number) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts/${postId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      toast.error("Failed to delete post idea.", {
+        icon: "🤔",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return null;
+    }
+
+    const data = await response.json();
+    const info = data["detail"];
+    toast.success(info, {
+      icon: "🤔",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+    router.refresh();
+  };
+
   const formatHashtags = (hashtags: string): string[] => {
     // Check if hashtags are not null or empty
     if (hashtags) {
@@ -96,6 +136,37 @@ export default function PostIdeaCard({
         <div className="h-4 w-4 bg-gray-900 rounded-full z-20"></div>
       </div>
       <div className="bg-gradient-to-tr from-[#170E13] to-[#7A7ADB] h-full w-full rounded-xl  flex flex-col justify-between relative group-hover/card:-translate-y-2 transition-all">
+        {isModalOpen ? (
+          <div className="bg-black rounded-xl bg-opacity-40 w-full h-full absolute flex justify-center items-center px-4">
+            <div className="bg-gray-100 w-full h-28 rounded-lg p-2 flex flex-col justify-between">
+              <h4 className="text-black font-semibold">
+                Do you really want to delete this idea?
+              </h4>
+              <div className="flex flex-row justify-end gap-4 text-black font-bold">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsModalOpen(false);
+                  }}
+                  className="border border-black rounded-md px-6 py-0.5"
+                >
+                  No
+                </button>
+                <button
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await deleteIdea(postState.id);
+                  }}
+                  className="bg-black text-white rounded-md px-6 py-0.5"
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
         <div className="absolute bottom-12 right-4">
           <div className="flex flex-col items-center gap-2 z-10 ">
             {postState.is_liked ? (
@@ -120,7 +191,13 @@ export default function PostIdeaCard({
               </button>
             )}
 
-            <BiDotsVerticalRounded size="25px" />
+            <BiTrash
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsModalOpen(true);
+              }}
+              size="25px"
+            />
           </div>
         </div>
         <div></div>
