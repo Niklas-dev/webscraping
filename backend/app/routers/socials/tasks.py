@@ -89,8 +89,6 @@ def create_post_idea_task(niche: str, description: str, extra: str, user_id: str
 
     create_user_post_idea_model.is_finished = True
 
-
-
     user: User = db.query(User).filter(User.id == user_id).first()
     remaining_creations = user.remaining_post_creations
     remaining_creations_onetime = user.remaining_post_creations_onetime_paid
