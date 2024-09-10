@@ -9,14 +9,32 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     steps:
-      - name: Setup Environment
+      - name: Install OpenSSH Client
         run: |
-          command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )
+          command -v ssh-agent >/dev/null || (apt-get update -y && apt-get install openssh-client -y)
+
+      - name: Start ssh-agent
+        run: |
           eval $(ssh-agent -s)
-          echo ${{ secrets.SSH_PRIVATE_KEY }} | tr -d '\r' | ssh-add -
+
+      - name: Add SSH private key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
+
+      - name: Create SSH directory
+        run: |
           mkdir -p ~/.ssh
+
+      - name: Create SSH config file
+        run: |
           touch ~/.ssh/config
+
+      - name: Create known_hosts file
+        run: |
           touch ~/.ssh/known_hosts
+
+      - name: Set permissions for SSH directory
+        run: |
           chmod -R 400 ~/.ssh
       - name: Cloning repo
         uses: actions/checkout@v3
