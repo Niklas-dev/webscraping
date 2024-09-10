@@ -1,23 +1,33 @@
-name: "deploy"
+name: Deploy to Dokku
 
 on:
   push:
     branches:
-      - production
+      - main # Change this to the branch you want to deploy
 
 jobs:
   deploy:
     environment: production
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Cloning repo
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Push to dokku
-        uses: dokku/github-action@master
-        with:
-          branch: production
-          git_remote_url: "ssh://git@github.com/webscraping.git"
+    runs-on: ubuntu-latest
 
-          ssh_private_key: ${{ secrets.SSH_SECRET_KEY_KL }}
+    steps:
+      # Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up SSH to access the VPS
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_KL }}
+
+      # Add the VPS to the list of known hosts to prevent SSH warnings
+      - name: Add Dokku VPS to known hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.DOKKU_HOST }} >> ~/.ssh/known_hosts
+
+      # Push code to the Dokku app
+      - name: Deploy to Dokku
+        run: |
+          git remote add dokku dokku@${{ secrets.DOKKU_HOST }}:frontend || true
+          git push dokku main:master
