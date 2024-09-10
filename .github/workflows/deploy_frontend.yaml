@@ -15,5 +15,5 @@ jobs:
         with:
           branch: production
           git_remote_url: "ssh://root@157.173.105.91/frontend"
-          ssh_host_key: ${{ secrets.SSH_PUBLIC_KEY }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          ssh_private_key: ${{ secrets.SSH_SECRET_KEY_KL }}
