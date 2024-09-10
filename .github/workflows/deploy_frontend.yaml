@@ -19,7 +19,7 @@ jobs:
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_KL }}
+          ssh-private-key: ${{ secrets.SSH_SECRET_KEY_KL }}
 
       # Add the VPS to the list of known hosts to prevent SSH warnings
       - name: Add Dokku VPS to known hosts
