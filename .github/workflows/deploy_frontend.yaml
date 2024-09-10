@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    environment: production
     runs-on: ubuntu-22.04
     steps:
       - name: Install OpenSSH Client
@@ -19,7 +20,7 @@ jobs:
 
       - name: Add SSH private key
         run: |
-          echo "${ secrets.SSH_PRIVATE_KEY }" | tr -d '\r' | ssh-add -
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
 
       - name: Create SSH directory
         run: |
