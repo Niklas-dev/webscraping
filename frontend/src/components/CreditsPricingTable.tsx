@@ -141,10 +141,7 @@ export default function CreditsPricingTable() {
               subscription
             )
           }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
-            subscription?.product.product_name === "Prod1"
-              ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
-              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
           }`}
         >
           Buy now
@@ -172,10 +169,7 @@ export default function CreditsPricingTable() {
           onClick={() =>
             onPlanClick("Prod3", "price_1OdfTdGpk89JeyEsyUNAQiPc", subscription)
           }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
-            subscription?.product.product_name === "Prod3"
-              ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
-              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
           }`}
         >
           Buy now
@@ -209,10 +203,7 @@ export default function CreditsPricingTable() {
           onClick={() =>
             onPlanClick("Prod2", "price_1Obq5xGpk89JeyEsqb8Twsx3", subscription)
           }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all ${
-            subscription?.product.product_name === "Prod2"
-              ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
-              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
           }`}
         >
           Buy now
