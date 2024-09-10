@@ -1,0 +1,22 @@
+name: "deploy"
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          branch: production
+          git_remote_url: "ssh://root@157.173.105.91/frontend"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
