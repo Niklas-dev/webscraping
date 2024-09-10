@@ -19,7 +19,7 @@ jobs:
 
       - name: Add SSH private key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
+          echo "${ secrets.SSH_PRIVATE_KEY }" | tr -d '\r' | ssh-add -
 
       - name: Create SSH directory
         run: |
