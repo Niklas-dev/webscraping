@@ -29,5 +29,5 @@ jobs:
       # Push code to the Dokku app
       - name: Deploy to Dokku
         run: |
-          git remote add dokku dokku@${{ secrets.DOKKU_HOST }}:frontend || true
+          git remote add dokku root@${{ secrets.DOKKU_HOST }}:frontend || true
           git push dokku main:master
