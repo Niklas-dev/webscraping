@@ -1,6 +1,7 @@
 import DashboardNavBar from "@/components/DashboardNavBar";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { FaPlus, FaUserCircle } from "react-icons/fa";
 
 export default function DashboardLayout({
@@ -31,7 +32,7 @@ export default function DashboardLayout({
             </div>
           </div>
         </nav>
-        {children}
+        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
       </div>
     </section>
   );
