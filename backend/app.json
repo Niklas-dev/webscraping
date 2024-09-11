@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dokku": {
+      "predeploy": "alembic upgrade head",
+      "postdeploy": ""
+    }
+  }
+}
