@@ -1,2 +1,2 @@
-backend=backend
-frontend=frontend
+trendpilot.frontend=frontend
+trendpilot.backend=backend
