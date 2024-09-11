@@ -3,6 +3,7 @@ import { League_Spartan } from "next/font/google";
 import "../styles/globals.css";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
 
 const league = League_Spartan({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={league.className}>
         <Toaster />
-        <AuthProvider>{children}</AuthProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <AuthProvider>{children}</AuthProvider>
+        </Suspense>
       </body>
     </html>
   );
