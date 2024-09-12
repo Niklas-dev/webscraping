@@ -2,11 +2,11 @@ import React from "react";
 
 export default async function RatingInfo() {
   return (
-    <section className="pt-36 px-8">
-      <div className="max-w-screen-xl mx-auto text-center flex flex-col gap-32 ">
-        <figure className="max-w-screen-md mx-auto flex flex-col items-center lg:translate-x-36">
+    <section className="px-8">
+      <div className="max-w-screen-xl mx-auto text-center flex flex-col gap-16 ">
+        <figure className="max-w-screen-md mx-auto flex flex-col items-center">
           <svg
-            className="h-12 mx-auto mb-3 text-white"
+            className="h-12 mx-auto mb-3 text-gray-800"
             viewBox="0 0 24 27"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@ export default async function RatingInfo() {
             />
           </svg>
           <blockquote>
-            <p className="text-2xl font-medium text-white ">
+            <p className="text-2xl font-medium text-gray-800 ">
               &quot;This app is a lifesaver for content creators! It generates
               spot-on post ideas for YouTube, TikTok, and Instagram based on
               your niche. My follower count has gone up since I started using
@@ -31,9 +31,9 @@ export default async function RatingInfo() {
               src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png"
               alt="profile picture"
             />
-            <div className="flex items-center divide-x-2 divide-gray-700">
-              <div className="pr-3 font-medium text-gray-300 ">Sophie T.</div>
-              <div className="pl-3 text-md font-light text-gray-200">
+            <div className="flex items-center divide-x-2 text-gray-800">
+              <div className="pr-3 font-medium text-gray-800 ">Sophie T.</div>
+              <div className="pl-3 text-md font-normal text-gray-600">
                 Small Creator
               </div>
             </div>
@@ -86,9 +86,9 @@ export default async function RatingInfo() {
             </svg>
           </div>
         </figure>
-        <figure className="max-w-screen-md mx-auto flex flex-col items-center lg:-translate-x-32">
+        <figure className="max-w-screen-md mx-auto flex flex-col items-center">
           <blockquote>
-            <p className="text-2xl font-medium text-white ">
+            <p className="text-2xl font-medium text-gray-800 ">
               &quot;Perfect for when you&lsquo;re stuck on what to post! The app
               offers fresh, trending ideas that have really boosted my
               engagement on social media. Super easy to use and totally worth
@@ -103,8 +103,8 @@ export default async function RatingInfo() {
               alt="profile picture"
             />
             <div className="flex items-center divide-x-2 divide-gray-700">
-              <div className="pr-3 font-medium text-gray-300 ">Alexy M.</div>
-              <div className="pl-3 text-md font-light text-gray-200">
+              <div className="pr-3 font-medium text-gray-600 ">Alexy M.</div>
+              <div className="pl-3 text-md font-normal text-gray-600">
                 Influencer
               </div>
             </div>
