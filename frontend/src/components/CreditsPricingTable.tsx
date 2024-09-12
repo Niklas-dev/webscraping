@@ -122,13 +122,13 @@ export default function CreditsPricingTable() {
   return (
     <main className="flex flex-col lg:flex-row items-center lg:justify-center mt-10 relative z-10 gap-16 pb-16">
       <div className="absolute flex flex-row justify-center gap-20">
-        <div className="blur-[120px] bg-blue-600 h-56 w-56 top-0 left-0 bg-opacity-50"></div>
-        <div className="blur-[120px] bg-yellow-400 h-56 w-56 top-0 left-0 bg-opacity-50"></div>
-        <div className="blur-[120px] bg-red-600 h-56 w-56 top-0 left-0 bg-opacity-50"></div>
+        <div className="blur-[120px] bg-blue-600 h-56 w-56 top-0 left-0 bg-opacity-25"></div>
+        <div className="blur-[120px] bg-yellow-400 h-56 w-56 top-0 left-0 bg-opacity-25"></div>
+        <div className="blur-[120px] bg-red-600 h-56 w-56 top-0 left-0 bg-opacity-25"></div>
       </div>
-      <div className="h-fit w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2 ring-blue-500 transition-all">
+      <div className="h-fit w-72 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-blue-500 transition-all">
         <h3 className="text-blue-500 text-2xl font-medium">7 Idea Credits</h3>
-        <p className="text-gray-300 mt-2">Small Package - Good to try out</p>
+        <p className="text-gray-800 mt-2">Small Package - Good to try out</p>
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
           € <p className="text-5xl font-semibold">4,99</p>
         </div>
@@ -147,19 +147,19 @@ export default function CreditsPricingTable() {
           Buy now
         </button>
         <ul className="mt-6 flex flex-col gap-3">
-          <li className="flex flex-row gap-2 text-[#e6e6e6]">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-white  ">
-              <FaCheck color="#e6e6e6" size={"12.5px"} />
+          <li className="flex flex-row gap-2 text-gray-800">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
+              <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Create 7 post ideas
           </li>
         </ul>
       </div>
-      <div className="h-fit w-80 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2 ring-yellow-300 transition-all">
+      <div className="h-fit w-80 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-yellow-300 transition-all">
         <h3 className="text-yellow-300 text-2xl font-medium">
           28 Idea Credits
         </h3>
-        <p className="text-gray-300 mt-2">
+        <p className="text-gray-800 mt-2">
           Big Package - Enough ideas for your presence
         </p>
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
@@ -175,25 +175,25 @@ export default function CreditsPricingTable() {
           Buy now
         </button>
         <ul className="mt-6 flex flex-col gap-3">
-          <li className="flex flex-row gap-2 text-[#e6e6e6]">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-white  ">
-              <FaCheck color="#e6e6e6" size={"12.5px"} />
+          <li className="flex flex-row gap-2 text-gray-800">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
+              <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Create 28 post ideas
           </li>
-          <li className="flex flex-row gap-2 text-[#e6e6e6]">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-white  ">
-              <FaCheck color="#e6e6e6" size={"12.5px"} />
+          <li className="flex flex-row gap-2 text-gray-800">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
+              <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Best value
           </li>
         </ul>
       </div>
-      <div className="h-fit w-72 bg-[#0c0c0c] bg-opacity-75 rounded-3xl p-6 z-10 hover:ring-2 ring-orange-500 transition-all">
+      <div className="h-fit w-72 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-orange-500 transition-all">
         <h3 className="text-orange-500 text-2xl font-medium">
           14 Idea Credits
         </h3>
-        <p className="text-gray-300 mt-2">
+        <p className="text-gray-800 mt-2">
           Medium Package - Good solution for you business level.
         </p>
         <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
@@ -209,9 +209,9 @@ export default function CreditsPricingTable() {
           Buy now
         </button>
         <ul className="mt-6 flex flex-col gap-3">
-          <li className="flex flex-row gap-2 text-[#e6e6e6]">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-white  ">
-              <FaCheck color="#e6e6e6" size={"12.5px"} />
+          <li className="flex flex-row gap-2 text-gray-800">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
+              <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Create 14 post ideas
           </li>

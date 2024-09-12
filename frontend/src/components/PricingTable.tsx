@@ -134,9 +134,9 @@ export default function PricingTable() {
   return (
     <main className="flex flex-col lg:flex-row items-center lg:justify-center mt-10 relative z-10 gap-16 pb-16">
       <div className="absolute flex flex-row justify-center gap-20">
-        <div className="blur-[120px] bg-blue-600 h-56 w-56 top-0 left-0 bg-opacity-10"></div>
-        <div className="blur-[120px] bg-yellow-400 h-56 w-56 top-0 left-0 bg-opacity-10"></div>
-        <div className="blur-[120px] bg-red-600 h-56 w-56 top-0 left-0 bg-opacity-10"></div>
+        <div className="blur-[120px] bg-blue-600 h-56 w-56 top-0 left-0 bg-opacity-30"></div>
+        <div className="blur-[120px] bg-yellow-400 h-56 w-56 top-0 left-0 bg-opacity-30"></div>
+        <div className="blur-[120px] bg-red-600 h-56 w-56 top-0 left-0 bg-opacity-30"></div>
       </div>
       <div className="h-fit w-72 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-blue-500 transition-all">
         <h3 className="text-blue-500 text-2xl font-medium">Basic - Monthly</h3>
