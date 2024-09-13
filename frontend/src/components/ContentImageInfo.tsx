@@ -7,25 +7,48 @@ export default function ContentImageInfo() {
   return (
     <div>
       <div className=" w-full flex flex-col items-center mt-10">
-        <div className="flex flex-row  gap-4">
-          <div
+        <div className="flex flex-row  gap-4 z-10">
+          <button
             onClick={() => setSelectedImage("/showcase1.png")}
-            className="bg-gradient-to-b from-gray-800 to-gray-900  text-white rounded-full px-4 py-2 text-lg font-medium"
+            className={`${
+              selectedImage === "/showcase1.png"
+                ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
+                : "hover:bg-gray-100"
+            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
           >
             Idea Creation
-          </div>
-          <div className="  text-black rounded-full px-4 py-2 text-lg font-medium">
+          </button>
+          <button
+            onClick={() => setSelectedImage("/showcase2.png")}
+            className={`${
+              selectedImage === "/showcase2.png"
+                ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
+                : "hover:bg-gray-100"
+            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
+          >
             Dashboard
-          </div>
-          <div className=" text-black rounded-full px-4 py-2 text-lg font-medium">
+          </button>
+          <button
+            className={`${
+              selectedImage === "/showcase3.png"
+                ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
+                : "hover:bg-gray-100"
+            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
+          >
             Ideas
-          </div>
-          <div className=" text-black rounded-full px-4 py-2 text-lg font-medium">
+          </button>
+          <button
+            className={`${
+              selectedImage === "/showcase4.png"
+                ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
+                : "hover:bg-gray-100"
+            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
+          >
             Platforms
-          </div>
+          </button>
         </div>
         <Image
-          className="rounded-t-2xl mt-16 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
+          className="rounded-t-2xl mt-16 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] "
           src={selectedImage}
           alt="Trendpilot"
           width={1000}
