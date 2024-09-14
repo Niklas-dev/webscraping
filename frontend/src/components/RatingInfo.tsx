@@ -2,11 +2,11 @@ import React from "react";
 
 export default async function RatingInfo() {
   return (
-    <section className="px-8">
-      <div className="max-w-screen-xl mx-auto text-center flex flex-col gap-16 ">
-        <figure className="max-w-screen-md mx-auto flex flex-col items-center">
+    <section className="w-full flex flex-row justify-center px-8 mt-16">
+      <div className=" mx-auto w-full text-center flex flex-row flex-wrap justify-center items-center gap-12 ">
+        <figure className="max-w-screen-md flex flex-col items-center bg-[#ffffff] p-8 h-72 rounded-2xl shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
           <svg
-            className="h-12 mx-auto mb-3 text-gray-800"
+            className="h-10 mx-auto mb-3 text-gray-800"
             viewBox="0 0 24 27"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@ export default async function RatingInfo() {
             />
           </svg>
           <blockquote>
-            <p className="text-2xl font-medium text-gray-800 ">
+            <p className="text-xl font-medium text-gray-800 ">
               &quot;This app is a lifesaver for content creators! It generates
               spot-on post ideas for YouTube, TikTok, and Instagram based on
               your niche. My follower count has gone up since I started using
@@ -86,13 +86,24 @@ export default async function RatingInfo() {
             </svg>
           </div>
         </figure>
-        <figure className="max-w-screen-md mx-auto flex flex-col items-center">
+        <figure className="max-w-screen-md  flex flex-col items-center bg-[#ffffff] p-8 h-72 rounded-2xl shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]">
+          <svg
+            className="h-10 mx-auto mb-3 text-gray-800"
+            viewBox="0 0 24 27"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z"
+              fill="currentColor"
+            />
+          </svg>
           <blockquote>
-            <p className="text-2xl font-medium text-gray-800 ">
+            <p className="text-xl font-medium text-gray-800 ">
               &quot;Perfect for when you&lsquo;re stuck on what to post! The app
               offers fresh, trending ideas that have really boosted my
               engagement on social media. Super easy to use and totally worth
-              it!&quot;
+              it! Really awesome!&quot;
             </p>
           </blockquote>
 

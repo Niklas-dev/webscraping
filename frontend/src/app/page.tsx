@@ -27,7 +27,7 @@ export default function Home() {
 
           <div className=" p-4 max-w-7xl  mx-auto relative z-10  w-full pt-4 md:pt-0">
             <div className="w-fit mx-auto pb-8 ">
-              <div className="bg-white border  border-gray-200 rounded-full py-1 px-8 text-lg text-gray-600 flex items-center justify-center space-x-3">
+              <div className="bg-white border  border-gray-200 rounded-full py-1 px-8 text-sm md:text-lg text-gray-600 flex items-center justify-center space-x-3">
                 <div className="animate-spin mb-1 flex justify-center items-center">
                   <FaStar className="w-4 h-4  text-gray-500 fill-gray-500" />
                 </div>
@@ -70,14 +70,28 @@ export default function Home() {
         id="examples"
         className="mt-20 md:mt-48 flex flex-col items-center gap-4 px-4 overflow-x-hidden h-fit pb-40"
       >
-        <h3 className="text-xl md:text-2xl lg:text-4xl text-gray-800 font-bold text-center">
-          One Platform, every niche <br /> Create unique post ideas on demand.
+        <h3 className="text-xl md:text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-gray-600 to-gray-900  font-bold text-center">
+          One App, all big social media platforms, <br /> every niche and
+          awesome ideas.
         </h3>
-        <p className="text-base md:text-lg lg:text-xl text-gray-800 font-medium text-center max-w-2xl">
-          In whatever niche your content fits, TrendPilot will help you to
-          generate viral and unique social media post ideas that will suit your
-          requirements.
+        <p className="text-base md:text-lg lg:text-xl text-gray-600 text-center max-w-2xl">
+          Generate niched down ideas for you social media account in seconds.
         </p>
+        <div className="flex flex-row items-center gap-10">
+          <Image
+            src={"./instagram.svg"}
+            alt="instagram"
+            width={70}
+            height={70}
+          />
+          <Image src={"/tiktok.png"} alt="instagram" width={100} height={100} />
+          <Image
+            src={"/youtube.png"}
+            alt="instagram"
+            width={150}
+            height={150}
+          />
+        </div>
       </div>
     </div>
   );
