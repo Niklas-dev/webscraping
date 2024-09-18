@@ -79,18 +79,106 @@ export default function Home() {
         </p>
         <div className="flex flex-row items-center gap-10">
           <Image
-            src={"./instagram.svg"}
+            priority
+            src={"/instagram.svg"}
             alt="instagram"
             width={70}
             height={70}
           />
-          <Image src={"/tiktok.png"} alt="instagram" width={100} height={100} />
           <Image
+            priority
+            src={"/tiktok.png"}
+            alt="instagram"
+            width={100}
+            height={100}
+          />
+          <Image
+            priority
             src={"/youtube.png"}
             alt="instagram"
             width={150}
             height={150}
           />
+        </div>
+      </div>
+      <div
+        id="examples"
+        className="mt-12 flex flex-col items-center gap-4 px-4 overflow-x-hidden h-fit pb-40"
+      >
+        <h3 className="text-xl md:text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-gray-600 to-gray-900  font-bold text-center">
+          Everything you need <br /> for the next brilliant idea.
+        </h3>
+
+        <div className="flex flex-col items-center  gap-4 mt-8">
+          <div className="flex flex-row flex-wrap items-center gap-8 bg-gray-50 p-16 rounded-2xl shadow-inner">
+            <div className="flex flex-col">
+              <h3 className="text-3xl font-bold">
+                Unblock bottlenecks <br /> with scheduling queues.
+              </h3>
+              <p className="text-xl w-96 text-gray-600">
+                Remove delays and decrease your time-to-offer with fast schedule
+                queuing — making life easier for your recruiters and
+                coordinators.
+              </p>
+            </div>
+            <Image
+              className="rounded-2xl shadow-sm"
+              src={"/showcase1.png"}
+              alt="Trendpilot"
+              width={600}
+              height={600}
+            />
+          </div>
+          <Image
+            src={"/connect-arrow.svg"}
+            alt="instagram"
+            width={30}
+            height={30}
+          />
+          <div className="flex flex-row-reverse flex-wrap items-center gap-8 bg-gray-50 p-16 rounded-2xl shadow-inner">
+            <div className="flex flex-col">
+              <h3 className="text-3xl font-bold">
+                Unblock bottlenecks <br /> with scheduling queues.
+              </h3>
+              <p className="text-xl w-96 text-gray-600">
+                Remove delays and decrease your time-to-offer with fast schedule
+                queuing — making life easier for your recruiters and
+                coordinators.
+              </p>
+            </div>
+            <Image
+              className="rounded-2xl shadow-sm"
+              src={"/showcase1.png"}
+              alt="Trendpilot"
+              width={600}
+              height={600}
+            />
+          </div>
+          <Image
+            src={"/connect-arrow.svg"}
+            alt="instagram"
+            width={30}
+            height={30}
+          />
+          <div className="flex flex-row flex-wrap items-center gap-8 bg-gray-50 p-16 rounded-2xl shadow-inner">
+            <div className="flex flex-col">
+              <h3 className="text-3xl font-bold">
+                Unblock bottlenecks <br /> with scheduling queues.
+              </h3>
+              <p className="text-xl w-96 text-gray-600">
+                Remove delays and decrease your time-to-offer with fast schedule
+                queuing — making life easier for your recruiters and
+                coordinators.
+              </p>
+            </div>
+            <Image
+              className="rounded-2xl shadow-sm"
+              src={"/showcase1.png"}
+              alt="Trendpilot"
+              width={600}
+              height={600}
+            />
+          </div>
         </div>
       </div>
     </div>
