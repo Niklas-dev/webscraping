@@ -160,13 +160,13 @@ export default function Footer() {
           <div className="mt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-4">
               <Link
-                href="#"
+                href="/privacy"
                 className="text-sm text-gray-500 hover:text-gray-900"
               >
                 Privacy Policy
               </Link>
               <Link
-                href="#"
+                href="/tos"
                 className="text-sm text-gray-500 hover:text-gray-900"
               >
                 Terms of Service
