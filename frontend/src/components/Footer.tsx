@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import ActionButton from "./ActionButton";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -9,19 +10,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center">
-              <svg
-                className="h-8 w-8 text-indigo-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
+              <Image
+                className=""
+                src={"/logo.svg"}
+                alt="logo"
+                width={40}
+                height={40}
+              />
               <span className="ml-2 text-2xl font-bold text-gray-900">
                 TrendPilot
               </span>
@@ -176,28 +171,16 @@ export default function Footer() {
               >
                 Terms of Service
               </Link>
-              <Link
-                href="#"
-                className="text-sm text-gray-500 hover:text-gray-900"
-              >
-                Cookie Policy
-              </Link>
             </div>
             <div className="mt-4 md:mt-0 flex items-center">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <span className="block h-2 w-2 rounded-full bg-green-400"></span>
+                  <span className="block h-2 w-2 rounded-full bg-green-400 "></span>
                 </div>
-                <p className="ml-2 text-sm text-gray-500">
+                <p className="ml-2 text-sm text-gray-500 ">
                   All systems operational
                 </p>
               </div>
-              <Link
-                href="#"
-                className="ml-6 text-sm font-medium text-indigo-600 hover:text-indigo-700"
-              >
-                View status <span aria-hidden="true">&rarr;</span>
-              </Link>
             </div>
           </div>
         </div>
