@@ -85,7 +85,7 @@ export default function Page() {
                 setFormData({ ...formData, username: e.target.value })
               }
               defaultValue={formData.username}
-              className="w-72 h-10 bg-gray-200 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
+              className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="text"
               name="Username"
               placeholder="Username"
@@ -101,7 +101,7 @@ export default function Page() {
                 setFormData({ ...formData, email: e.target.value })
               }
               defaultValue={formData.email}
-              className="w-72 h-10 bg-gray-200 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
+              className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="email"
               name="Email"
               placeholder="Email"
@@ -117,7 +117,7 @@ export default function Page() {
                 setFormData({ ...formData, password: e.target.value })
               }
               defaultValue={formData.password}
-              className="w-72 h-10 bg-gray-200 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
+              className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="password"
               name="Password"
               placeholder="Password"
