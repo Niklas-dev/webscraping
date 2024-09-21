@@ -52,7 +52,7 @@ export default function Page() {
     router.push(`${process.env.NEXT_PUBLIC_BACKEND}/auth/google`);
   };
   return (
-    <div className="h-screen w-screen relative selection:bg-orange-500  bg-gradient-to-b from-[#111111] to-black overflow-x-hidden">
+    <div className="h-screen w-screen relative selection:bg-orange-500  bg-white overflow-x-hidden">
       <div className="flex flex-col justify-start items-center">
         <BlurColors />
         <form
@@ -62,11 +62,14 @@ export default function Page() {
           }}
           className="flex flex-col gap-4  p-12 rounded-xl z-10 mt-60"
         >
-          <h1 className="text-2xl text-white text-center font-bold">
+          <Link
+            href={"/"}
+            className="text-2xl text-black text-center font-bold"
+          >
             TrendPilot
-          </h1>
+          </Link>
           <div className="flex flex-col">
-            <label className=" text-white" htmlFor="username">
+            <label className=" text-gray-800" htmlFor="username">
               Username
             </label>
             <input
@@ -74,7 +77,7 @@ export default function Page() {
                 setFormData({ ...formData, username: e.target.value })
               }
               defaultValue={formData.username}
-              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg text-white outline-none focus:ring-2"
+              className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="text"
               name="Username"
               placeholder="Username"
@@ -82,7 +85,7 @@ export default function Page() {
             />
           </div>
           <div className="flex flex-col">
-            <label className=" text-white" htmlFor="password">
+            <label className=" text-gray-800" htmlFor="password">
               Password
             </label>
             <input
@@ -90,7 +93,7 @@ export default function Page() {
                 setFormData({ ...formData, password: e.target.value })
               }
               defaultValue={formData.password}
-              className="w-72 h-10 bg-[#222222] rounded-lg py-1 px-3 text-lg text-white outline-none focus:ring-2"
+              className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="password"
               name="Password"
               placeholder="Password"
@@ -102,27 +105,27 @@ export default function Page() {
             <button
               type="submit"
               onClick={() => login(formData)}
-              className="bg-white rounded-lg py-1 px-3 font-medium text-lg "
+              className="bg-black border-2 border-black text-white rounded-lg py-1 px-3 font-medium text-lg "
             >
               Login
             </button>
             <button
               onClick={() => loginGoogle()}
               type="button"
-              className="border-white border-2 text-white rounded-lg py-1 px-3 font-medium text-lg "
+              className="border-black border-2 text-black rounded-lg py-1 px-3 font-medium text-lg "
             >
               Google
             </button>
           </div>
-          <div className="h-[1px] bg-white w-full flex flex-row justify-center mt-4">
-            <span className="text-white font-medium bg-[#080808] -translate-y-2.5 w-fit h-fit px-2">
+          <div className="h-[1px] bg-black w-full flex flex-row justify-center mt-4">
+            <span className="text-black font-medium bg-white -translate-y-2.5 w-fit h-fit px-2">
               or
             </span>
           </div>
           <div className="w-full flex flex-row justify-center">
             <Link
               href={"/register"}
-              className="text-lg text-white hover:underline w-fit"
+              className="text-lg text-gray-800 hover:underline w-fit"
             >
               create a new account
             </Link>
