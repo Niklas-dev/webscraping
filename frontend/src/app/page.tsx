@@ -9,6 +9,7 @@ import Image from "next/image";
 import { FaArrowDown, FaStar } from "react-icons/fa";
 import BlurColors from "@/components/BlurColors";
 import ContentImageInfo from "@/components/ContentImageInfo";
+import Footer from "@/components/Footer";
 
 const BoxesClient = dynamic(
   () => import("../components/ui/BackgroundBoxes"),
@@ -130,7 +131,7 @@ export default function Home() {
             />
           </div>
           <Image
-            src={"/connect-arrow.svg"}
+            src={"/connect-arr1.svg"}
             alt="instagram"
             width={30}
             height={30}
@@ -155,7 +156,7 @@ export default function Home() {
             />
           </div>
           <Image
-            src={"/connect-arrow.svg"}
+            src={"/connect-arr2.svg"}
             alt="instagram"
             width={30}
             height={30}
@@ -181,6 +182,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
