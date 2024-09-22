@@ -10,6 +10,8 @@ import { FaArrowDown, FaStar } from "react-icons/fa";
 import BlurColors from "@/components/BlurColors";
 import ContentImageInfo from "@/components/ContentImageInfo";
 import Footer from "@/components/Footer";
+import FeatureCard from "@/components/FeatureCard";
+import FadeInWrapper from "@/components/FadeInWrapper";
 
 const BoxesClient = dynamic(
   () => import("../components/ui/BackgroundBoxes"),
@@ -110,76 +112,50 @@ export default function Home() {
           Everything you need <br /> for the next brilliant idea.
         </h3>
 
-        <div className="flex flex-col items-center  gap-4 mt-8">
-          <div className="flex flex-row flex-wrap items-center gap-8 bg-gray-50 p-16 rounded-2xl shadow-inner">
-            <div className="flex flex-col">
-              <h3 className="text-3xl font-bold">
-                Unblock bottlenecks <br /> with scheduling queues.
-              </h3>
-              <p className="text-xl w-96 text-gray-600">
-                Remove delays and decrease your time-to-offer with fast schedule
+        <div className="flex flex-col items-center  gap-4 mt-8 overflow-hidden">
+          <FadeInWrapper>
+            <FeatureCard
+              headline="Unblock bottlenecks <br /> with scheduling queues."
+              text="Remove delays and decrease your time-to-offer with fast schedule
                 queuing — making life easier for your recruiters and
-                coordinators.
-              </p>
-            </div>
-            <Image
-              className="rounded-2xl shadow-sm"
-              src={"/showcase1.png"}
-              alt="Trendpilot"
-              width={600}
-              height={600}
+                coordinators."
+              imageSrc="/showcase1.png"
             />
-          </div>
+          </FadeInWrapper>
+
           <Image
             src={"/connect-arr1.svg"}
             alt="instagram"
             width={30}
             height={30}
           />
-          <div className="flex flex-row-reverse flex-wrap items-center gap-8 bg-gray-50 p-16 rounded-2xl shadow-inner">
-            <div className="flex flex-col">
-              <h3 className="text-3xl font-bold">
-                Unblock bottlenecks <br /> with scheduling queues.
-              </h3>
-              <p className="text-xl w-96 text-gray-600">
-                Remove delays and decrease your time-to-offer with fast schedule
+
+          <FadeInWrapper>
+            <FeatureCard
+              headline="Unblock bottlenecks <br /> with scheduling queues."
+              text="Remove delays and decrease your time-to-offer with fast schedule
                 queuing — making life easier for your recruiters and
-                coordinators.
-              </p>
-            </div>
-            <Image
-              className="rounded-2xl shadow-sm"
-              src={"/showcase1.png"}
-              alt="Trendpilot"
-              width={600}
-              height={600}
+                coordinators."
+              imageSrc="/showcase1.png"
             />
-          </div>
+          </FadeInWrapper>
+
           <Image
             src={"/connect-arr2.svg"}
             alt="instagram"
             width={30}
             height={30}
           />
-          <div className="flex flex-row flex-wrap items-center gap-8 bg-gray-50 p-16 rounded-2xl shadow-inner">
-            <div className="flex flex-col">
-              <h3 className="text-3xl font-bold">
-                Unblock bottlenecks <br /> with scheduling queues.
-              </h3>
-              <p className="text-xl w-96 text-gray-600">
-                Remove delays and decrease your time-to-offer with fast schedule
+
+          <FadeInWrapper>
+            <FeatureCard
+              headline="Unblock bottlenecks <br /> with scheduling queues."
+              text="Remove delays and decrease your time-to-offer with fast schedule
                 queuing — making life easier for your recruiters and
-                coordinators.
-              </p>
-            </div>
-            <Image
-              className="rounded-2xl shadow-sm"
-              src={"/showcase1.png"}
-              alt="Trendpilot"
-              width={600}
-              height={600}
+                coordinators."
+              imageSrc="/showcase1.png"
             />
-          </div>
+          </FadeInWrapper>
         </div>
       </div>
       <Footer />
