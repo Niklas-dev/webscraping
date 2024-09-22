@@ -123,13 +123,14 @@ export default function Home() {
             />
           </FadeInWrapper>
 
-          <Image
-            src={"/connect-arr1.svg"}
-            alt="instagram"
-            width={30}
-            height={30}
-          />
-
+          <FadeInWrapper>
+            <Image
+              src={"/connect-arr1.svg"}
+              alt="instagram"
+              width={30}
+              height={30}
+            />
+          </FadeInWrapper>
           <FadeInWrapper>
             <FeatureCard
               headline="Unblock bottlenecks <br /> with scheduling queues."
@@ -139,13 +140,14 @@ export default function Home() {
               imageSrc="/showcase1.png"
             />
           </FadeInWrapper>
-
-          <Image
-            src={"/connect-arr2.svg"}
-            alt="instagram"
-            width={30}
-            height={30}
-          />
+          <FadeInWrapper>
+            <Image
+              src={"/connect-arr2.svg"}
+              alt="instagram"
+              width={30}
+              height={30}
+            />
+          </FadeInWrapper>
 
           <FadeInWrapper>
             <FeatureCard
