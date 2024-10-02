@@ -7,14 +7,14 @@ export default function ContentImageInfo() {
   return (
     <div>
       <div className=" w-full flex flex-col items-center mt-10">
-        <div className="flex flex-row  gap-4 z-10">
+        <div className="flex flex-row flex-wrap justify-center md:justify-start gap-2 text-nowrap  md:gap-4 z-10 text-sm  md:text-lg">
           <button
             onClick={() => setSelectedImage("/showcase1.png")}
             className={`${
               selectedImage === "/showcase1.png"
                 ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
                 : "hover:bg-gray-100"
-            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
+            } rounded-full px-4 py-2  font-medium transition-colors`}
           >
             Idea Creation
           </button>
@@ -24,7 +24,7 @@ export default function ContentImageInfo() {
               selectedImage === "/showcase2.png"
                 ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
                 : "hover:bg-gray-100"
-            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
+            } rounded-full px-4 py-2  font-medium transition-colors`}
           >
             Dashboard
           </button>
@@ -33,7 +33,7 @@ export default function ContentImageInfo() {
               selectedImage === "/showcase3.png"
                 ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
                 : "hover:bg-gray-100"
-            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
+            } rounded-full px-4 py-2  font-medium transition-colors`}
           >
             Ideas
           </button>
@@ -42,7 +42,7 @@ export default function ContentImageInfo() {
               selectedImage === "/showcase4.png"
                 ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
                 : "hover:bg-gray-100"
-            } rounded-full px-4 py-2 text-lg font-medium transition-colors`}
+            } rounded-full px-4 py-2  font-medium transition-colors`}
           >
             Platforms
           </button>
