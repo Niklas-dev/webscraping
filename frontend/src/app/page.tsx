@@ -30,20 +30,18 @@ export default function Home() {
 
           <div className=" p-4 max-w-7xl  mx-auto relative z-10  w-full pt-4 md:pt-0">
             <div className="w-fit mx-auto pb-8 ">
-              <div className="bg-white border  border-gray-200 rounded-full py-1 px-8 text-sm md:text-lg text-gray-600 flex items-center justify-center space-x-3">
+              <div className="bg-white border  border-gray-200 rounded-full py-1 px-4 sm:px-8 text-sm md:text-lg text-gray-600 flex items-center justify-center space-x-3">
                 <div className="animate-spin mb-1 flex justify-center items-center">
                   <FaStar className="w-4 h-4  text-gray-500 fill-gray-500" />
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="items-center justify-center hidden md:flex">
                   <span className="font-semibold text-gray-800">400+</span>
                   <span className="ml-1">created posts</span>
                 </div>
-                <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-                <div>
-                  <span className="font-semibold text-gray-800 text-">
-                    1mil+
-                  </span>
-                  <span className="ml-1">people reached</span>
+                <div className="w-1 h-1 bg-gray-300 rounded-full hidden md:flex"></div>
+                <div className="items-center justify-center hidden md:flex">
+                  <span className="font-semibold text-gray-800 ">1mil+</span>
+                  <span className="ml-1 text-nowrap">people reached</span>
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div>
