@@ -2,9 +2,9 @@ import React from "react";
 
 export default async function RatingInfo() {
   return (
-    <section className="w-full flex flex-row justify-center px-8 mt-16">
+    <section className="w-full flex flex-row justify-center px-8 mt-4 md:mt-16">
       <div className=" mx-auto w-full text-center flex flex-row flex-wrap justify-center items-center gap-12 ">
-        <figure className="max-w-screen-md flex flex-col items-center bg-gray-50 p-8 h-72 rounded-2xl shadow-inner">
+        <figure className="max-w-screen-md flex flex-col items-center bg-gray-50 p-8 h-fit rounded-2xl shadow-inner">
           <svg
             className="h-10 mx-auto mb-3 text-gray-800"
             viewBox="0 0 24 27"
@@ -86,7 +86,7 @@ export default async function RatingInfo() {
             </svg>
           </div>
         </figure>
-        <figure className="max-w-screen-md flex flex-col items-center bg-gray-50 p-8 h-72 rounded-2xl shadow-inner">
+        <figure className="max-w-screen-md flex flex-col items-center bg-gray-50 p-8 h-fit rounded-2xl shadow-inner">
           <svg
             className="h-10 mx-auto mb-3 text-gray-800"
             viewBox="0 0 24 27"

@@ -1,22 +1,13 @@
 import NavBar from "@/components/NavBar";
-import { InfoGrid } from "@/components/InfoGrid";
-
 import { Spotlight } from "@/components/ui/Spotlight";
-import dynamic from "next/dynamic";
 import ActionButton from "@/components/ActionButton";
 import RatingInfo from "@/components/RatingInfo";
-import Image from "next/image";
-import { FaArrowDown, FaStar } from "react-icons/fa";
-import BlurColors from "@/components/BlurColors";
+import { FaStar } from "react-icons/fa";
 import ContentImageInfo from "@/components/ContentImageInfo";
 import Footer from "@/components/Footer";
-import FeatureCard from "@/components/FeatureCard";
-import FadeInWrapper from "@/components/FadeInWrapper";
+import SocialMedia from "@/components/SocialMedia";
+import Features from "@/components/Features";
 
-const BoxesClient = dynamic(
-  () => import("../components/ui/BackgroundBoxes"),
-  {}
-);
 export default function Home() {
   return (
     <div className="w-full h-screen relative bg-white bg-grid-white/[0.05] overflow-x-hidden overflow-y-scroll">
@@ -66,98 +57,8 @@ export default function Home() {
       </div>
       <ContentImageInfo />
       <RatingInfo />
-
-      <div
-        id="examples"
-        className="mt-20 md:mt-48 flex flex-col items-center gap-4 px-4 overflow-x-hidden h-fit pb-40"
-      >
-        <h3 className="text-xl md:text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-gray-600 to-gray-900  font-bold text-center">
-          One App, all big social media platforms, <br /> every niche and
-          awesome ideas.
-        </h3>
-        <p className="text-base md:text-lg lg:text-xl text-gray-600 text-center max-w-2xl">
-          Generate niched down ideas for you social media account in seconds.
-        </p>
-        <div className="flex flex-row items-center gap-10">
-          <Image
-            priority
-            src={"/instagram.svg"}
-            alt="instagram"
-            width={70}
-            height={70}
-          />
-          <Image
-            priority
-            src={"/tiktok.png"}
-            alt="instagram"
-            width={100}
-            height={100}
-          />
-          <Image
-            priority
-            src={"/youtube.png"}
-            alt="instagram"
-            width={150}
-            height={150}
-          />
-        </div>
-      </div>
-      <div
-        id="examples"
-        className="mt-12 flex flex-col items-center gap-4 px-4 overflow-x-hidden h-fit pb-40"
-      >
-        <h3 className="text-xl md:text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-gray-600 to-gray-900  font-bold text-center">
-          Everything you need <br /> for the next brilliant idea.
-        </h3>
-
-        <div className="flex flex-col items-center  gap-4 mt-8 overflow-hidden">
-          <FadeInWrapper>
-            <FeatureCard
-              headline="Unblock bottlenecks <br /> with scheduling queues."
-              text="Remove delays and decrease your time-to-offer with fast schedule
-                queuing — making life easier for your recruiters and
-                coordinators."
-              imageSrc="/showcase1.png"
-            />
-          </FadeInWrapper>
-
-          <FadeInWrapper>
-            <Image
-              src={"/connect-arr1.svg"}
-              alt="instagram"
-              width={30}
-              height={30}
-            />
-          </FadeInWrapper>
-          <FadeInWrapper>
-            <FeatureCard
-              headline="Unblock bottlenecks <br /> with scheduling queues."
-              text="Remove delays and decrease your time-to-offer with fast schedule
-                queuing — making life easier for your recruiters and
-                coordinators."
-              imageSrc="/showcase1.png"
-            />
-          </FadeInWrapper>
-          <FadeInWrapper>
-            <Image
-              src={"/connect-arr2.svg"}
-              alt="instagram"
-              width={30}
-              height={30}
-            />
-          </FadeInWrapper>
-
-          <FadeInWrapper>
-            <FeatureCard
-              headline="Unblock bottlenecks <br /> with scheduling queues."
-              text="Remove delays and decrease your time-to-offer with fast schedule
-                queuing — making life easier for your recruiters and
-                coordinators."
-              imageSrc="/showcase1.png"
-            />
-          </FadeInWrapper>
-        </div>
-      </div>
+      <SocialMedia />
+      <Features />
       <Footer />
     </div>
   );
