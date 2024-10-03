@@ -5,10 +5,8 @@ import Image from "next/image";
 
 export default function Features() {
   return (
-    <div
-      id="examples"
-      className="mt-24 md:mt-64 flex flex-col items-center gap-4 px-4 overflow-x-hidden h-fit pb-40"
-    >
+    <div className="mt-24 md:mt-64 flex flex-col items-center gap-4 px-4 overflow-x-hidden h-fit pb-40">
+      <div id="features" className="absolute -translate-y-64"></div>
       <h3 className="text-2xl md:text-3xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-gray-600 to-gray-900  font-bold text-center">
         Everything you need <br /> for the next brilliant idea.
       </h3>
