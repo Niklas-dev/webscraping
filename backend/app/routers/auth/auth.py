@@ -1,5 +1,3 @@
-import os
-
 from authlib.integrations.base_client import OAuthError
 from authlib.oauth2.rfc6749 import OAuth2Token
 from fastapi import APIRouter, Depends, HTTPException
