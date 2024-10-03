@@ -19,6 +19,7 @@ import SideNavElement from "./SideNavElement";
 import Link from "next/link";
 import { Turn as Hamburger } from "hamburger-react";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function DashboardNavBar() {
   const [isOpen, setOpen] = useState(true);
@@ -33,7 +34,14 @@ export default function DashboardNavBar() {
             href={"/"}
             className="text-2xl font-medium flex flex-row items-center gap-1 "
           >
-            <BiChart color="#00000" /> TrendPilot
+            <Image
+              className=""
+              src={"/logo.svg"}
+              alt="logo"
+              width={35}
+              height={35}
+            />{" "}
+            TrendPilot
           </Link>
 
           <div className="mt-12 flex flex-col ">
