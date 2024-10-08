@@ -17,7 +17,7 @@ class UserPostIdea(Base):
     video_creation_instructions = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), default=func.now())
     is_deleted = Column(Boolean, default=False)
-
+    status = Column(String, nullable=True, default="unadded")
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="user_post_ideas")
 

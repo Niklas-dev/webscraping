@@ -69,8 +69,9 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency,
 
 @router.get("/posts")
 async def create_new_post_idea(user: user_dependency, db: db_dependency):
-    posts = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_deleted == False).order_by(UserPostIdea.is_finished == True,
-                                                                                    desc(UserPostIdea.created_at)).all()
+    posts = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_deleted == False).order_by(
+        UserPostIdea.is_finished == True,
+        desc(UserPostIdea.created_at)).all()
     return {"posts": posts}
 
 
@@ -78,8 +79,8 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency):
 async def get_new_post_idea(user: user_dependency, db: db_dependency, idea_id: int):
     post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id,
                                                        UserPostIdea.id == idea_id).order_by(
-                                                       UserPostIdea.is_finished == True,
-                                                       UserPostIdea.created_at).first()
+        UserPostIdea.is_finished == True,
+        UserPostIdea.created_at).first()
     return {"post": post}
 
 
@@ -95,8 +96,9 @@ async def delete_new_post_idea(user: user_dependency, db: db_dependency, idea_id
 
 @router.get("/liked-posts")
 async def get_liked_new_post_idea(user: user_dependency, db: db_dependency):
-    liked_posts = (db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_liked == True)
-                   .order_by(UserPostIdea.created_at).all())
+    liked_posts = (db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_liked == True,
+                                                 UserPostIdea.is_deleted == False).order_by(
+        UserPostIdea.created_at).all())
     return {"liked_posts": liked_posts}
 
 
