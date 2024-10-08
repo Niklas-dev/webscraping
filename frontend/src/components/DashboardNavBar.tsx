@@ -9,6 +9,7 @@ import {
   BiFolder,
   BiHeart,
   BiHome,
+  BiMap,
   BiMoney,
   BiSquareRounded,
   BiTrendingUp,
@@ -52,6 +53,9 @@ export default function DashboardNavBar() {
               </SideNavElement>
               <SideNavElement route="/dashboard/ideas" name="Ideas">
                 <BiBulb />
+              </SideNavElement>
+              <SideNavElement route="/dashboard/roadmap" name="Roadmap">
+                <BiMap />
               </SideNavElement>
               <SideNavElement
                 route="/dashboard/trending"
