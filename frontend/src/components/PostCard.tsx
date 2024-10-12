@@ -1,18 +1,14 @@
 // components/TaskCard.tsx
+import { IPostIdea } from "@/shared/interfaces";
+import { getCookie } from "cookies-next";
 import React from "react";
 import { useDrag } from "react-dnd";
-interface Post {
-  id: number;
-  title: string;
-  assignee: string;
-  date: string;
-  status: "Unadded" | "To-do" | "Doing" | "Done";
-}
+
 interface PostCardProps {
-  post: Post;
+  post: IPostIdea;
   movePost: (
     id: number,
-    status: "Unadded" | "To-do" | "Doing" | "Done"
+    status: "unadded" | "used" | "planned" | "dropoff"
   ) => void;
 }
 
@@ -46,9 +42,18 @@ export default function PostCard({ post, movePost }: PostCardProps) {
         </button>
       </div>
       <div className="flex items-center mt-2 text-sm text-gray-500">
-        <span className="mr-2">{post.assignee}</span>
-        <span>{post.date}</span>
+        <span>{post.title}</span>
       </div>
+      {post.status !== "unadded" && (
+        <div className="flex justify-end">
+          <button
+            onClick={() => movePost(post.id, "unadded")}
+            className="py-0.5 px-2 rounded-lg border border-gray-400 text-gray-800 mt-2 text-sm hover:bg-gray-100 transition-colors"
+          >
+            Unplan
+          </button>
+        </div>
+      )}
     </div>
   );
 }

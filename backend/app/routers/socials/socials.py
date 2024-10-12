@@ -9,7 +9,7 @@ from celery_setup import celery_app
 from .models import UserPostIdea
 from .tasks import test_tasks
 from .services import create_new_post
-from .validators import CreatePostIdeaRequest, ChangeLikePostIdeaRequest
+from .validators import CreatePostIdeaRequest, ChangeLikePostIdeaRequest, ChangeStatusPostIdeaRequest
 from ..auth.services import user_dependency
 from ...db.database import db_dependency
 
@@ -107,6 +107,18 @@ async def change_like_new_post_idea(user: user_dependency, db: db_dependency,
                                     change_like_post_idea_request: ChangeLikePostIdeaRequest):
     post = db.query(UserPostIdea).filter(UserPostIdea.id == change_like_post_idea_request.id).first()
     post.is_liked = change_like_post_idea_request.is_liked
+    db.commit()
+    db.refresh(post)
+
+    return {"post": post}
+
+
+@router.post("/change-status-post-idea")
+async def change_status_new_post_idea(user: user_dependency, db: db_dependency,
+                                      change_status_post_idea_request: ChangeStatusPostIdeaRequest):
+    print(change_status_post_idea_request)
+    post = db.query(UserPostIdea).filter(UserPostIdea.id == change_status_post_idea_request.id).first()
+    post.status = change_status_post_idea_request.status
     db.commit()
     db.refresh(post)
 

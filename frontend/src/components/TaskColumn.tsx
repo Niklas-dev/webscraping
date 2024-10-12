@@ -2,19 +2,14 @@ import React from "react";
 import { useDrop } from "react-dnd";
 
 import PostCard from "./PostCard";
-interface Post {
-  id: number;
-  title: string;
-  assignee: string;
-  date: string;
-  status: "Unadded" | "To-do" | "Doing" | "Done";
-}
+import { IPostIdea } from "@/shared/interfaces";
+
 interface ColumnProps {
   title: string;
-  posts: Post[];
+  posts: IPostIdea[];
   movePost: (
     id: number,
-    status: "Unadded" | "To-do" | "Doing" | "Done"
+    status: "unadded" | "used" | "planned" | "dropoff"
   ) => void;
 }
 
@@ -22,7 +17,7 @@ export default function Column({ title, posts, movePost }: ColumnProps) {
   const [, drop] = useDrop({
     accept: "POST",
     drop: (item: { id: number }) =>
-      movePost(item.id, title as "Unadded" | "To-do" | "Doing" | "Done"),
+      movePost(item.id, title as "unadded" | "used" | "planned" | "dropoff"),
   });
 
   return (
