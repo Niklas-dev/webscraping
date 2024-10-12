@@ -6,16 +6,15 @@ export default function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   useEffect(() => {
-    return () => {
-      setCookie("access_token", searchParams.get("access_token"), {
-        maxAge: 60 * 6 * 24 * 7,
-      });
-      setCookie("refresh_token", searchParams.get("refresh_token"), {
-        maxAge: 60 * 6 * 24 * 14,
-      });
+    setCookie("access_token", searchParams.get("access_token"), {
+      maxAge: 60 * 6 * 24 * 7,
+    });
+    setCookie("refresh_token", searchParams.get("refresh_token"), {
+      maxAge: 60 * 6 * 24 * 14,
+    });
 
-      router.push("/dashboard");
-    };
+    router.push("/dashboard");
+    return () => {};
   }, [searchParams, router]);
 
   return (
