@@ -19,3 +19,7 @@ class CreatePostIdeaRequest(BaseModel):
 class ChangeLikePostIdeaRequest(BaseModel):
     id: int
     is_liked: bool
+
+class ChangeStatusPostIdeaRequest(BaseModel):
+    id: int
+    status: str

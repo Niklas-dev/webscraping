@@ -22,6 +22,7 @@ export default function FeatureCard({
         </p>
       </div>
       <Image
+        priority
         className="rounded-2xl shadow-sm  w-2/3 min-w-60"
         src={"/showcase1.png"}
         alt="Trendpilot"

@@ -9,7 +9,7 @@ from celery_setup import celery_app
 from .models import UserPostIdea
 from .tasks import test_tasks
 from .services import create_new_post
-from .validators import CreatePostIdeaRequest, ChangeLikePostIdeaRequest
+from .validators import CreatePostIdeaRequest, ChangeLikePostIdeaRequest, ChangeStatusPostIdeaRequest
 from ..auth.services import user_dependency
 from ...db.database import db_dependency
 
@@ -69,8 +69,9 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency,
 
 @router.get("/posts")
 async def create_new_post_idea(user: user_dependency, db: db_dependency):
-    posts = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_deleted == False).order_by(UserPostIdea.is_finished == True,
-                                                                                    desc(UserPostIdea.created_at)).all()
+    posts = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_deleted == False).order_by(
+        UserPostIdea.is_finished == True,
+        desc(UserPostIdea.created_at)).all()
     return {"posts": posts}
 
 
@@ -78,8 +79,8 @@ async def create_new_post_idea(user: user_dependency, db: db_dependency):
 async def get_new_post_idea(user: user_dependency, db: db_dependency, idea_id: int):
     post: UserPostIdea = db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id,
                                                        UserPostIdea.id == idea_id).order_by(
-                                                       UserPostIdea.is_finished == True,
-                                                       UserPostIdea.created_at).first()
+        UserPostIdea.is_finished == True,
+        UserPostIdea.created_at).first()
     return {"post": post}
 
 
@@ -95,8 +96,9 @@ async def delete_new_post_idea(user: user_dependency, db: db_dependency, idea_id
 
 @router.get("/liked-posts")
 async def get_liked_new_post_idea(user: user_dependency, db: db_dependency):
-    liked_posts = (db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_liked == True)
-                   .order_by(UserPostIdea.created_at).all())
+    liked_posts = (db.query(UserPostIdea).filter(UserPostIdea.user_id == user.id, UserPostIdea.is_liked == True,
+                                                 UserPostIdea.is_deleted == False).order_by(
+        UserPostIdea.created_at).all())
     return {"liked_posts": liked_posts}
 
 
@@ -105,6 +107,18 @@ async def change_like_new_post_idea(user: user_dependency, db: db_dependency,
                                     change_like_post_idea_request: ChangeLikePostIdeaRequest):
     post = db.query(UserPostIdea).filter(UserPostIdea.id == change_like_post_idea_request.id).first()
     post.is_liked = change_like_post_idea_request.is_liked
+    db.commit()
+    db.refresh(post)
+
+    return {"post": post}
+
+
+@router.post("/change-status-post-idea")
+async def change_status_new_post_idea(user: user_dependency, db: db_dependency,
+                                      change_status_post_idea_request: ChangeStatusPostIdeaRequest):
+    print(change_status_post_idea_request)
+    post = db.query(UserPostIdea).filter(UserPostIdea.id == change_status_post_idea_request.id).first()
+    post.status = change_status_post_idea_request.status
     db.commit()
     db.refresh(post)
 

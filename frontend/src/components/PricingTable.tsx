@@ -154,7 +154,7 @@ export default function PricingTable() {
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
             subscription?.product.product_name === "Prod1"
               ? "text-gray-800 border-gray-800 border-2 hover:bg-gray-100 hover:text-black"
-              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+              : "bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
           }`}
         >
           {subscription?.product.product_name === "Prod1"
@@ -205,7 +205,7 @@ export default function PricingTable() {
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
             subscription?.product.product_name === "Prod3"
               ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
-              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+              : "bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
           }`}
         >
           {subscription?.product.product_name === "Prod3"
@@ -214,26 +214,26 @@ export default function PricingTable() {
         </button>
         <ul className="mt-6 flex flex-col gap-3">
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555  ">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             15% cheaper per month
           </li>
 
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Create 18 posts per week
           </li>
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Post backups forever!
           </li>
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Personal customer support
@@ -257,7 +257,7 @@ export default function PricingTable() {
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all ${
             subscription?.product.product_name === "Prod2"
               ? "text-white border-white border-2 hover:bg-gray-100 hover:text-black"
-              : "bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+              : "bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
           }`}
         >
           {subscription?.product.product_name === "Prod2"
@@ -266,25 +266,25 @@ export default function PricingTable() {
         </button>
         <ul className="mt-6 flex flex-col gap-3">
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555  ">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             14 Day Free Test Trial
           </li>
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Create 18 posts per week
           </li>
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Post backups forever!
           </li>
           <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-#555555">
+            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]">
               <FaCheck color="#555555" size={"12.5px"} />
             </div>{" "}
             Personal customer support

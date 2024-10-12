@@ -56,6 +56,7 @@ export interface IPostIdea {
   description: string;
   video_creation_instructions: string;
   hashtags: string | null;
+  status: "unadded" | "used" | "planned" | "dropoff";
 }
 
 export interface IFullUserData {

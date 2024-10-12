@@ -141,7 +141,7 @@ export default function CreditsPricingTable() {
               subscription
             )
           }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
           }`}
         >
           Buy now
@@ -169,7 +169,7 @@ export default function CreditsPricingTable() {
           onClick={() =>
             onPlanClick("Prod3", "price_1OdfTdGpk89JeyEsyUNAQiPc", subscription)
           }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
           }`}
         >
           Buy now
@@ -203,7 +203,7 @@ export default function CreditsPricingTable() {
           onClick={() =>
             onPlanClick("Prod2", "price_1Obq5xGpk89JeyEsqb8Twsx3", subscription)
           }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-white text-black hover:border-gray-100 hover:bg-transparent border-2 hover:text-gray-100"
+          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
           }`}
         >
           Buy now
