@@ -20,8 +20,8 @@ router = APIRouter(
     tags=['auth']
 )
 
-GOOGLE_CLIENT_ID = "969709362942-oqoriveq3lumcs940jio55uj54uet39u.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = "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"
+GOOGLE_CLIENT_ID = app_settings.GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET = app_settings.GOOGLE_CLIENT_SECRET
 GOOGLE_REDIRECT_URI = app_settings.GOOGLE_REDIRECT_URI
 FRONTEND_URL = app_settings.FRONTEND_URL
 
