@@ -20,11 +20,6 @@ router = APIRouter(
     tags=['auth']
 )
 
-GOOGLE_CLIENT_ID = app_settings.GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET = app_settings.GOOGLE_CLIENT_SECRET
-GOOGLE_REDIRECT_URI = app_settings.GOOGLE_REDIRECT_URI
-FRONTEND_URL = app_settings.FRONTEND_URL
-
 
 @router.get("/google")
 async def login_google(request: Request):
