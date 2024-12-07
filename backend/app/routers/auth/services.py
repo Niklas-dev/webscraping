@@ -1,9 +1,10 @@
+import bcrypt
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import timedelta, datetime, UTC
 from typing import Annotated
 
-from starlette import status
 from passlib.context import CryptContext
+from starlette import status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session, defer
 from authlib.integrations.starlette_client import OAuth
@@ -11,7 +12,12 @@ from authlib.integrations.starlette_client import OAuthError
 import os
 from jose import jwt, JWTError
 from starlette.config import Config
-
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from fastapi import BackgroundTasks
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from .validators import GoogleUser
 from .models import User
 from ...config.settings import app_settings
@@ -19,19 +25,16 @@ from ...db.database import db_dependency
 
 ALGORITHM = "HS256"
 
-bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 oauth_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 GOOGLE_CLIENT_ID = app_settings.GOOGLE_CLIENT_ID or None
 GOOGLE_CLIENT_SECRET = app_settings.GOOGLE_CLIENT_SECRET or None
 
-
 if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
     raise Exception('Missing env variables')
 
 config_data = {'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID, 'GOOGLE_CLIENT_SECRET': GOOGLE_CLIENT_SECRET}
-
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 starlette_config = Config(environ=config_data)
 
 oauth = OAuth(starlette_config)
@@ -41,6 +44,11 @@ oauth.register(
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
     client_kwargs={'scope': 'openid email profile'},
 )
+SMTP_SERVER = os.getenv("SMTP_SERVER")
+SMTP_PORT = int(os.getenv("SMTP_PORT"))
+SMTP_EMAIL = os.getenv("SMTP_EMAIL")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+JWT_EXPIRATION_TIME = int(os.getenv("JWT_EXPIRATION_TIME", 3600))
 
 
 def authenticate_user(username: str, password: str, db: type[Session]):
@@ -49,7 +57,7 @@ def authenticate_user(username: str, password: str, db: type[Session]):
     if not user:
         return False
 
-    if not bcrypt_context.verify(password, user.hashed_password):
+    if not pwd_context.verify(password, user.hashed_password):
         return False
     return user
 
@@ -127,6 +135,55 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
         db.commit()
         db.refresh(new_user)
         return new_user
+
+
+def generate_verification_token(email: str):
+    expiration_time = datetime.now() + timedelta(minutes=30)
+    payload = {
+        "sub": email,
+        "exp": expiration_time
+    }
+    token = jwt.encode(payload, app_settings.SECRET_KEY, algorithm=ALGORITHM)
+    return token
+
+
+def verify_token(token: str):
+    try:
+        payload = jwt.decode(token, app_settings.SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=400, detail="Token has expired")
+    except jwt.JWTError:
+        raise HTTPException(status_code=400, detail="Invalid token")
+
+
+async def send_verification_email(email: str, token: str):
+    verification_link = f"localhost/auth/verify-email?token={token}"
+    subject = "Verify your email"
+    html_content = f"""
+    <html>
+        <body>
+            <h1>Email Verification</h1>
+            <p>Click the link below to verify your email address:</p>
+            <a href="{verification_link}">Verify Email</a>
+            <p>This link is valid for {JWT_EXPIRATION_TIME} minutes.</p>
+        </body>
+    </html>
+    """
+    message = Mail(
+        from_email='support@trendpilot.pro',
+        to_emails=email,
+        subject=subject,
+        html_content=html_content)
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
+    print(f"Verification email sent to {email}")
 
 
 user_dependency = Annotated[dict, Depends(get_current_user)]

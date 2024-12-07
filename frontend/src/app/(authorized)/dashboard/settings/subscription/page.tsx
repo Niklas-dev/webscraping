@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default async function page() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   const getCurrentUserPlan = async () => {
     const response = await fetch(

@@ -1,9 +1,10 @@
 "use client";
 import BlurColors from "@/components/BlurColors";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { setCookie } from "cookies-next";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 export default function Page() {
   const [formData, setFormData] = useState({
     username: "",
@@ -11,6 +12,25 @@ export default function Page() {
   });
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const detail = searchParams.get("detail");
+    if (detail === "email_verified") {
+      toast.success("Your email has been verified.", {
+        duration: 4000,
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
+
+    return () => {};
+  }, [searchParams]);
+
   const login = async (_formData: { username: string; password: string }) => {
     console.log(_formData);
     const response = await fetch(
@@ -27,6 +47,17 @@ export default function Page() {
     console.log(response.ok);
 
     if (!response.ok) {
+      const data = await response.json();
+      console.log(data);
+      toast.error(data.detail, {
+        duration: 4000,
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
       return null;
     }
 
@@ -58,7 +89,6 @@ export default function Page() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            login(formData);
           }}
           className="flex flex-col gap-4  p-12 rounded-xl z-10 mt-60"
         >

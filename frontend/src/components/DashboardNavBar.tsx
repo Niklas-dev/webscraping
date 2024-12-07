@@ -9,6 +9,7 @@ import {
   BiFolder,
   BiHeart,
   BiHome,
+  BiLogOut,
   BiMap,
   BiMoney,
   BiSquareRounded,
@@ -19,11 +20,16 @@ import {
 import SideNavElement from "./SideNavElement";
 import Link from "next/link";
 import { Turn as Hamburger } from "hamburger-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import { AuthContext } from "@/providers/AuthProvider";
 
 export default function DashboardNavBar() {
   const [isOpen, setOpen] = useState(true);
+  const user = useContext(AuthContext);
+  const router = useRouter();
   return (
     <div className={` ${isOpen ? "absolute md:relative z-20 " : "  "}`}>
       <div className="absolute z-20 p-2">
@@ -89,6 +95,17 @@ export default function DashboardNavBar() {
               </SideNavElement>
             </div>
           </div>
+          <button
+            onClick={() => {
+              user.logout();
+              router.push("/");
+            }}
+            className={
+              "text-gray-900 w-full hover:bg-gray-200 p-3 rounded-xl text-lg font-semibold flex flex-row items-center gap-2  transition-colors cursor-pointer mt-4"
+            }
+          >
+            <BiLogOut /> Sign out
+          </button>
         </div>
       </div>
     </div>
