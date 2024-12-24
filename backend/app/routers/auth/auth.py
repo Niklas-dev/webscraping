@@ -1,14 +1,18 @@
+import bcrypt
 from authlib.integrations.base_client import OAuthError
 from authlib.oauth2.rfc6749 import OAuth2Token
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from datetime import timedelta
 from typing import Annotated
+
+from sqlalchemy.exc import IntegrityError
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
 from .models import User
 from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest, UserUpdateRequest
-from .services import create_access_token, authenticate_user, bcrypt_context, create_refresh_token, \
-    create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token, user_dependency
+from .services import create_access_token, authenticate_user, create_refresh_token, \
+    create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token, user_dependency, \
+    generate_verification_token, send_verification_email, verify_token, pwd_context
 from ...config.settings import app_settings
 from ...db.database import db_dependency
 from .services import oauth
@@ -20,15 +24,10 @@ router = APIRouter(
     tags=['auth']
 )
 
-GOOGLE_CLIENT_ID = "969709362942-oqoriveq3lumcs940jio55uj54uet39u.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = "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"
-GOOGLE_REDIRECT_URI = app_settings.GOOGLE_REDIRECT_URI
-FRONTEND_URL = app_settings.FRONTEND_URL
-
 
 @router.get("/google")
 async def login_google(request: Request):
-    return await oauth.google.authorize_redirect(request, GOOGLE_REDIRECT_URI)
+    return await oauth.google.authorize_redirect(request, app_settings.GOOGLE_REDIRECT_URI)
 
 
 @router.get("/callback/google")
@@ -58,20 +57,49 @@ async def auth_google(request: Request, db: db_dependency):
     refresh_token = create_refresh_token(user.username, user.id,
                                          timedelta(days=app_settings.REFRESH_TOKEN_EXPIRATION_DAYS))
 
-    return RedirectResponse(f"{FRONTEND_URL}/auth?access_token={access_token}&refresh_token={refresh_token}")
+    return RedirectResponse(
+        f"{app_settings.FRONTEND_URL}/auth?access_token={access_token}&refresh_token={refresh_token}")
 
 
 @router.post("/create-user", status_code=status.HTTP_201_CREATED)
-async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
-    create_user_model = User(
-        username=create_user_request.username,
-        hashed_password=bcrypt_context.hash(create_user_request.password)
-    )
+async def create_user(db: db_dependency, create_user_request: CreateUserRequest, background_tasks: BackgroundTasks):
+    existing_user = db.query(User).filter(User.username == create_user_request.username).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Username already taken.")
 
-    db.add(create_user_model)
+    hashed_password = pwd_context.hash(create_user_request.password)
+    try:
+        user = User(username=create_user_request.username, email=create_user_request.email,
+                    hashed_password=hashed_password)
+        db.add(user)
+        db.commit()
+    except IntegrityError as e:
+        raise HTTPException(status_code=400, detail="Email already taken.")
+
+    token = generate_verification_token(create_user_request.username)
+
+    background_tasks.add_task(send_verification_email, create_user_request.email, token)
+
+    return {"message": "User created. Please check your email to verify your account."}
+
+
+@router.get("/verify-email")
+async def verify_email(db: db_dependency, token: str):
+    payload = verify_token(token)
+    email = payload["sub"]
+
+    user = db.query(User).filter(User.username == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if user.is_verified:
+        raise HTTPException(status_code=400, detail="User already verified")
+
+    # Mark the user as verified
+    user.is_verified = True
     db.commit()
 
-    return create_user_request
+    return RedirectResponse(f"{app_settings.FRONTEND_URL}/login?detail=email_verified")
 
 
 @router.get("/get-user", status_code=status.HTTP_201_CREATED)
@@ -85,6 +113,10 @@ async def login_for_access_token(db: db_dependency, form_data: Annotated[OAuth2P
 
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user.")
+
+    if not user.is_verified:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="You must verify your email first. Check "
+                                                                             "your email inbox.")
 
     access_token = create_access_token(user.username, user.id,
                                        timedelta(days=app_settings.ACCESS_TOKEN_EXPIRATION_DAYS))

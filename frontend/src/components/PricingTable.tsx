@@ -94,6 +94,8 @@ export default function PricingTable() {
           color: "#fff",
         },
       });
+      router.push("/dashboard/settings/subscription");
+
       return;
     }
 

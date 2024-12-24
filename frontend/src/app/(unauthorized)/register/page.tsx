@@ -6,6 +6,7 @@ import { setCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -35,6 +36,18 @@ export default function Page() {
     console.log(response.ok);
 
     if (!response.ok) {
+      const data = await response.json();
+      console.log(data);
+      toast.error(data.detail, {
+        duration: 8000,
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      //setFormData({ username: "", email: "", password: "" });
       return null;
     }
 
@@ -42,19 +55,19 @@ export default function Page() {
 
     console.log(data);
 
-    const { access_token, refresh_token } = data as {
-      access_token: string;
-      refresh_token: string;
-    };
-
-    setCookie("access_token", access_token, {
-      maxAge: 60 * 6 * 24 * 7,
-    });
-    setCookie("refresh_token", refresh_token, {
-      maxAge: 60 * 6 * 24 * 14,
-    });
-
-    router.push("/dashboard");
+    toast.success(
+      "Account has been created. Check your emails to verify your account.",
+      {
+        duration: 12000,
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      }
+    );
+    router.refresh();
   };
   const registerGoogle = () => {
     router.push(`${process.env.NEXT_PUBLIC_BACKEND}/auth/google`);
@@ -84,7 +97,7 @@ export default function Page() {
               onChange={(e) =>
                 setFormData({ ...formData, username: e.target.value })
               }
-              defaultValue={formData.username}
+              value={formData.username}
               className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="text"
               name="Username"
@@ -100,7 +113,7 @@ export default function Page() {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              defaultValue={formData.email}
+              value={formData.email}
               className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="email"
               name="Email"
@@ -116,7 +129,7 @@ export default function Page() {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              defaultValue={formData.password}
+              value={formData.password}
               className="w-72 h-10 bg-gray-100 rounded-lg py-1 px-3 text-lg text-black outline-none focus:ring-2"
               type="password"
               name="Password"
