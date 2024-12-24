@@ -76,7 +76,7 @@ def get_user_subscription(user: user_dependency):
 @router.post("/create-checkout-session")
 def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
     if user.subscription_status == "active":
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an ongoing subscription.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an ongoing subscription. Cancel it first.")
     try:
         checkout_session = stripe.checkout.Session.create(
             client_reference_id=user.id,
