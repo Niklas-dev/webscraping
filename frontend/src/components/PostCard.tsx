@@ -1,7 +1,6 @@
 // components/TaskCard.tsx
 import { IPostIdea } from "@/shared/interfaces";
-import { getCookie } from "cookies-next";
-import React from "react";
+import React, { useRef } from "react";
 import { useDrag } from "react-dnd";
 
 interface PostCardProps {
@@ -13,6 +12,8 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, movePost }: PostCardProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
+
   const [{ isDragging }, drag] = useDrag({
     type: "POST",
     item: { id: post.id },
@@ -21,9 +22,12 @@ export default function PostCard({ post, movePost }: PostCardProps) {
     }),
   });
 
+  // Connect the drag function to the ref
+  drag(ref);
+
   return (
     <div
-      ref={drag}
+      ref={ref}
       className={`bg-white p-4 mb-2 rounded-lg shadow cursor-move ${
         isDragging ? "opacity-50" : ""
       }`}
