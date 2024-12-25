@@ -7,15 +7,10 @@ from passlib.context import CryptContext
 from starlette import status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session, defer
-from authlib.integrations.starlette_client import OAuth
-from authlib.integrations.starlette_client import OAuthError
+from authlib.integrations.starlette_client import OAuth, OAuthError
 import os
 from jose import jwt, JWTError
 from starlette.config import Config
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from fastapi import BackgroundTasks
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from .validators import GoogleUser
@@ -29,6 +24,7 @@ oauth_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 GOOGLE_CLIENT_ID = app_settings.GOOGLE_CLIENT_ID or None
 GOOGLE_CLIENT_SECRET = app_settings.GOOGLE_CLIENT_SECRET or None
+SENDGRID_API_KEY = app_settings.SENDGRID_API_KEY or None
 
 if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
     raise Exception('Missing env variables')
@@ -44,11 +40,6 @@ oauth.register(
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
     client_kwargs={'scope': 'openid email profile'},
 )
-SMTP_SERVER = os.getenv("SMTP_SERVER")
-SMTP_PORT = int(os.getenv("SMTP_PORT"))
-SMTP_EMAIL = os.getenv("SMTP_EMAIL")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
-JWT_EXPIRATION_TIME = int(os.getenv("JWT_EXPIRATION_TIME", 3600))
 
 
 def authenticate_user(username: str, password: str, db: type[Session]):
@@ -166,7 +157,7 @@ async def send_verification_email(email: str, token: str):
             <h1>Email Verification</h1>
             <p>Click the link below to verify your email address:</p>
             <a href="{verification_link}">Verify Email</a>
-            <p>This link is valid for {JWT_EXPIRATION_TIME} minutes.</p>
+            <p>This link is valid for x minutes.</p>
         </body>
     </html>
     """
@@ -176,7 +167,7 @@ async def send_verification_email(email: str, token: str):
         subject=subject,
         html_content=html_content)
     try:
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        sg = SendGridAPIClient(app_settings.SENDGRID_API_KEY)
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
