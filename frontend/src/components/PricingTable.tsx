@@ -2,7 +2,6 @@
 import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { FaCheck } from "react-icons/fa";
-import { cookies } from "next/headers";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
