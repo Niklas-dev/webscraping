@@ -50,7 +50,7 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
 @router.post("/create-new-post-idea")
 async def create_new_post_idea(user: user_dependency, db: db_dependency,
                                create_post_idea_request: CreatePostIdeaRequest):
-    if user.subscription_status != "active":
+    if user.subscription_status != "active" and not user.remaining_post_creations_onetime_paid >= 1:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No active subscription")
 
     if user.remaining_post_creations >= 1:
