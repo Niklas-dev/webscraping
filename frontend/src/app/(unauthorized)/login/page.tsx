@@ -132,6 +132,12 @@ export default function Page() {
           </div>
 
           <div className="flex flex-col gap-2 mt-4">
+            <Link
+              className="hover:underline text-gray-800"
+              href={"/forgot-password"}
+            >
+              Forgot password
+            </Link>
             <button
               type="submit"
               onClick={() => login(formData)}

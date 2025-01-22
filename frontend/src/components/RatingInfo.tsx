@@ -19,17 +19,17 @@ export default async function RatingInfo() {
           </svg>
           <blockquote>
             <p className="text-xl font-medium text-gray-800 ">
-              &quot;This app is a lifesaver for content creators! It generates
-              spot-on post ideas for YouTube, TikTok, and Instagram based on
-              your niche. My follower count has gone up since I started using
-              it. Highly recommended!&quot;
+              &quot;TrendPilot helped me grow my small instagram channel in
+              almost no time. I had problems with finding ideas but thanks to
+              trendpilot I dont have to worry about the idea collection
+              anymore.&quot;
             </p>
           </blockquote>
 
           <figcaption className="flex items-center justify-center mt-6 space-x-3">
             <img
               className="w-6 h-6 rounded-full"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png"
+              src="/healthy.jpg"
               alt="profile picture"
             />
             <div className="flex items-center divide-x-2 text-gray-800">
