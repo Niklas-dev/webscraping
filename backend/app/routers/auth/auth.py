@@ -196,6 +196,7 @@ async def reset_password(
         reset_data: PasswordReset,
         db: db_dependency
 ):
+
     payload = verify_token(reset_data.token)
     print(payload)
     user = db.query(User).filter(User.email == payload["email"]).first()

@@ -188,14 +188,14 @@ async def send_verification_email(email: str, token: str):
 
 
 async def send_password_reset_email(email: str, token: str):
-    reset_link = f"{app_settings.BACKEND_URL}/auth/reset-password?token={token}"
-    subject = "Request to reset your TendPilot Password"
+    reset_link = f"{app_settings.FRONTEND_URL}/change-password?token={token}"
+    subject = "Request to reset your TrendPilot Password"
     html_content = f"""
     <html>
         <body>
             <h1>Password Reset</h1>
             <p>Click the link below to reset your password:</p>
-            <a href="{reset_link}">Verify Email</a>
+            <a href="{reset_link}">Reset Password</a>
             <p>This link is valid for x minutes.</p>
         </body>
     </html>
