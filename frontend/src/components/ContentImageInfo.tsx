@@ -28,24 +28,6 @@ export default function ContentImageInfo() {
           >
             Dashboard
           </button>
-          <button
-            className={`${
-              selectedImage === "/showcase3.png"
-                ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
-                : "hover:bg-gray-100"
-            } rounded-full px-4 py-2  font-medium transition-colors`}
-          >
-            Ideas
-          </button>
-          <button
-            className={`${
-              selectedImage === "/showcase4.png"
-                ? "bg-gradient-to-b from-gray-800 to-gray-900  text-white"
-                : "hover:bg-gray-100"
-            } rounded-full px-4 py-2  font-medium transition-colors`}
-          >
-            Platforms
-          </button>
         </div>
 
         <div className="px-4">

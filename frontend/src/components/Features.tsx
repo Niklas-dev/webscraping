@@ -14,10 +14,12 @@ export default function Features() {
       <div className="flex flex-col items-center  gap-4 mt-8 overflow-hidden px-4">
         <FadeInWrapper>
           <FeatureCard
-            headline="Unblock bottlenecks <br /> with scheduling queues."
-            text="Remove delays and decrease your time-to-offer with fast schedule
-                queuing — making life easier for your recruiters and
-                coordinators."
+            headline={
+              <p>
+                Viral and awesome ideas <br /> just a click away.
+              </p>
+            }
+            text="Generate your next viral ideas just with a button click and the niche of your choice. Our platform will do the rest for you."
             imageSrc="/showcase1.png"
           />
         </FadeInWrapper>
@@ -32,11 +34,14 @@ export default function Features() {
         </FadeInWrapper>
         <FadeInWrapper>
           <FeatureCard
-            headline="Unblock bottlenecks <br /> with scheduling queues."
-            text="Remove delays and decrease your time-to-offer with fast schedule
-                queuing — making life easier for your recruiters and
-                coordinators."
-            imageSrc="/showcase1.png"
+            headline={
+              <p>
+                Never forget any idea ever
+                <br /> again.
+              </p>
+            }
+            text="Create a big colletion of trending and viral ideas. Manage all of them in on place and never forget any of them again."
+            imageSrc="/ideas.png"
           />
         </FadeInWrapper>
         <FadeInWrapper>
@@ -50,11 +55,13 @@ export default function Features() {
 
         <FadeInWrapper>
           <FeatureCard
-            headline="Unblock bottlenecks <br /> with scheduling queues."
-            text="Remove delays and decrease your time-to-offer with fast schedule
-                queuing — making life easier for your recruiters and
-                coordinators."
-            imageSrc="/showcase1.png"
+            headline={
+              <p>
+                Plan your content <br /> with our amazing roadmap.
+              </p>
+            }
+            text="Never loose track of your newly created and awesome ideas. Plan your schedules and next steps with the TrendPilot roadmap."
+            imageSrc="/roadmap.png"
           />
         </FadeInWrapper>
       </div>

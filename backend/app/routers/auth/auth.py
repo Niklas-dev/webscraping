@@ -9,10 +9,12 @@ from sqlalchemy.exc import IntegrityError
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
 from .models import User
-from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest, UserUpdateRequest
+from .validators import CreateUserRequest, GoogleUser, Token, RefreshTokenRequest, UserUpdateRequest, \
+    PasswordResetRequest, PasswordReset
 from .services import create_access_token, authenticate_user, create_refresh_token, \
     create_user_from_google_info, get_user_by_google_sub, token_expired, decode_token, user_dependency, \
-    generate_verification_token, send_verification_email, verify_token, pwd_context
+    generate_verification_token, send_verification_email, verify_token, pwd_context, create_reset_token, \
+    send_password_reset_email
 from ...config.settings import app_settings
 from ...db.database import db_dependency
 from .services import oauth
@@ -147,30 +149,63 @@ async def refresh_access_token(db: db_dependency, refresh_token_request: Refresh
 
 @router.patch("/update-user", response_model=UserUpdateRequest)
 def update_user(user: user_dependency, db: db_dependency, user_update_request: UserUpdateRequest):
-    # Get the user from the database
     user = db.query(User).filter(User.id == user.id).first()
     print(user)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Example of restricted fields that should not be updated
     restricted_fields = ['id', 'created_at', 'is_admin', 'hashed_password', 'google_sub']
 
-    # Convert the user_update to a dictionary, excluding unset fields
     update_data = user_update_request.dict(exclude_unset=True)
 
-    # Check if any restricted fields are in the update request
     for field in restricted_fields:
         if field in update_data:
             raise HTTPException(status_code=400, detail=f"Field '{field}' cannot be updated.")
 
-    # Update only the fields that are allowed and provided
     print(update_data.items())
     for key, value in update_data.items():
         setattr(user, key, value)
     print(user.niche_preference)
-    # Commit the changes to the database
     db.commit()
     db.refresh(user)
 
     return user
+
+
+@router.post("/request-password-reset")
+async def request_password_reset(
+        reset_request: PasswordResetRequest,
+        db: db_dependency
+):
+    user = db.query(User).filter(User.email == reset_request.email).first()
+    if not user:
+        return {"detail": "If the email exists, a password reset link has been sent."}
+
+    token = create_reset_token(user.email, timedelta(
+        hours=1))
+    user.reset_token = token
+    db.commit()
+
+    await send_password_reset_email(user.email, token)
+
+    return {"detail": "If the email exists, a password reset link has been sent."}
+
+
+@router.post("/reset-password")
+async def reset_password(
+        reset_data: PasswordReset,
+        db: db_dependency
+):
+
+    payload = verify_token(reset_data.token)
+    print(payload)
+    user = db.query(User).filter(User.email == payload["email"]).first()
+
+    if not user or user.reset_token != reset_data.token:
+        raise HTTPException(status_code=400, detail="Invalid reset token")
+
+    user.hashed_password = pwd_context.hash(reset_data.new_password)
+    user.reset_token = None
+    db.commit()
+
+    return {"detail": "Password has been reset successfully"}

@@ -207,7 +207,7 @@ export default function PostIdeaCard({
         <div className="bg-gradient-to-b from-transparent to-black p-2 h-fit flex flex-col justify-end rounded-xl ">
           <div className="flex flex-row items-center gap-2">
             <div className="h-9 w-9 bg-gray-300 rounded-full"></div>
-            <p className="font-semibold">A Cool Person</p>
+            <p className="font-semibold">Your Media Account</p>
           </div>
           <div className="mt-1 ">
             <p className="truncate w-11/12 font-medium">
