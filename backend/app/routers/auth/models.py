@@ -16,6 +16,9 @@ class User(Base):
     verification_token = Column(String, nullable=True)
     is_verified = Column(Boolean, default=False)
 
+    reset_token = Column(String, nullable=True)
+
+
     remaining_post_creations = Column(Integer, default=0)
     remaining_post_creations_onetime_paid = Column(Integer, default=0)
     created_posts_all_time = Column(Integer, default=0)

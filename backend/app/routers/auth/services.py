@@ -63,6 +63,16 @@ def create_access_token(username: str, user_id: int, expires_delta: timedelta):
     return jwt.encode(encode, app_settings.SECRET_KEY, algorithm=ALGORITHM)
 
 
+def create_reset_token(email, expires_delta: timedelta):
+    encode = {"email": email}
+
+    expires = datetime.now(UTC) + expires_delta
+
+    encode.update({"exp": expires})
+
+    return jwt.encode(encode, app_settings.SECRET_KEY, algorithm=ALGORITHM)
+
+
 def create_refresh_token(username: str, user_id: int, expires_delta: timedelta):
     return create_access_token(username, user_id, expires_delta)
 
@@ -149,7 +159,7 @@ def verify_token(token: str):
 
 
 async def send_verification_email(email: str, token: str):
-    verification_link = f"localhost/auth/verify-email?token={token}"
+    verification_link = f"{app_settings.BACKEND_URL}/auth/verify-email?token={token}"
     subject = "Verify your email"
     html_content = f"""
     <html>
@@ -175,6 +185,35 @@ async def send_verification_email(email: str, token: str):
     except Exception as e:
         print(e.message)
     print(f"Verification email sent to {email}")
+
+
+async def send_password_reset_email(email: str, token: str):
+    reset_link = f"{app_settings.BACKEND_URL}/auth/reset-password?token={token}"
+    subject = "Request to reset your TendPilot Password"
+    html_content = f"""
+    <html>
+        <body>
+            <h1>Password Reset</h1>
+            <p>Click the link below to reset your password:</p>
+            <a href="{reset_link}">Verify Email</a>
+            <p>This link is valid for x minutes.</p>
+        </body>
+    </html>
+    """
+    message = Mail(
+        from_email='support@trendpilot.pro',
+        to_emails=email,
+        subject=subject,
+        html_content=html_content)
+    try:
+        sg = SendGridAPIClient(app_settings.SENDGRID_API_KEY)
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
+    print(f"Password reset email sent to {email}")
 
 
 user_dependency = Annotated[dict, Depends(get_current_user)]
