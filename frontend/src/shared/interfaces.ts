@@ -75,3 +75,31 @@ export interface IFullUserData {
   subscription_next_renew: string | null;
   extra_preference: string | null;
 }
+
+export interface IStripeProduct {
+  id: string; // The product's unique identifier
+  name: string; // The name of the product
+  description: string; // The description of the product (defaults to "No description")
+  active: boolean; // Whether the product is active or not
+  images: string[]; // Array of images associated with the product
+  livemode: boolean; // Whether the product is in live mode or test mode
+  created: number; // The timestamp when the product was created (UNIX timestamp)
+  updated: number; // The timestamp when the product was last updated (UNIX timestamp)
+  features: IFeature[];
+  price: {
+    price_id: string;
+    unit_amount: string;
+    currency: string;
+    recurring: {
+      interval: string; // Monthly subscription
+      interval_count: number; // Every month
+    };
+  };
+}
+export interface IFeature {
+  name: string;
+}
+
+export interface IStripeProductsResponse {
+  products: IStripeProduct[];
+}

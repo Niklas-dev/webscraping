@@ -154,10 +154,10 @@ def update_user(user: user_dependency, db: db_dependency, user_update_request: U
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
 
-    restricted_fields = ['id', 'created_at', 'is_admin', 'hashed_password', 'google_sub']
+    restricted_fields = ['id', 'created_at', 'is_admin', 'hashed_password', 'google_sub', 'email']
 
     update_data = user_update_request.dict(exclude_unset=True)
-
+    print(update_data)
     for field in restricted_fields:
         if field in update_data:
             raise HTTPException(status_code=400, detail=f"Field '{field}' cannot be updated.")

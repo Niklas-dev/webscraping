@@ -2,7 +2,8 @@ import bcrypt
 from fastapi import APIRouter, Depends, HTTPException
 from datetime import timedelta, datetime, UTC
 from typing import Annotated
-
+import random
+import string
 from passlib.context import CryptContext
 from starlette import status
 from fastapi.security import OAuth2PasswordBearer
@@ -112,6 +113,17 @@ def get_user_by_google_sub(google_sub: int, db: Session):
     return db.query(User).filter(User.google_sub == str(google_sub)).first()
 
 
+def get_unique_username(base_username, db):
+    username = base_username
+    counter = 1
+
+    while db.query(User).filter(User.username == username).first():
+        username = f"{base_username}{counter}"  # Append a number to make it unique
+        counter += 1
+
+    return username
+
+
 def create_user_from_google_info(google_user: GoogleUser, db: Session):
     google_sub = google_user.sub
     email = google_user.email
@@ -125,11 +137,15 @@ def create_user_from_google_info(google_user: GoogleUser, db: Session):
         db.commit()
         return existing_user
     else:
+        # get the first part of the email as the username
+        base_username = email.split("@")[0]
 
+        unique_username = get_unique_username(base_username, db)
         new_user = User(
-            username=email,
+            username=unique_username,
             email=email,
             google_sub=google_sub,
+            is_oauth=True
 
         )
         db.add(new_user)

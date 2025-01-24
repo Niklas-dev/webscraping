@@ -51,7 +51,7 @@ export default function Page() {
       console.log(data);
       toast.error(data.detail, {
         duration: 4000,
-        icon: "👏",
+
         style: {
           borderRadius: "10px",
           background: "#333",
