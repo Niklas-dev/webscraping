@@ -1,5 +1,5 @@
 import os
-from fastapi import APIRouter, Request, HTTPException, Header
+from fastapi import APIRouter, Request, HTTPException, Header, Query
 import stripe
 from sqlalchemy import asc
 from sqlalchemy.orm import defer
@@ -51,6 +51,63 @@ def handle_invoice_paid(session, db):
 
 def handle_invoice_payment_failed(session, db):
     user = "/"
+def format_price(unit_amount: int) -> str:
+    if unit_amount is None:
+        return "0.00"
+    # Convert cents to dollars and format as a string with 2 decimals
+    return f"{unit_amount / 100:.2f}"
+
+# Endpoint to fetch Stripe products based on type
+
+@router.get("/products/")
+async def get_products(product_type: str = Query(..., regex="^(one_time|subscription)$")):
+    try:
+        # Fetch all Stripe products
+        stripe_products = stripe.Product.list()
+        filtered_products = []
+
+        for product in stripe_products["data"]:
+            # Fetch associated pricing for each product
+            prices = stripe.Price.list(product=product["id"])
+            for price in prices["data"]:
+                product_info = {
+                    "id": product["id"],
+                    "name": product["name"],
+                    "description": product["description"] or "No description",
+                    "active": product["active"],
+                    "images": product["images"],
+                    "livemode": product["livemode"],
+                    "created": product["created"],
+                    "updated": product["updated"],
+                    "features": product["marketing_features"] or [],
+                    "price": None  # Placeholder for the price data
+                }
+
+                # Add price details
+                if price["type"] == "one_time" and product_type == "one_time":
+                    product_info["price"] = {
+                        "price_id": price["id"],  # Add price ID
+                        "unit_amount": format_price(price.get("unit_amount", None)),
+                        "currency": price.get("currency", ""),
+                        "recurring": None
+                    }
+                    filtered_products.append(product_info)
+                elif price["type"] == "recurring" and product_type == "subscription":
+                    product_info["price"] = {
+                        "price_id": price["id"],  # Add price ID
+                        "unit_amount": format_price(price.get("unit_amount", None)),
+                        "currency": price.get("currency", ""),
+                        "recurring": {
+                            "interval": price["recurring"]["interval"],
+                            "interval_count": price["recurring"]["interval_count"]
+                        }
+                    }
+                    filtered_products.append(product_info)
+
+        return {"products": filtered_products}
+
+    except stripe.error.StripeError as e:
+        raise HTTPException(status_code=400, detail=f"Stripe API error: {e.user_message}")
 
 
 @router.get("/get-user-subscription")
