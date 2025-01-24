@@ -194,7 +194,7 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
     try:
         print(create_checkout_request)
         checkout_session = stripe.checkout.Session.create(
-            payment_method_types=["card", "paypal"],
+            payment_method_types=["card"],
             client_reference_id=user.id,
             line_items=[
                 {
