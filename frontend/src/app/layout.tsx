@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: OPENGRAPHIMAGE.src,
+        url: new URL(OPENGRAPHIMAGE.src, "https://trendpilot.pro").toString(),
         width: OPENGRAPHIMAGE.width,
         height: OPENGRAPHIMAGE.height,
       },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     images: [
       {
-        url: OPENGRAPHIMAGE.src,
+        url: new URL(OPENGRAPHIMAGE.src, "https://trendpilot.pro").toString(),
         width: OPENGRAPHIMAGE.width,
         height: OPENGRAPHIMAGE.height,
       },
