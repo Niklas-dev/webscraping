@@ -1,47 +1,60 @@
 "use client";
 import { getCookie } from "cookies-next";
-import Link from "next/link";
 import { FaCheck } from "react-icons/fa";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
-import { ISubscription, IUserSubResponse } from "@/shared/interfaces";
-interface IPlan {
-  product_id: string;
-  product_name: string;
-  price: string;
-  id: number;
-}
+import toast from "react-hot-toast";
+import {
+  IFeature,
+  IStripeProduct,
+  IStripeProductsResponse,
+  ISubscription,
+  IUserSubResponse,
+} from "@/shared/interfaces";
+import PricingCard from "@/components/PricingCard";
 
 export default function CreditsPricingTable() {
   const user = useContext(AuthContext);
   const router = useRouter();
 
   const [subscription, setSubscription] = useState<ISubscription>();
+  const [products, setProducts] = useState<IStripeProduct[]>([]);
+  const [loading, setLoading] = useState(true); // Loading state
+  const colorMap = ["blue", "yellow", "orange"];
 
-  const getPlans = async () => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND}/payments/get-plans`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+  // Function to fetch products from Stripe
+  const fetchStripeProducts = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}/payments/products?product_type=one_time`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getCookie("access_token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch Stripe products");
       }
-    );
-    console.log(response.ok);
 
-    if (!response.ok) {
-      return null;
+      const data: IStripeProductsResponse = await response.json();
+      setProducts(data.products);
+    } catch (error) {
+      console.error("Error fetching Stripe products:", error);
+      toast.error("Failed to load pricing plans", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    } finally {
+      setLoading(false); // Stop loading once data is fetched
     }
-
-    const data: IPlan[] = await response.json();
-
-    console.log(data);
-
-    return data;
   };
 
   const getCurrentUserPlan = async () => {
@@ -56,23 +69,18 @@ export default function CreditsPricingTable() {
         },
       }
     );
-    console.log(response.ok);
 
     if (!response.ok) {
       return null;
     }
 
     const data: IUserSubResponse = await response.json();
-
-    console.log(data?.subscription);
-
     setSubscription(data?.subscription);
   };
 
   useLayoutEffect(() => {
     getCurrentUserPlan();
-    getPlans();
-    return () => {};
+    fetchStripeProducts();
   }, []);
 
   const onPlanClick = async (
@@ -81,8 +89,8 @@ export default function CreditsPricingTable() {
     currentSub: ISubscription | undefined
   ) => {
     if (!user.username) {
-      console.log("login pls");
       router.push("/login");
+      return;
     }
 
     const response = await fetch(
@@ -102,9 +110,7 @@ export default function CreditsPricingTable() {
 
     if (!response.ok) {
       const error: { detail: string } = await response.json();
-      console.log(error);
       toast.error(error.detail, {
-        icon: "👏",
         style: {
           borderRadius: "10px",
           background: "#333",
@@ -125,97 +131,35 @@ export default function CreditsPricingTable() {
         <div className="blur-[120px] bg-yellow-400 h-56 w-56 top-0 left-0 bg-opacity-25"></div>
         <div className="blur-[120px] bg-red-600 h-56 w-56 top-0 left-0 bg-opacity-25"></div>
       </div>
-      <div className="h-fit w-72 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-blue-500 transition-all">
-        <h3 className="text-blue-500 text-2xl font-medium">7 Idea Credits</h3>
-        <p className="text-gray-800 mt-2">Small Package - Good to try out</p>
-        <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
-          € <p className="text-5xl font-semibold">4,99</p>
-        </div>
 
-        <button
-          onClick={() =>
-            onPlanClick(
-              "prod_QAgO2lYuIGfGzr",
-              "price_1PKL27Gpk89JeyEs7ANv8Tck",
-              subscription
-            )
-          }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
-          }`}
-        >
-          Buy now
-        </button>
-        <ul className="mt-6 flex flex-col gap-3">
-          <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
-              <FaCheck color="#555555" size={"12.5px"} />
-            </div>{" "}
-            Create 7 post ideas
-          </li>
-        </ul>
-      </div>
-      <div className="h-fit w-80 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-yellow-300 transition-all">
-        <h3 className="text-yellow-300 text-2xl font-medium">
-          28 Idea Credits
-        </h3>
-        <p className="text-gray-800 mt-2">
-          Big Package - Enough ideas for your presence
-        </p>
-        <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
-          € <p className="text-5xl font-semibold">14,99</p>
+      {loading ? (
+        // Show skeleton loader when data is loading
+        <div className="flex flex-wrap justify-center gap-6">
+          {[...Array(3)].map((_, index) => (
+            <div
+              key={index}
+              className="w-72 h-96 bg-gray-200 rounded-3xl animate-pulse"
+            ></div>
+          ))}
         </div>
-        <button
-          onClick={() =>
-            onPlanClick("Prod3", "price_1OdfTdGpk89JeyEsyUNAQiPc", subscription)
-          }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
-          }`}
-        >
-          Buy now
-        </button>
-        <ul className="mt-6 flex flex-col gap-3">
-          <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
-              <FaCheck color="#555555" size={"12.5px"} />
-            </div>{" "}
-            Create 28 post ideas
-          </li>
-          <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
-              <FaCheck color="#555555" size={"12.5px"} />
-            </div>{" "}
-            Best value
-          </li>
-        </ul>
-      </div>
-      <div className="h-fit w-72 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-orange-500 transition-all">
-        <h3 className="text-orange-500 text-2xl font-medium">
-          14 Idea Credits
-        </h3>
-        <p className="text-gray-800 mt-2">
-          Medium Package - Good solution for you business level.
-        </p>
-        <div className="flex flex-row items-center text-2xl font-medium gap-2 py-4">
-          € <p className="text-5xl font-semibold">9,99</p>
-        </div>
-        <button
-          onClick={() =>
-            onPlanClick("Prod2", "price_1Obq5xGpk89JeyEsqb8Twsx3", subscription)
-          }
-          className={`w-full h-10 font-semibold text-lg rounded-lg transition-all bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
-          }`}
-        >
-          Buy now
-        </button>
-        <ul className="mt-6 flex flex-col gap-3">
-          <li className="flex flex-row gap-2 text-gray-800">
-            <div className=" w-fit h-fit p-0.5 rounded-full border border-[#555555]  ">
-              <FaCheck color="#555555" size={"12.5px"} />
-            </div>{" "}
-            Create 14 post ideas
-          </li>
-        </ul>
-      </div>
+      ) : (
+        // Render pricing cards after loading
+        products.map((product, index) => (
+          <PricingCard
+            key={product.id}
+            title={product.name}
+            description={product.description || ""}
+            price={product.price.unit_amount}
+            productId={product.id}
+            priceId={product.id} // Adjust this if you need a specific price ID
+            features={product.features}
+            accentColor={colorMap[index % colorMap.length]}
+            currentSubscription={subscription}
+            onPlanClick={onPlanClick}
+            buttonText="Buy now"
+          />
+        ))
+      )}
     </main>
   );
 }
