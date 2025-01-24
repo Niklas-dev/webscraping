@@ -4,7 +4,7 @@ import "../styles/globals.css";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
-import OPENGRAPHIMAGE from "./opengraph-image.png";
+import OPENGRAPHIMAGE from "../../public/opengraph-image.png";
 const league = League_Spartan({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
