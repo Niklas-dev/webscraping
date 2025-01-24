@@ -19,8 +19,25 @@ export default function Page() {
 
   const register = async (_formData: {
     username: string;
+    email: string;
     password: string;
   }) => {
+    if (
+      _formData.username === "" ||
+      _formData.email === "" ||
+      _formData.password === ""
+    ) {
+      toast.error("All fields are required.", {
+        duration: 8000,
+
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return null;
+    }
     console.log(_formData);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND}/auth/create-user`,
@@ -40,7 +57,7 @@ export default function Page() {
       console.log(data);
       toast.error(data.detail, {
         duration: 8000,
-        icon: "👏",
+
         style: {
           borderRadius: "10px",
           background: "#333",

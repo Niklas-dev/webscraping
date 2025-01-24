@@ -76,7 +76,7 @@ export default function PricingTable() {
   }, []);
 
   const onPlanClick = async (
-    product: string,
+    product_id: string,
     price_id: string,
     currentSub: ISubscription | undefined
   ) => {
@@ -84,7 +84,7 @@ export default function PricingTable() {
       console.log("login pls");
       router.push("/login");
     }
-    if (product === currentSub?.product.product_name) {
+    if (product_id === currentSub?.product.product_id) {
       toast.error("You are already subscribed to this plan.", {
         icon: "👏",
         style: {
@@ -107,7 +107,7 @@ export default function PricingTable() {
           Authorization: `Bearer ${getCookie("access_token")}`,
         },
         body: JSON.stringify({
-          product_id: "prod_PSadtKPNwNOW6O",
+          product_id: product_id,
           price_id: price_id,
         }),
       }
@@ -117,7 +117,6 @@ export default function PricingTable() {
       const error: { detail: string } = await response.json();
       console.log(error);
       toast.error(error.detail, {
-        icon: "👏",
         style: {
           borderRadius: "10px",
           background: "#333",
@@ -150,15 +149,19 @@ export default function PricingTable() {
 
         <button
           onClick={() =>
-            onPlanClick("Prod1", "price_1OdfSDGpk89JeyEsBnVx5cxc", subscription)
+            onPlanClick(
+              "prod_PSadtKPNwNOW6O",
+              "price_1OdfSDGpk89JeyEsBnVx5cxc",
+              subscription
+            )
           }
           className={`w-full h-10 font-semibold text-lg rounded-lg transition-all  ${
-            subscription?.product.product_name === "Prod1"
+            subscription?.product.product_id === "prod_PSadtKPNwNOW6O"
               ? "text-gray-800 border-gray-800 border-2 hover:bg-gray-100 hover:text-black"
               : "bg-black text-white hover:border-gray-200 hover:bg-white hover:text-black border-2 "
           }`}
         >
-          {subscription?.product.product_name === "Prod1"
+          {subscription?.product.product_id === "prod_PSadtKPNwNOW6O"
             ? "Currently subscribed"
             : "Get Started"}
         </button>
