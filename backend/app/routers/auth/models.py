@@ -9,6 +9,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     google_sub = Column(String, unique=True, nullable=True)
+    is_oauth = Column(Boolean, default=False)
     username = Column(String, unique=True)
     email = Column(String, unique=True)
     hashed_password = Column(String)

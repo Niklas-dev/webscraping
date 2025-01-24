@@ -36,6 +36,7 @@ class PasswordReset(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
+    username: Optional[str] = None
     niche_preference: Optional[str] = None
     extra_preference: Optional[str] = None
     age: Optional[int] = None
