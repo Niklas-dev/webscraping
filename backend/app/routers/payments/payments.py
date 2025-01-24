@@ -37,7 +37,7 @@ def get_user_by_customer_id(customer_id, db):
 
 
 def get_plan_by_product_id(prod_id, db):
-    return db.query(Plan).filter(Plan.product_id == product_id).first()
+    return db.query(Plan).filter(Plan.product_id == prod_id).first()
 
 
 def handle_session_completed(session, db):
