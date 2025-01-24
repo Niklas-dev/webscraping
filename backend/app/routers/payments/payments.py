@@ -209,7 +209,7 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
         )
         return checkout_session.url
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e)
 
 
 @router.post("/webhook")
