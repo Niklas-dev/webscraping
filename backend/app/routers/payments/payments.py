@@ -171,7 +171,7 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
             client_reference_id=user.id,
             success_url=FRONTEND_URL + "payments/success?session_id={CHECKOUT_SESSION_ID}",
             cancel_url=FRONTEND_URL + "payments/cancel",
-            payment_method_types=["card", "paypal"],
+            payment_method_types=["card"],
             mode="subscription",
             metadata={
                 "client_reference_id": user.id,
@@ -192,6 +192,7 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
 @router.post("/create-checkout-session-onetime")
 def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
     try:
+        print(create_checkout_request)
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card", "paypal"],
             client_reference_id=user.id,

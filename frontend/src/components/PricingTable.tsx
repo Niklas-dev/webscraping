@@ -121,6 +121,7 @@ export default function PricingTable() {
 
     if (!response.ok) {
       const error: { detail: string } = await response.json();
+      console.log(error);
       toast.error(error.detail, {
         style: {
           borderRadius: "10px",

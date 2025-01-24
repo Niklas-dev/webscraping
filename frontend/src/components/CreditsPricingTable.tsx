@@ -151,7 +151,7 @@ export default function CreditsPricingTable() {
             description={product.description || ""}
             price={product.price.unit_amount}
             productId={product.id}
-            priceId={product.id} // Adjust this if you need a specific price ID
+            priceId={product.price.price_id} // Adjust this if you need a specific price ID
             features={product.features}
             accentColor={colorMap[index % colorMap.length]}
             currentSubscription={subscription}
