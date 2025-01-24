@@ -1,6 +1,7 @@
 import React from "react";
 import { FaCheck } from "react-icons/fa";
 import { IFeature, ISubscription } from "@/shared/interfaces";
+import clsx from "clsx";
 
 interface PricingCardProps {
   title: string;
@@ -37,9 +38,15 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
   return (
     <div
-      className={`h-fit w-72 lg:w-80 bg-gray-100 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-${accentColor}-500 transition-all`}
+      className={`h-fit w-72 lg:w-80 bg-gray-200 bg-opacity-100 rounded-3xl p-6 z-20 hover:ring-2 ring-${accentColor}-500 transition-all`}
     >
-      <h3 className={`text-${accentColor}-500 text-2xl font-medium`}>
+      <h3
+        className={clsx("text-2xl font-medium", {
+          "text-blue-500": accentColor === "blue",
+          "text-yellow-500": accentColor === "yellow",
+          "text-orange-500": accentColor === "orange",
+        })}
+      >
         {title}
       </h3>
       <p className="text-gray-800 mt-2">{description}</p>

@@ -121,6 +121,7 @@ export default function PricingTable() {
 
     if (!response.ok) {
       const error: { detail: string } = await response.json();
+      console.log(error);
       toast.error(error.detail, {
         style: {
           borderRadius: "10px",
@@ -136,7 +137,7 @@ export default function PricingTable() {
   };
 
   return (
-    <main className="flex flex-col lg:flex-row items-center lg:justify-center mt-10 relative z-10 gap-16 pb-16">
+    <main className="flex flex-col lg:flex-row items-start lg:justify-center mt-10 relative z-10 gap-16 pb-16">
       <div className="absolute flex flex-row justify-center gap-20">
         <div className="blur-[120px] bg-blue-600 h-56 w-56 top-0 left-0 bg-opacity-30"></div>
         <div className="blur-[120px] bg-yellow-400 h-56 w-56 top-0 left-0 bg-opacity-30"></div>
