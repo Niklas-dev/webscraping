@@ -21,6 +21,37 @@ router = APIRouter(
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 FRONTEND_URL = app_settings.FRONTEND_URL
 
+def get_user_by_subscription_id(subscription_id, db):
+    return db.query(User).filter(User.subscription_id == subscription_id).options(
+        defer(User.hashed_password), defer(User.google_sub)).first()
+
+
+def get_user_by_id(user_id, db):
+    return db.query(User).filter(User.id == user_id).options(
+        defer(User.hashed_password), defer(User.google_sub)).first()
+
+
+def get_user_by_customer_id(customer_id, db):
+    return db.query(User).filter(User.customer_id == customer_id).options(
+        defer(User.hashed_password), defer(User.google_sub)).first()
+
+
+def get_plan_by_product_id(prod_id, db):
+    return db.query(Plan).filter(Plan.product_id == product_id).first()
+
+
+def handle_session_completed(session, db):
+    user = get_user_by_id(session.client_reference_id, db)
+    print(user.username)
+
+
+def handle_invoice_paid(session, db):
+    user = "/"
+
+
+def handle_invoice_payment_failed(session, db):
+    user = "/"
+
 
 @router.get("/get-user-subscription")
 def get_user_subscription(user: user_dependency, db: db_dependency):
@@ -148,6 +179,7 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid session.")
 
     if event["type"] == "checkout.session.completed":
+        print("Checkout session completed")
         if session["mode"] == "subscription":
 
             user = get_user_by_id(session.client_reference_id, db)
@@ -174,14 +206,14 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
             user.subscription_next_renew = subscription.current_period_end
 
             plan_id = subscription["items"].data[0].price.product
-
+            print(plan_id)
             if not plan_id:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Plan not found.")
 
             plan = db.query(Plan).filter(Plan.product_id == plan_id).first()
 
             user.plan_id = plan.id
-            user.remaining_post_creations = plan.weekly_uses
+            user.remaining_post_creations = plan.monthly_uses
 
             db.commit()
         elif session["mode"] == "payment":
@@ -198,7 +230,13 @@ async def stripe_webhook(db: db_dependency, request: Request, stripe_signature=H
             db.commit()
 
     if event["type"] == "invoice.paid":
-        pass
+        user: User = get_user_by_customer_id(session.customer, db)
+
+        prod_id = session.subscription.items.data[0].price.product
+        plan: Plan = get_plan_by_product_id(prod_id, db)
+
+        user.remaining_post_creations = plan.monthly_uses
+        print(f"Invoice paid: {prod_id} - {session.customer}")
 
     if event["type"] == "invoice.payment_failed":
         user = get_user_by_customer_id(session.customer, db)
@@ -232,29 +270,3 @@ def create_checkout_session(user: user_dependency):
     return session.url
 
 
-def get_user_by_subscription_id(subscription_id, db):
-    return db.query(User).filter(User.subscription_id == subscription_id).options(
-        defer(User.hashed_password), defer(User.google_sub)).first()
-
-
-def get_user_by_id(user_id, db):
-    return db.query(User).filter(User.id == user_id).options(
-        defer(User.hashed_password), defer(User.google_sub)).first()
-
-
-def get_user_by_customer_id(customer_id, db):
-    return db.query(User).filter(User.customer_id == customer_id).options(
-        defer(User.hashed_password), defer(User.google_sub)).first()
-
-
-def handle_session_completed(session, db):
-    user = get_user_by_id(session.client_reference_id, db)
-    print(user.username)
-
-
-def handle_invoice_paid(session, db):
-    user = "/"
-
-
-def handle_invoice_payment_failed(session, db):
-    user = "/"
