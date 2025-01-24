@@ -10,6 +10,7 @@ class Settings:
         self.SECRET_KEY: str = os.getenv("SECRET_KEY")
         self.FRONTEND_URL: str = os.getenv("FRONTEND_URL")
         self.BACKEND_URL: str = os.getenv("BACKEND_URL")
+        self.REDIS_HOST: str = os.getenv("REDIS_HOST")
         self.CORS_ORIGINS: list[str] = ["*"]
         self.ACCESS_TOKEN_EXPIRATION_DAYS: int = 7
         self.REFRESH_TOKEN_EXPIRATION_DAYS: int = 14
