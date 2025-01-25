@@ -21,6 +21,7 @@ router = APIRouter(
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 FRONTEND_URL = app_settings.FRONTEND_URL
 
+
 def get_user_by_subscription_id(subscription_id, db):
     return db.query(User).filter(User.subscription_id == subscription_id).options(
         defer(User.hashed_password), defer(User.google_sub)).first()
@@ -51,11 +52,14 @@ def handle_invoice_paid(session, db):
 
 def handle_invoice_payment_failed(session, db):
     user = "/"
+
+
 def format_price(unit_amount: int) -> str:
     if unit_amount is None:
         return "0.00"
     # Convert cents to dollars and format as a string with 2 decimals
     return f"{unit_amount / 100:.2f}"
+
 
 # Endpoint to fetch Stripe products based on type
 
@@ -176,7 +180,7 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
             metadata={
                 "client_reference_id": user.id,
             },
-
+            allow_promotion_codes=True,
             line_items=[
                 {
                     "price": create_checkout_request.price_id,
@@ -202,6 +206,7 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
                     "quantity": 1,
                 }
             ],
+            allow_promotion_codes=True,
             metadata={"product_id": create_checkout_request.product_id},
             mode="payment",
             success_url=FRONTEND_URL + "payments/success?session_id={CHECKOUT_SESSION_ID}",
@@ -326,5 +331,3 @@ def create_checkout_session(user: user_dependency):
     )
 
     return session.url
-
-
