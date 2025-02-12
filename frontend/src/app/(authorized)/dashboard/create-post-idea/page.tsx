@@ -2,27 +2,57 @@
 
 import PostTypeSelection from "@/components/PostTypeSelection";
 import RichTextFormInput from "@/components/RichTextFormInput";
-import SocialMediaCardLink from "@/components/SocialMediaCardLink";
 import TextFormInput from "@/components/TextFormInput";
-import { IFullUserData } from "@/shared/interfaces";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { IFullUserData } from "@/shared/interfaces";
 import { getCookie } from "cookies-next";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaInstagram } from "react-icons/fa";
+
+const CONTENT_FORMATS = [
+  { value: "image", label: "Image Post" },
+  { value: "video", label: "Video" },
+  { value: "carousel", label: "Carousel" },
+  { value: "story", label: "Story" },
+  { value: "reel", label: "Reel" },
+];
+
+const POST_GOALS = [
+  { value: "engagement", label: "Increase Engagement" },
+  { value: "sales", label: "Drive Sales" },
+  { value: "awareness", label: "Brand Awareness" },
+  { value: "traffic", label: "Drive Traffic" },
+  { value: "leads", label: "Generate Leads" },
+];
+
+const TONES = [
+  { value: "professional", label: "Professional" },
+  { value: "casual", label: "Casual" },
+  { value: "humorous", label: "Humorous" },
+  { value: "inspirational", label: "Inspirational" },
+  { value: "educational", label: "Educational" },
+];
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     niche: "",
-    description: "",
+    post_goal: "",
+    target_audience: "",
+    content_format: "",
+    tone: "",
     extra: "",
   });
 
   const router = useRouter();
-
   const searchParams = useSearchParams();
-
   const post_type = searchParams.get("post_type");
 
   const loadPreferences = async () => {
@@ -54,11 +84,13 @@ export default function Page() {
 
     setFormData({
       niche: data.niche_preference ?? "",
+      post_goal: "",
+      target_audience: "",
+      content_format: "",
+      tone: "",
       extra: data.extra_preference ?? "",
-      description: "",
     });
     setIsLoading(false);
-    console.log(data);
   };
 
   const createNewPostIdea = async () => {
@@ -111,7 +143,7 @@ export default function Page() {
   return (
     <div className="px-8">
       <h2 className="text-3xl font-semibold">Create your next big idea</h2>
-      <div className="h-[2px] w-full bg-gray-200 mt-2 "></div>
+      <div className="h-[2px] w-full bg-gray-200 mt-2"></div>
       <div className="w-full pt-4 flex flex-col gap-6 items-start">
         <div className="flex flex-row w-full gap-6">
           <div className="flex flex-col gap-6 w-full">
@@ -124,15 +156,97 @@ export default function Page() {
               }
               value={formData.niche}
             />
-            <RichTextFormInput
-              id="description"
-              label="Description"
-              placeholder="Describe closer what you want to your post idea to be about. Leave blank if you have no idea."
+
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label htmlFor="post_goal" className="text-sm font-medium">
+                  Post Goal
+                </label>
+                <Select
+                  value={formData.post_goal}
+                  onValueChange={(value) =>
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      post_goal: value,
+                    }))
+                  }
+                >
+                  <SelectTrigger id="post_goal">
+                    <SelectValue placeholder="Select a goal" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {POST_GOALS.map((goal) => (
+                      <SelectItem key={goal.value} value={goal.value}>
+                        {goal.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="content_format" className="text-sm font-medium">
+                  Content Format
+                </label>
+                <Select
+                  value={formData.content_format}
+                  onValueChange={(value) =>
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      content_format: value,
+                    }))
+                  }
+                >
+                  <SelectTrigger id="content_format">
+                    <SelectValue placeholder="Select a format" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CONTENT_FORMATS.map((format) => (
+                      <SelectItem key={format.value} value={format.value}>
+                        {format.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <TextFormInput
+              id="target_audience"
+              label="Target Audience"
+              placeholder="Describe your target audience"
               onChange={(value) =>
-                setFormData((prevData) => ({ ...prevData, description: value }))
+                setFormData((prevData) => ({
+                  ...prevData,
+                  target_audience: value,
+                }))
               }
-              value={formData.description}
+              value={formData.target_audience}
             />
+
+            <div className="space-y-2">
+              <label htmlFor="tone" className="text-sm font-medium">
+                Content Tone
+              </label>
+              <Select
+                value={formData.tone}
+                onValueChange={(value) =>
+                  setFormData((prevData) => ({ ...prevData, tone: value }))
+                }
+              >
+                <SelectTrigger id="tone">
+                  <SelectValue placeholder="Select a tone" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TONES.map((tone) => (
+                    <SelectItem key={tone.value} value={tone.value}>
+                      {tone.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <RichTextFormInput
               id="extra"
               label="Extra information"
@@ -142,6 +256,7 @@ export default function Page() {
               }
               value={formData.extra}
             />
+
             <button
               onClick={() => createNewPostIdea()}
               className="bg-[#1b1b1b] hover:bg-[#252525] text-white px-6 py-2 rounded-xl text-lg font-semibold"

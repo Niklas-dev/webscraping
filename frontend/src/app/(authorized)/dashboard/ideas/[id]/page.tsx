@@ -1,152 +1,299 @@
 "use client";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { IPostIdea } from "@/shared/interfaces";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { getCookie } from "cookies-next";
-import TextFormInput from "@/components/TextFormInput";
-import RichTextFormInput from "@/components/RichTextFormInput";
-import IdeaInfoArea from "@/components/IdeaInfoArea";
-import IdeaInfoAreaInstructions from "@/components/IdeaInfoAreaInstructions";
+import type { IPostIdea } from "@/shared/interfaces";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Clock,
+  Hash,
+  Loader2,
+  TrendingUp,
+  Users,
+  Video,
+  CheckCircle2,
+  XCircle,
+  ThumbsUp,
+  Settings,
+  Edit3,
+  MessageCircle,
+} from "lucide-react";
+
 export default function Page() {
   const params = useParams<{ id: string }>();
-
   const [post, setPost] = useState<IPostIdea | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
   const formatHashtags = (hashtags: string): string[] => {
-    // Check if hashtags are not null or empty
     if (hashtags) {
-      // Remove curly braces and split the string into a list of hashtags
-      const hashtagsStr = hashtags.replace(/^\{|\}$/g, ""); // Remove curly braces using regex
-      return hashtagsStr.split(",").map((hashtag) => hashtag.trim()); // Split by comma and trim extra spaces
+      const hashtagsStr = hashtags.replace(/^\{|\}$/g, "");
+      return hashtagsStr.split(",").map((hashtag) => hashtag.trim());
     }
     return [];
   };
 
-  const getPost = async (id: string): Promise<IPostIdea[] | null> => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts/${id}`,
-      {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${getCookie("access_token")}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data = await response.json();
-
-    const post = data["post"];
-
-    console.log(post);
-    setPost(post);
-    setIsLoading(false);
-    return post;
+  const getStatusColor = (status: IPostIdea["status"]) => {
+    const colors = {
+      unadded: "bg-gray-500",
+      used: "bg-green-500",
+      planned: "bg-blue-500",
+      dropoff: "bg-red-500",
+    };
+    return colors[status];
   };
 
-  useLayoutEffect(() => {
-    getPost(params.id);
+  const getPost = async (id: string) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}/socials/posts/${id}`,
+        {
+          cache: "no-store",
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${getCookie("access_token")}`,
+          },
+        }
+      );
 
-    return () => {};
-  }, []);
+      if (!response.ok) return null;
+
+      const data = await response.json();
+      setPost(data.post);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch post:", error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getPost(params.id);
+  }, [params.id]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+      </div>
+    );
+  }
 
   return (
-    <div className="px-8 min-h-0 flex flex-col">
-      <h2 className="text-3xl font-semibold">Your next post idea</h2>
-      <div className="h-[2px] w-full bg-gray-200 mt-2 shadow-2xl"></div>
-      <div className="flex flex-row flex-wrap lg:flex-nowrap gap-8  min-h-0 overflow-auto relative pt-6">
-        {isLoading ? (
-          <div className="flex flex-row justify-start w-full" role="status">
-            <svg
-              aria-hidden="true"
-              className="w-8 h-8 text-gray-100 animate-spin  fill-gray-500"
-              viewBox="0 0 100 101"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                fill="currentColor"
-              />
-              <path
-                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                fill="currentFill"
-              />
-            </svg>
-            <span className="sr-only">Loading...</span>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-4xl font-bold tracking-tight">{post?.title}</h1>
+          <div className="flex gap-2 mt-2">
+            <Badge variant={post?.is_finished ? "default" : "secondary"}>
+              {post?.is_finished ? (
+                <CheckCircle2 className="w-4 h-4 mr-1" />
+              ) : (
+                <XCircle className="w-4 h-4 mr-1" />
+              )}
+              {post?.is_finished ? "Completed" : "In Progress"}
+            </Badge>
+            <Badge variant={post?.is_liked ? "default" : "secondary"}>
+              <ThumbsUp className="w-4 h-4 mr-1" />
+              {post?.is_liked ? "Liked" : "Not Liked"}
+            </Badge>
+            <Badge className={`${getStatusColor(post?.status!)}`}>
+              {post?.status}
+            </Badge>
           </div>
-        ) : (
-          <form className="space-y-6">
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Video className="w-5 h-5" />
+              Content Overview
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <div>
-              <IdeaInfoArea title="Title" content={post?.title!} />
+              <h3 className="font-medium mb-2">Description</h3>
+              <p className="text-muted-foreground">{post?.description}</p>
+            </div>
+            <div>
+              <h3 className="font-medium mb-2">Hashtags</h3>
+              <div className="flex flex-wrap gap-2">
+                {formatHashtags(post?.hashtags!).map((tag) => (
+                  <Badge key={tag} variant="secondary">
+                    <Hash className="w-3 h-3 mr-1" />
+                    {tag.slice(1)}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Settings className="w-5 h-5" />
+              Content Strategy
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="seo">
+                <AccordionTrigger>
+                  <span className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    SEO & Keywords
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {post?.seo_keywords.map((keyword, index) => (
+                      <Badge key={index} variant="outline">
+                        {keyword}
+                      </Badge>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="timing">
+                <AccordionTrigger>
+                  <span className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Best Posting Times
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <ul className="list-disc list-inside space-y-1 pt-2">
+                    {post?.best_posting_times.map((time, index) => (
+                      <li key={index}>{time}</li>
+                    ))}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="engagement">
+                <AccordionTrigger>
+                  <span className="flex items-center gap-2">
+                    <Users className="w-4 h-4" />
+                    Engagement Strategy
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="pt-2 text-muted-foreground">
+                    {post?.engagement_strategy}
+                  </p>
+                  <h4 className="font-medium mt-4 mb-2">
+                    Engagement Suggestions:
+                  </h4>
+                  <ul className="list-disc list-inside space-y-1">
+                    {post?.engagement_suggestions.map((suggestion, index) => (
+                      <li key={index} className="text-muted-foreground">
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="platform">
+                <AccordionTrigger>
+                  <span className="flex items-center gap-2">
+                    <MessageCircle className="w-4 h-4" />
+                    Platform Adaptation
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="pt-2 text-muted-foreground">
+                    {post?.platform_adaptation}
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="editing">
+                <AccordionTrigger>
+                  <span className="flex items-center gap-2">
+                    <Edit3 className="w-4 h-4" />
+                    Editing Suggestions
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <ul className="list-disc list-inside space-y-1 pt-2">
+                    {post?.editing_suggestions.map((suggestion, index) => (
+                      <li key={index} className="text-muted-foreground">
+                        {suggestion}
+                      </li>
+                    ))}
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Video className="w-5 h-5" />
+              Video Creation Guide
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <h3 className="font-medium mb-2">Instructions</h3>
+              <div className="prose prose-gray max-w-none">
+                {post?.video_creation_instructions
+                  .split("\n")
+                  .map((instruction, index) => (
+                    <p key={index} className="mb-4 text-muted-foreground">
+                      {instruction}
+                    </p>
+                  ))}
+              </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                Hashtags
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {formatHashtags(post?.hashtags!).map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center bg-gray-100 text-gray-800 rounded-full px-3 py-1 text-lg"
-                  >
-                    <svg
-                      className="w-3 h-3 mr-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
-                      />
-                    </svg>
-                    {tag.slice(1)}
-                  </span>
+              <h3 className="font-medium mb-2">Suggested Script</h3>
+              <div className="space-y-2">
+                {post?.suggested_script.map((line, index) => (
+                  <div key={index} className="p-3 bg-muted rounded-md">
+                    <p className="text-sm text-muted-foreground">{line}</p>
+                  </div>
                 ))}
               </div>
             </div>
 
             <div>
-              <IdeaInfoArea
-                title="Video Descripition"
-                content={post?.description!}
-              />
+              <h3 className="font-medium mb-2">Relevant Data</h3>
+              <div className="prose prose-gray max-w-none">
+                {post?.relevant_data.map((data, index) => (
+                  <p key={index} className="mb-2 text-muted-foreground">
+                    {data}
+                  </p>
+                ))}
+              </div>
             </div>
+          </CardContent>
+        </Card>
+      </div>
 
-            <div>
-              <IdeaInfoAreaInstructions
-                title="How to create your idea"
-                contents={post?.video_creation_instructions!}
-              />
-            </div>
-
-            <div className="flex justify-between">
-              <button
-                type="button"
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Save Draft
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-              >
-                Create Your Idea Now
-              </button>
-            </div>
-          </form>
-        )}
+      <div className="flex justify-between gap-4 mt-6">
+        <Button variant="outline" size="lg">
+          Save Draft
+        </Button>
+        <Button size="lg">Create Your Idea Now</Button>
       </div>
     </div>
   );
