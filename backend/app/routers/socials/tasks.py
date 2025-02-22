@@ -44,24 +44,29 @@ def create_post_idea_task(niche: str,
 
     template = (
         "You are a highly advanced social media content assistant for my SaaS, specializing in viral and engaging "
-        "post ideas. Your goal is to generate well-structured, compelling, and high-performance post ideas tailored to the user's "
+        "post ideas. Your goal is to generate well-structured, compelling, and high-performance post ideas tailored "
+        "to the user's"
         "needs."
 
         "### **Guidelines:**"
-        "1. **Title**: Create a compelling title that is engaging and curiosity-inducing. The title should grab attention and make the audience want to learn more."
+        "1. **Title**: Create a compelling title that is engaging and curiosity-inducing. The title should grab "
+        "attention and make the audience want to learn more."
 
         "2. **Description**: Write a persuasive description that:"
         "   - Starts with an attention-grabbing hook to draw in the audience."
         "   - Clearly explains the post’s purpose so the audience understands the message."
         "   - Encourages engagement with a call-to-action, such as 'What do you think? Comment below!'"
+        "   - Shouldn't be to long to fit as a caption for the post."
 
-        "3. **Hashtags**: Generate a mix of viral, niche-relevant, and broad-reaching hashtags that will increase the post’s discoverability and engagement."
+        "3. **Hashtags**: Generate a mix of viral, niche-relevant, and broad-reaching hashtags that will increase the "
+        "post’s discoverability and engagement."
 
         "4. **Video Creation Instructions**: Provide clear, actionable steps for creating the video:"
         "   - Each step should be **at least 5 sentences long**, providing clear instructions."
         "   - Include suggested **phrases the user can say** in the video."
         "   - Provide relevant **data, statistics, or references** to back up the content."
         "   - Suggest **visuals, transitions, or editing styles** (if applicable) to enhance the video’s appeal."
+        "   - Should be long and deep to really support the creator when using the idea."
 
         "5. **SEO & Performance Optimization**:"
         "   - Recommend relevant **high-ranking keywords** that will help the post perform well in search results."
@@ -85,10 +90,13 @@ def create_post_idea_task(niche: str,
         "- Editing styles, like using **fast cuts** for short-form videos or **slow transitions** for longer content."
 
         "9. **Suggested Script**: A list of suggested phrases or lines the user can say in the video. This should be "
-        "in line with the post’s theme, tone, and objective."
+        "in line with the post’s theme, tone, and objective. Make sure the script is long enough to fill the full "
+        "duration of the video. It should be engaging and sound natural when spoken. It should be made out of full "
+        "sentences and it must be enough of them to fill a video with a acceptable duration for the given video type."
 
         "10. **Relevant Data**: Provide any **statistics, facts, or references** that can be used in the content to "
-        "validate the message or make the post more credible."
+        "validate the message or make the post more credible. Make sure to provide exact numbers or facts. It should "
+        "include at least 5 stats."
 
         "### **User Inputs:**"
         "Niche: {niche} "
@@ -141,17 +149,9 @@ def create_post_idea_task(niche: str,
     # Helper function to convert strings with new formats into lists
     def convert_string_to_list(value):
         """Convert strings of hashtags or posting times into lists."""
-        if isinstance(value, str):
-            # If the string is in curly braces, like hashtags or times, handle it:
-            if value.startswith("{") and value.endswith("}"):
-                value = value[1:-1]  # Remove the curly braces
-                # Split by commas, then strip quotes if the values have them
-                return [item.strip().strip('"') for item in value.split(",")]
-            try:
-                return json.loads(value)  # Try to parse the JSON string into a list
-            except json.JSONDecodeError:
-                return []  # Return empty list if parsing fails
-        return value  # Return the value as is if already a list
+
+        return json.dumps(value)
+
 
     # Map the LLM results to the UserPostIdea fields
     create_user_post_idea_model.title = json_result["title"]
@@ -166,7 +166,7 @@ def create_post_idea_task(niche: str,
     if "best_posting_times" in json_result:
         create_user_post_idea_model.best_posting_times = convert_string_to_list(json_result["best_posting_times"])
     if "engagement_strategy" in json_result:
-        create_user_post_idea_model.engagement_strategy = json_result["engagement_strategy"]
+        create_user_post_idea_model.engagement_strate = json_result["engagement_strategy"]
     if "engagement_suggestions" in json_result:
         create_user_post_idea_model.engagement_suggestions = convert_string_to_list(
             json_result["engagement_suggestions"])
