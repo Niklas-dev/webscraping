@@ -57,6 +57,17 @@ export interface IPostIdea {
   video_creation_instructions: string;
   hashtags: string | null;
   status: "unadded" | "used" | "planned" | "dropoff";
+
+  // New fields added
+  created_at: Date;
+  seo_keywords: string; // List of high-ranking SEO keywords
+  best_posting_times: string; // Recommended posting times
+  engagement_strategy: string; // Strategy for engagement
+  engagement_suggestions: string; // Suggestions to boost engagement
+  platform_adaptation: string; // How to adapt content for the platform
+  editing_suggestions: string; // Suggestions for editing visuals and transitions
+  suggested_script: string; // Suggested script lines for the video
+  relevant_data: string; // Relevant statistics or facts to include
 }
 
 export interface IFullUserData {

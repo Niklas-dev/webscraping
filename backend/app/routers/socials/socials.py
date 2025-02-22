@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from celery.result import AsyncResult
 from fastapi import APIRouter, HTTPException, WebSocket
@@ -48,23 +49,52 @@ async def websocket_endpoint(websocket: WebSocket, task_id: str):
 
 
 @router.post("/create-new-post-idea")
-async def create_new_post_idea(user: user_dependency, db: db_dependency,
-                               create_post_idea_request: CreatePostIdeaRequest):
-    if user.subscription_status != "active" and not user.remaining_post_creations_onetime_paid >= 1:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No active subscription")
+async def create_new_post_idea(
+    user: user_dependency,
+    db: db_dependency,
+    create_post_idea_request: CreatePostIdeaRequest
+):
+    logging.info(f"User {user.id} requested a new post idea.")
+    print(create_post_idea_request)
 
+    # Check if user has an active subscription or enough one-time credits
+    if user.subscription_status != "active" and user.remaining_post_creations_onetime_paid < 1:
+        logging.warning(f"User {user.id} has no active subscription or credits left.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No active subscription or one-time credits available."
+        )
+
+    # Deduct the correct type of credits
     if user.remaining_post_creations >= 1:
-        result = create_new_post(niche=create_post_idea_request.niche, description=create_post_idea_request.description,
-                                 extra=create_post_idea_request.extra, user_id=user.id, db=db)
-        return {"task_id": result.id, "detail": "You post idea is being generated."}
-
+        user.remaining_post_creations -= 1
     elif user.remaining_post_creations_onetime_paid >= 1:
-        result = create_new_post(niche=create_post_idea_request.niche, description=create_post_idea_request.description,
-                                 extra=create_post_idea_request.extra, user_id=user.id, db=db)
-        return {"task_id": result.id, "detail": "You post idea is being generated."}
+        user.remaining_post_creations_onetime_paid -= 1
+    else:
+        logging.error(f"User {user.id} ran out of credits despite checks.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No credits remaining. Consider upgrading your subscription."
+        )
 
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No credits remaining. "
-                                                                        "Think about upgrading your subscription.")
+    # Generate the post idea with enhanced inputs
+    result = create_new_post(
+        niche=create_post_idea_request.niche,
+        post_goal=create_post_idea_request.post_goal,
+        target_audience=create_post_idea_request.target_audience,
+        content_format=create_post_idea_request.content_format,
+        extra=create_post_idea_request.extra,
+        tone=create_post_idea_request.tone,
+        user_id=user.id,
+        db=db
+    )
+
+    logging.info(f"Post idea task {result.id} successfully created for user {user.id}.")
+
+    return {
+        "task_id": result.id,
+        "detail": "Your post idea is being generated."
+    }
 
 
 @router.get("/posts")
