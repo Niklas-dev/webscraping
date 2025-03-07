@@ -25,9 +25,9 @@ export default function Page() {
           <h2 className="text-2xl font-semibold mt-6">1. Data Controller</h2>
           <p>
             The data controller responsible for the processing of your personal
-            data is [Your Company Name], located at [Your Company Address]. You
-            can contact us at [email/contact information] for any questions
-            regarding your personal data.
+            data is TrendPilot, located in Germany. You can contact us at
+            niklas.developers@gmail.com for any questions regarding your
+            personal data.
           </p>
 
           <h2 className="text-2xl font-semibold mt-6">
