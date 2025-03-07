@@ -41,6 +41,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          defer
+          src="https://analytics.trendpilot.pro/script.js"
+          data-website-id="b933e078-922e-48a1-a289-73dc84032068"
+        ></script>
+      </head>
       <body className={league.className}>
         <Toaster />
         <Suspense fallback={<div>Loading...</div>}>
