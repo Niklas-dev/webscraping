@@ -31,7 +31,7 @@ export default function Home() {
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full hidden md:flex"></div>
                 <div className="items-center justify-center hidden md:flex">
-                  <span className="font-semibold text-gray-800 ">1mil+</span>
+                  <span className="font-semibold text-gray-800 ">5k+</span>
                   <span className="ml-1 text-nowrap">people reached</span>
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
@@ -42,12 +42,11 @@ export default function Home() {
               </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-gray-600 to-gray-900  ">
-              Unique ideas, <br /> never came that fast.
+              Unique ideas <br /> never came that fast.
             </h1>
             <p className="mt-4 font-normal text-xl md:text-2xl text-gray-800 max-w-lg text-center mx-auto">
-              Empower your social media strategy with our powerful content
-              ideas. Instantly generate multiple trending content ideas
-              effortlessly.
+              Empower your social media strategy with powerful content ideas.
+              Instantly generate multiple trending content ideas effortlessly.
             </p>
             <div className="flex flex-row justify-center pt-6">
               <ActionButton className="w-32 h-12" />
