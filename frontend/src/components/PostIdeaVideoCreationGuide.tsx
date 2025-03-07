@@ -11,7 +11,7 @@ export default function VideoCreationGuide({ post }: VideoCreationGuideProps) {
   return (
     <Card className="border-none shadow-none bg-card">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
+        <CardTitle className="flex items-center gap-2 text-xl">
           <Video className="w-4 h-4" />
           Video Creation Guide
         </CardTitle>
@@ -32,10 +32,10 @@ export default function VideoCreationGuide({ post }: VideoCreationGuideProps) {
                     key={index}
                     className="flex gap-3 p-4 rounded-lg bg-muted/50"
                   >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-base">
                       {index + 1}
                     </span>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-base text-muted-foreground leading-relaxed">
                       {instruction}
                     </p>
                   </div>
@@ -53,7 +53,7 @@ export default function VideoCreationGuide({ post }: VideoCreationGuideProps) {
                     className="flex items-start gap-3 p-4 rounded-lg bg-muted/50"
                   >
                     <PlayCircle className="w-4 h-4 mt-0.5 text-primary shrink-0" />
-                    <p className="text-sm text-muted-foreground">{line}</p>
+                    <p className="text-base text-muted-foreground">{line}</p>
                   </div>
                 )
               )}
@@ -65,7 +65,7 @@ export default function VideoCreationGuide({ post }: VideoCreationGuideProps) {
               {JSON.parse(post?.relevant_data!).map(
                 (data: string, index: number) => (
                   <div key={index} className="p-4 rounded-lg bg-muted/50">
-                    <p className="text-sm text-muted-foreground">{data}</p>
+                    <p className="text-base text-muted-foreground">{data}</p>
                   </div>
                 )
               )}

@@ -34,14 +34,6 @@ export default function PostHeader({ post }: PostHeaderProps) {
         <div className="space-y-1">
           <h1 className="text-3xl font-bold tracking-tight">{post?.title}</h1>
           <div className="flex flex-wrap gap-2">
-            <Badge variant={post?.is_finished ? "default" : "secondary"}>
-              {post?.is_finished ? (
-                <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
-              ) : (
-                <XCircle className="w-3.5 h-3.5 mr-1.5" />
-              )}
-              {post?.is_finished ? "Completed" : "In Progress"}
-            </Badge>
             <Badge variant={post?.is_liked ? "default" : "secondary"}>
               <ThumbsUp className="w-3.5 h-3.5 mr-1.5" />
               {post?.is_liked ? "Liked" : "Not Liked"}

@@ -1,5 +1,6 @@
 // components/TaskCard.tsx
 import { IPostIdea } from "@/shared/interfaces";
+import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 import { useDrag } from "react-dnd";
 
@@ -13,7 +14,7 @@ interface PostCardProps {
 
 export default function PostCard({ post, movePost }: PostCardProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-
+  const router = useRouter();
   const [{ isDragging }, drag] = useDrag({
     type: "POST",
     item: { id: post.id },
@@ -34,7 +35,7 @@ export default function PostCard({ post, movePost }: PostCardProps) {
     >
       <div className="flex justify-between items-start">
         <h3 className="font-medium">{post.title}</h3>
-        <button className="text-gray-500 hover:text-gray-700">
+        <button className="text-gray-500 hover:text-gray-700 hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -46,10 +47,16 @@ export default function PostCard({ post, movePost }: PostCardProps) {
         </button>
       </div>
       <div className="flex items-center mt-2 text-sm text-gray-500">
-        <span>{post.title}</span>
+        <span>{post.description}</span>
       </div>
       {post.status !== "unadded" && (
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => router.push(`/dashboard/ideas/${post.id}`)}
+            className="py-0.5 px-2 rounded-lg border border-gray-400 text-gray-800 mt-2 text-sm hover:bg-gray-100 transition-colors"
+          >
+            Open
+          </button>
           <button
             onClick={() => movePost(post.id, "unadded")}
             className="py-0.5 px-2 rounded-lg border border-gray-400 text-gray-800 mt-2 text-sm hover:bg-gray-100 transition-colors"
