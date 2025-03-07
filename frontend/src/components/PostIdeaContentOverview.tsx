@@ -36,29 +36,29 @@ export default function ContentOverview({ post }: ContentOverviewProps) {
   return (
     <Card className="border-none shadow-none bg-card">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
+        <CardTitle className="flex items-center gap-2 text-xl">
           <Video className="w-4 h-4" />
           Content Overview
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
-          <h3 className="text-sm font-medium mb-2">Description</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <h3 className="text-base font-medium mb-2">Description</h3>
+          <p className="text-base text-muted-foreground leading-relaxed">
             {post?.description}
           </p>
         </div>
 
         <div>
-          <h3 className="text-sm font-medium mb-2">Hashtags</h3>
-          <div className="flex flex-wrap gap-1.5">
+          <h3 className="text-base font-medium mb-2">Hashtags</h3>
+          <div className="flex flex-wrap gap-1.5 text-base">
             {JSON.parse(post?.hashtags!).map((tag: string, index: number) => (
               <Badge
                 key={index}
                 variant="secondary"
-                className="bg-primary/5 text-primary hover:bg-primary/10"
+                className="bg-primary/5 text-primary hover:bg-primary/10 text-base"
               >
-                <Hash className="w-3 h-3 mr-1" />
+                <Hash className="w-3 h-3 mr-1 " />
                 {tag.slice(1)}
               </Badge>
             ))}
@@ -66,7 +66,7 @@ export default function ContentOverview({ post }: ContentOverviewProps) {
         </div>
 
         <div className="pt-4 border-t">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-base">
             <span className="text-muted-foreground">Created</span>
             <span className="font-medium">
               {formatTimeAgo(post?.created_at!)}

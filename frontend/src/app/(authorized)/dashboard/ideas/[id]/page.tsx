@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import type { IPostIdea } from "@/shared/interfaces";
 import { Loader2 } from "lucide-react";
@@ -13,11 +13,13 @@ import ContentStrategy from "@/components/PostIdeaContentStrategy";
 import PostHeader from "@/components/PostIdeaHeader";
 import VideoCreationGuide from "@/components/PostIdeaVideoCreationGuide";
 import { BiBookAdd, BiHeart } from "react-icons/bi";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
   const [post, setPost] = useState<IPostIdea | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   async function getPost(id: string) {
     try {
@@ -45,6 +47,71 @@ export default function Page() {
     }
   }
 
+  const updatePostStatus = async (newStatus: string, id: number) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/socials/change-status-post-idea`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+        body: JSON.stringify({
+          id: id,
+          status: newStatus,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+    getPost(params.id);
+  };
+
+  const updatePostLike = async (newLikeValue: boolean, id: number) => {
+    toast.success("Post Idea like status changed", {
+      icon: "❤️",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND}/socials/change-like-post-idea`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${getCookie("access_token")}`,
+        },
+        body: JSON.stringify({
+          id: id,
+          is_liked: newLikeValue,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      toast.error("Failed to update post idea.", {
+        icon: "🤔",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return null;
+    }
+
+    const data = await response.json();
+    getPost(params.id);
+  };
+
   useEffect(() => {
     getPost(params.id);
   }, [params.id]); // Added getPost to dependencies
@@ -59,7 +126,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="px-4 py-8 space-y-8">
         <PostHeader post={post} />
 
         <div className="grid gap-6 lg:grid-cols-12">
@@ -74,11 +141,40 @@ export default function Page() {
         </div>
 
         <div className="flex justify-between gap-4 sticky bottom-4 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 rounded-lg border shadow-sm">
-          <Button variant="outline" size="lg" className="w-full max-w-[200px]">
-            Like Idea <BiHeart />
+          <Button
+            onClick={async () =>
+              await updatePostLike(!post?.is_liked, post!.id)
+            }
+            variant="outline"
+            size="lg"
+            className="w-full max-w-[200px]"
+          >
+            {post?.is_liked ? (
+              <>Remove like</>
+            ) : (
+              <>
+                Like Idea <BiHeart />
+              </>
+            )}
           </Button>
-          <Button size="lg" className="w-full max-w-[200px]">
-            Add Idea to planned <BiBookAdd />
+          <Button
+            onClick={async () => {
+              await updatePostStatus(
+                post?.status === "planned" ? "unplanned" : "planned",
+                post!.id
+              );
+            }}
+            size="lg"
+            className="w-full max-w-[200px]"
+          >
+            {post?.status === "planned" ? (
+              "Move to unplanned"
+            ) : (
+              <>
+                Move to planned
+                <BiBookAdd />
+              </>
+            )}
           </Button>
         </div>
       </div>
