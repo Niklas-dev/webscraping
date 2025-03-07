@@ -54,6 +54,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
         € <p className="text-5xl font-semibold">{price}</p>
       </div>
       <button
+        data-umami-event="Checkout Button"
         onClick={() => onPlanClick(productId, priceId, currentSubscription)}
         className={`w-full h-10 font-semibold text-lg rounded-lg transition-all ${
           isCurrentSubscription

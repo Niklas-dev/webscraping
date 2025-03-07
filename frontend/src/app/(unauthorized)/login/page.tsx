@@ -139,6 +139,7 @@ export default function Page() {
               Forgot password
             </Link>
             <button
+              data-umami-event="Signin Email button"
               type="submit"
               onClick={() => login(formData)}
               className="bg-black border-2 border-black text-white rounded-lg py-1 px-3 font-medium text-lg "
@@ -146,6 +147,7 @@ export default function Page() {
               Login
             </button>
             <button
+              data-umami-event="Signin Google button"
               onClick={() => loginGoogle()}
               type="button"
               className="border-black border-2 text-black rounded-lg py-1 px-3 font-medium text-lg "

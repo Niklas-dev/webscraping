@@ -157,12 +157,14 @@ export default function Page() {
 
           <div className="flex flex-col gap-2 mt-4">
             <button
+              data-umami-event="Signup Google button"
               type="submit"
               className="bg-black text-white border-black border-2 rounded-lg py-1 px-3 font-medium text-lg "
             >
               Register
             </button>
             <button
+              data-umami-event="Signup Google button"
               onClick={() => registerGoogle()}
               type="button"
               className="border-black border-2 text-black rounded-lg py-1 px-3 font-medium text-lg "
