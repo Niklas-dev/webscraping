@@ -21,8 +21,8 @@ export default function FeatureCard({
         className="rounded-2xl shadow-sm  w-2/3 min-w-60"
         src={imageSrc}
         alt="Trendpilot"
-        width={600}
-        height={600}
+        width={1200}
+        height={1200}
       />
     </div>
   );

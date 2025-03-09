@@ -87,6 +87,7 @@ async def get_products(product_type: str = Query(..., regex="^(one_time|subscrip
                     "price": None  # Placeholder for the price data
                 }
 
+
                 # Add price details
                 if price["type"] == "one_time" and product_type == "one_time":
                     product_info["price"] = {

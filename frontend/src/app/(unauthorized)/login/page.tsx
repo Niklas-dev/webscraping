@@ -1,10 +1,11 @@
 "use client";
 import BlurColors from "@/components/BlurColors";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { setCookie } from "cookies-next";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import { AuthContext } from "@/providers/AuthProvider";
 export default function Page() {
   const [formData, setFormData] = useState({
     username: "",
@@ -13,8 +14,12 @@ export default function Page() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const user = useContext(AuthContext);
 
   useEffect(() => {
+    if (user.username) {
+      router.push("/dashboard");
+    }
     const detail = searchParams.get("detail");
     if (detail === "email_verified") {
       toast.success("Your email has been verified.", {
@@ -29,7 +34,7 @@ export default function Page() {
     }
 
     return () => {};
-  }, [searchParams]);
+  }, [searchParams, user.username]);
 
   const login = async (_formData: { username: string; password: string }) => {
     console.log(_formData);
