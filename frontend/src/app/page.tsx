@@ -1,38 +1,45 @@
 import NavBar from "@/components/NavBar";
 import { Spotlight } from "@/components/ui/Spotlight";
-import ActionButton from "@/components/ActionButton";
 import RatingInfo from "@/components/RatingInfo";
-import { FaStar } from "react-icons/fa";
+import { Star } from "lucide-react";
 import ContentImageInfo from "@/components/ContentImageInfo";
 import Footer from "@/components/Footer";
 import SocialMedia from "@/components/SocialMedia";
 import Features from "@/components/Features";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CheckCircle, Sparkles } from "lucide-react";
+import CTASection from "@/components/CTASection";
+import FAQ from "@/components/FAQ";
+import PricingSection from "@/components/PricingSection";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen relative bg-white bg-grid-white/[0.05] overflow-x-hidden overflow-y-scroll">
+    <div className="w-full min-h-screen bg-[#fffdf7] overflow-x-hidden">
       <NavBar />
-      <div className="h-fit">
-        <div className="h-fit w-full rounded-md flex md:items-center md:justify-center mt-10 md:mt-20">
+      <main className="pt-20">
+        {/* Hero Section */}
+        <section className="w-full rounded-md flex md:items-center md:justify-center mt-10 md:mt-20 relative">
           <Spotlight
-            className="-top-0 left-0 sm:-top-24 sm:-left-10 md:-left-18 md:-top-4 lg:left-[18%] lg:-top-12 absolute"
+            className="-top-40 left-0 md:-top-20 md:-left-40 absolute"
             fill="yellow"
           />
 
-          <div className=" p-4 max-w-7xl  mx-auto relative z-10  w-full pt-4 md:pt-0">
-            <div className="w-fit mx-auto pb-8 ">
-              <div className="bg-white border  border-gray-200 rounded-full py-1 px-4 sm:px-8 text-sm md:text-lg text-gray-600 flex items-center justify-center space-x-3">
-                <div className="animate-spin mb-1 flex justify-center items-center">
-                  <FaStar className="w-4 h-4  text-gray-500 fill-gray-500" />
-                </div>
-                <div className="items-center justify-center hidden md:flex">
+          <div className="p-4 max-w-7xl mx-auto relative z-10 w-full pt-4 md:pt-0">
+            {/* Hero Stats Banner */}
+            <div className="w-fit mx-auto pb-8">
+              <div className="bg-white border border-gray-200 rounded-full py-2 px-4 sm:px-8 text-sm md:text-base text-gray-600 flex items-center justify-center space-x-3">
+                <div className="flex items-center">
+                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 mr-2" />
                   <span className="font-semibold text-gray-800">400+</span>
                   <span className="ml-1">created posts</span>
                 </div>
-                <div className="w-1 h-1 bg-gray-300 rounded-full hidden md:flex"></div>
-                <div className="items-center justify-center hidden md:flex">
-                  <span className="font-semibold text-gray-800 ">5k+</span>
-                  <span className="ml-1 text-nowrap">people reached</span>
+                <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                <div>
+                  <span className="font-semibold text-gray-800">5k+</span>
+                  <span className="ml-1">people reached</span>
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div>
@@ -41,23 +48,85 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-gray-600 to-gray-900  ">
-              Unique ideas <br /> never came that fast.
+
+            {/* New Badge */}
+            <div className="flex justify-center mb-6">
+              <Badge
+                variant="outline"
+                className="bg-yellow-50/50 text-yellow-700 border-yellow-200 px-3 py-1"
+              >
+                <Sparkles className="w-3 h-3 mr-1" /> New AI-Powered Content
+                Ideas
+              </Badge>
+            </div>
+
+            {/* Hero Headline */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-center text-gray-900">
+              Never run out of <br />
+              <span className="text-yellow-500">viral content ideas</span>{" "}
+              again.
             </h1>
-            <p className="mt-4 font-normal text-xl md:text-2xl text-gray-800 max-w-lg text-center mx-auto">
-              Empower your social media strategy with powerful content ideas.
-              Instantly generate multiple trending content ideas effortlessly.
+
+            {/* Hero Subheadline */}
+            <p className="mt-6 text-xl text-gray-600 max-w-2xl text-center mx-auto">
+              TrendPilot helps content creators generate{" "}
+              <span className="text-gray-900">trending ideas</span> that grow
+              your audience and{" "}
+              <span className="text-gray-900">save hours</span> of brainstorming
+              time.
             </p>
-            <div className="flex flex-row justify-center pt-6">
-              <ActionButton className="w-32 h-12" />
+
+            {/* Social Proof */}
+            <div className="flex flex-wrap items-center justify-center mt-6 gap-4 text-sm text-gray-500">
+              <span className="flex items-center">
+                <CheckCircle className="w-4 h-4 mr-1.5 text-green-500" /> Used
+                by 2,500+ creators
+              </span>
+              <span className="flex items-center">
+                <CheckCircle className="w-4 h-4 mr-1.5 text-green-500" /> Cancel
+                subscription anytime
+              </span>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+              <Link
+                href={"/login"}
+                className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-8 py-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+              >
+                Start Creating Ideas <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-8 py-6 text-lg rounded-full"
+              >
+                Watch Demo
+              </Button>
+            </div>
+
+            {/* Limited Time Offer */}
+            <div className="mt-6 text-center">
+              <span className="inline-flex items-center bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-sm font-medium">
+                🔥 Limited time: Get 50% off your first month
+              </span>
             </div>
           </div>
-        </div>
-      </div>
-      <ContentImageInfo />
-      <RatingInfo />
-      <SocialMedia />
-      <Features />
+        </section>
+
+        {/* Product Showcase Section */}
+        <section className="mt-20">
+          <ContentImageInfo />
+        </section>
+
+        <TestimonialCarousel />
+        <RatingInfo />
+        <SocialMedia />
+        <Features />
+        <PricingSection />
+        <FAQ />
+        <CTASection />
+      </main>
       <Footer />
     </div>
   );

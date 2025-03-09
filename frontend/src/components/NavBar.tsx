@@ -1,38 +1,146 @@
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import ActionButton from "./ActionButton";
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Lightbulb } from "lucide-react";
 
 export default function NavBar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="h-20 w-[calc(100%-0.8rem)] bg-transparent text-black flex flex-row justify-between  items-center px-10 md:px-28 sticky top-0 backdrop-blur-sm shadow-sm z-20 overflow-x-hidden ">
-      <div className="flex flex-row items-center">
-        <Image
-          className=""
-          src={"/logo.svg"}
-          alt="logo"
-          width={50}
-          height={50}
-        />
-        <Link
-          href={"/"}
-          className="text-xl md:text-3xl font-bold mt-2 text-gray-800"
-        >
-          TrendPilot
-        </Link>
-      </div>
-      <div className="flex flex-row items-center gap-4 text-xl font-medium">
-        <Link href={"/#reviews"} className="hover:underline hidden md:flex">
-          Reviews
-        </Link>
-        <Link href={"/#features"} className="hover:underline hidden md:flex">
-          Features
+    <header
+      className={`w-full h-16 md:h-20 border-b ${
+        scrolled
+          ? "border-gray-200 bg-white/95"
+          : "border-transparent bg-transparent"
+      } backdrop-blur-md fixed top-0 left-0 right-0 z-50 transition-all duration-300`}
+    >
+      <div className="container mx-auto h-full flex items-center justify-between px-4">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <div className="bg-yellow-400 rounded-full p-1.5">
+            <Lightbulb className="w-5 h-5 text-black" />
+          </div>
+          <span className="font-bold text-xl text-gray-900">TrendPilot</span>
         </Link>
 
-        <Link href={"/pricing"} className="hover:underline hidden md:flex">
-          Pricing
-        </Link>
-        <ActionButton className="w-32 h-12" />
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8">
+          <Link
+            href="#features"
+            className="text-gray-800 hover:text-black font-medium transition-colors"
+          >
+            Features
+          </Link>
+          <Link
+            href="#reviews"
+            className="text-gray-800 hover:text-black font-medium transition-colors"
+          >
+            Reviews
+          </Link>
+          <Link
+            href="#pricing"
+            className="text-gray-800 hover:text-black font-medium transition-colors"
+          >
+            Pricing
+          </Link>
+          <Link
+            href="#faq"
+            className="text-gray-800 hover:text-black font-medium transition-colors"
+          >
+            FAQ
+          </Link>
+        </nav>
+
+        {/* Desktop CTA */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            href="/login"
+            className="text-gray-800 hover:text-black font-medium transition-colors"
+          >
+            Log in
+          </Link>
+          <Link
+            href={"/register"}
+            className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-medium px-6 py-2 rounded-md text-lg"
+          >
+            Get Started
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-gray-600"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
+        </button>
       </div>
-    </nav>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-b border-gray-100 absolute w-full z-50">
+          <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+            <Link
+              href="#features"
+              className="text-gray-600 hover:text-gray-900 font-medium py-2 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Features
+            </Link>
+            <Link
+              href="#reviews"
+              className="text-gray-600 hover:text-gray-900 font-medium py-2 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Reviews
+            </Link>
+            <Link
+              href="#pricing"
+              className="text-gray-600 hover:text-gray-900 font-medium py-2 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Pricing
+            </Link>
+            <Link
+              href="#faq"
+              className="text-gray-600 hover:text-gray-900 font-medium py-2 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              FAQ
+            </Link>
+            <div className="flex flex-col gap-2 pt-2 border-t border-gray-100">
+              <Link
+                href="/login"
+                className="text-gray-600 hover:text-gray-900 font-medium py-2 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Log in
+              </Link>
+              <Button
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-medium w-full"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Get Started
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }

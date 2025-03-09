@@ -1,11 +1,12 @@
 "use client";
 
 import BlurColors from "@/components/BlurColors";
+import { AuthContext } from "@/providers/AuthProvider";
 import { setCookie } from "cookies-next";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Page() {
@@ -16,7 +17,7 @@ export default function Page() {
   });
 
   const router = useRouter();
-
+  const user = useContext(AuthContext);
   const register = async (_formData: {
     username: string;
     email: string;
@@ -89,6 +90,15 @@ export default function Page() {
   const registerGoogle = () => {
     router.push(`${process.env.NEXT_PUBLIC_BACKEND}/auth/google`);
   };
+
+  useEffect(() => {
+    if (user.username) {
+      router.push("/dashboard");
+    }
+
+    return () => {};
+  }, [user.username]);
+
   return (
     <div className="h-screen w-screen relative selection:bg-orange-500  bg-white overflow-x-hidden">
       <div className="flex flex-col justify-start items-center mt-60">

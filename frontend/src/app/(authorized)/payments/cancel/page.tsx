@@ -8,7 +8,7 @@ export default function Page() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/dashboard/home");
+      router.push("/#pricing");
     }, 2000);
 
     return () => clearTimeout(timer);
