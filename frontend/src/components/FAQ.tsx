@@ -16,27 +16,37 @@ const faqs = [
   {
     question: "Can I use TrendPilot for multiple social media accounts?",
     answer:
-      "Yes! With our Pro and Business plans, you can manage multiple social media accounts across different platforms. The Free plan allows you to use TrendPilot for one account on either Instagram or TikTok.",
+      "Yes! With our Pro and Business plans, you can manage multiple social media accounts across different platforms.",
   },
   {
     question: "How many content ideas can I generate?",
     answer:
-      "The Free plan includes 5 content ideas per day. The Pro and Business plans offer unlimited idea generation, allowing you to create as many content ideas as you need.",
+      "The Basic and Pro plans offer monthly idea generation, allowing you to create many content ideas.",
   },
   {
     question: "Is there a free trial available?",
     answer:
-      "Yes, we offer a 7-day free trial of our Pro plan so you can experience all the premium features before committing. No credit card is required to start your trial.",
+      "Yes, we offer a 14-day free trial of our Pro plan so you can experience all the premium features before committing.",
   },
   {
     question: "Can I cancel my subscription at any time?",
     answer:
-      "Absolutely. You can cancel your subscription at any time with no questions asked. If you cancel within 30 days of your initial purchase, we'll provide a full refund.",
+      "Absolutely. You can cancel your subscription at any time with no questions asked. If you cancel within 30 days of your initial purchase, we'll provide a refund.",
   },
   {
     question: "Do you offer support if I need help?",
     answer:
-      "Yes, we provide email support for all plans. Pro users receive faster response times, while Business plan subscribers get priority support with dedicated account managers.",
+      "Yes, we provide email support for all plans. Basic users receive fast response times, while Pro plan subscribers get priority support with dedicated account managers.",
+  },
+  {
+    question: "Will I keep my created ideas after a canceled subscription?",
+    answer:
+      "Definitely. You'll retain access to all the content ideas you've created, even if you cancel your subscription.",
+  },
+  {
+    question: "Do I have to use a subscription?",
+    answer:
+      "No, you can also buy credits to generate content ideas on a pay-as-you-go basis. However, subscriptions offer better value and further benefits.",
   },
 ];
 
