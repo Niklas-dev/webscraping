@@ -126,7 +126,7 @@ export default function Page() {
   }, [isModalOpen]);
 
   return (
-    <div className="px-8">
+    <div className="md:px-8">
       <div className="w-full h-full">
         <div className="flex flex-row justify-between items-center mt-20">
           <div>
