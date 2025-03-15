@@ -178,6 +178,9 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
             cancel_url=FRONTEND_URL + "payments/cancel",
             payment_method_types=["card"],
             mode="subscription",
+            subscription_data={
+                "trial_period_days": 14,
+            },
             metadata={
                 "client_reference_id": user.id,
             },
