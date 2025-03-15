@@ -167,12 +167,28 @@ def get_user_subscription(user: user_dependency):
 
 
 @router.post("/create-checkout-session")
-def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
+def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest, db: db_dependency):
     if user.subscription_status == "active":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="You already have an ongoing "
                                                                             "subscription. Cancel it first.")
+
+    stripe_customer_id = user.customer_id
+
+    if not stripe_customer_id:
+        stripe_customer = stripe.Customer.create(
+            email=user.email,
+            metadata={
+                "user_id": user.id
+            }
+        )
+
+        user.customer_id = stripe_customer.id
+        stripe_customer_id = stripe_customer.id
+        db.commit()
+
     try:
         checkout_session = stripe.checkout.Session.create(
+            customer=stripe_customer_id,
             client_reference_id=user.id,
             success_url=FRONTEND_URL + "payments/success?session_id={CHECKOUT_SESSION_ID}",
             cancel_url=FRONTEND_URL + "payments/cancel",
@@ -198,10 +214,24 @@ def create_checkout_session(request: Request, user: user_dependency, create_chec
 
 
 @router.post("/create-checkout-session-onetime")
-def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest):
+def create_checkout_session(request: Request, user: user_dependency, create_checkout_request: CreateCheckoutRequest, db: db_dependency):
     try:
+        stripe_customer_id = user.customer_id
+
+        if not stripe_customer_id:
+            stripe_customer = stripe.Customer.create(
+                email=user.email,
+                metadata={
+                    "user_id": user.id
+                }
+            )
+
+            user.customer_id = stripe_customer.id
+            stripe_customer_id = stripe_customer.id
+            db.commit()
         print(create_checkout_request)
         checkout_session = stripe.checkout.Session.create(
+            customer=stripe_customer_id,
             payment_method_types=["card"],
             client_reference_id=user.id,
             line_items=[
