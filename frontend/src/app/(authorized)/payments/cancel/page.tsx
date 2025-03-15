@@ -19,9 +19,7 @@ export default function Page() {
       <div className="text-3xl font-medium">
         Your checkout has been canceled.
       </div>
-      <div className="text-lg">
-        You are being redirected to the dashboard...
-      </div>
+      <div className="text-lg">You are being redirected...</div>
     </div>
   );
 }
