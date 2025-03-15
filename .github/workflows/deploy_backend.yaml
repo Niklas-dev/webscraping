@@ -1,0 +1,37 @@
+name: "deploy"
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    environment: production  # Specify the environment here
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa 157.173.105.91 >> ~/.ssh/known_hosts
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Check SSH key permissions
+        run: |
+          ls -l ~/.ssh/id_rsa
+          cat ~/.ssh/id_rsa
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@157.173.105.91/trendpilot.backend"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          branch: "production"  # Specify the production branch to deploy to
