@@ -135,13 +135,6 @@ export default function PricingSection() {
       setPlansStripe(data.products);
     } catch (error) {
       console.error("Error fetching Stripe products:", error);
-      toast.error("Failed to load pricing plans", {
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-        },
-      });
     } finally {
       setLoading(false); // Stop loading once data is fetched
     }
@@ -168,13 +161,6 @@ export default function PricingSection() {
       console.log(data.products);
     } catch (error) {
       console.error("Error fetching Stripe products:", error);
-      toast.error("Failed to load pricing plans", {
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-        },
-      });
     } finally {
       setLoading(false); // Stop loading once data is fetched
     }
@@ -263,6 +249,8 @@ export default function PricingSection() {
     getCurrentUserPlan();
     fetchStripeProducts();
     fetchStripeCredits();
+
+    return () => {};
   }, []);
 
   return (

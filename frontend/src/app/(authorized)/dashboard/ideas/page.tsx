@@ -42,7 +42,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="px-8 min-h-0 flex flex-col">
+    <div className="md:px-8 min-h-0 flex flex-col">
       <h2 className="text-3xl font-semibold">Your cool ideas ❄️</h2>
       <div className="h-[2px] w-full bg-gray-200 mt-2 shadow-2xl"></div>
       <div className="flex flex-row flex-wrap gap-8  min-h-0 overflow-auto relative pt-6">

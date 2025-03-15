@@ -80,7 +80,7 @@ export default function Page() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="px-8">
+      <div className="md:px-8">
         <h2 className="text-3xl font-semibold">Plan your content 📈</h2>
         <div className="h-[2px] w-full bg-gray-200 mt-2 "></div>
         <div className="pt-6">

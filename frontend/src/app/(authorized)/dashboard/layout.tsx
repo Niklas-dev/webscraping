@@ -12,7 +12,7 @@ export default function DashboardLayout({
   return (
     <section className="h-screen w-screen  flex flex-row ">
       <DashboardNavBar />
-      <div className="flex flex-col w-full h-full overflow-x-hidden pl-8">
+      <div className="flex flex-col w-full h-full overflow-x-hidden md:pl-8 px-4">
         <nav className="flex flex-row justify-end py-4 px-10 drop-shadow-sm relative z-10 ">
           <div className="flex flex-row items-center gap-4">
             <Link
