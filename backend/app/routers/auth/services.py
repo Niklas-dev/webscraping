@@ -176,22 +176,73 @@ def verify_token(token: str):
 
 async def send_verification_email(email: str, token: str):
     verification_link = f"{app_settings.BACKEND_URL}/auth/verify-email?token={token}"
-    subject = "Verify your email"
+    subject = "Confirm Your Email - TrendPilot"
+
     html_content = f"""
     <html>
-        <body>
-            <h1>Email Verification</h1>
-            <p>Click the link below to verify your email address:</p>
-            <a href="{verification_link}">Verify Email</a>
-            <p>This link is valid for x minutes.</p>
-        </body>
+    <head>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 0;
+            }}
+            .container {{
+                max-width: 600px;
+                margin: 40px auto;
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }}
+            .logo {{
+                font-size: 24px;
+                font-weight: bold;
+                color: #111;
+                margin-bottom: 20px;
+            }}
+            .button {{
+                display: inline-block;
+                padding: 12px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                color: #ffffff;
+                background-color: #ffbe00;
+                text-decoration: none;
+                border-radius: 6px;
+                margin-top: 20px;
+            }}
+            .footer {{
+                margin-top: 30px;
+                font-size: 12px;
+                color: #777;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="logo">TrendPilot</div>
+            <h2>Verify Your Email</h2>
+            <p>Welcome to TrendPilot! To get started, please verify your email address.</p>
+            <a href="{verification_link}" class="button">Verify Email</a>
+            <p>This link will expire in a couple of minutes.</p>
+            <div class="footer">
+                <p>If you did not sign up for TrendPilot, you can ignore this email.</p>
+                <p>Need help? Contact us at <a href="mailto:niklas.developers@gmail.com">niklas.developers@gmail.com</a></p>
+            </div>
+        </div>
+    </body>
     </html>
     """
+
     message = Mail(
         from_email='support@trendpilot.pro',
         to_emails=email,
         subject=subject,
         html_content=html_content)
+
     try:
         sg = SendGridAPIClient(app_settings.SENDGRID_API_KEY)
         response = sg.send(message)
@@ -200,7 +251,9 @@ async def send_verification_email(email: str, token: str):
         print(response.headers)
     except Exception as e:
         print(e.message)
+
     print(f"Verification email sent to {email}")
+
 
 
 async def send_password_reset_email(email: str, token: str):
