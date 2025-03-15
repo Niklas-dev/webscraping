@@ -142,63 +142,19 @@ export default function Features() {
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                 <span className="text-sm text-gray-600">
-                  Drag-and-drop scheduling
+                  Drag-and-drop planning
                 </span>
               </li>
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                 <span className="text-sm text-gray-600">
-                  Publishing reminders
+                  Keep track of planned ideas
                 </span>
               </li>
               <li className="flex items-center">
                 <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                 <span className="text-sm text-gray-600">
                   Optimal posting time suggestions
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-            <div className="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-              <svg
-                className="w-6 h-6 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                />
-              </svg>
-            </div>
-            <h4 className="text-xl font-bold mb-2">Analytics & Insights</h4>
-            <p className="text-gray-600 mb-4">
-              Track which ideas perform best to refine your content strategy
-              over time.
-            </p>
-            <ul className="space-y-2">
-              <li className="flex items-center">
-                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm text-gray-600">
-                  Idea performance tracking
-                </span>
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm text-gray-600">
-                  Audience growth metrics
-                </span>
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm text-gray-600">
-                  Content strategy recommendations
                 </span>
               </li>
             </ul>

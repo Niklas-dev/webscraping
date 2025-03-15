@@ -157,7 +157,7 @@ export default function Page() {
               type="button"
               className="border-black border-2 text-black rounded-lg py-1 px-3 font-medium text-lg "
             >
-              Google
+              Login With Google
             </button>
           </div>
           <div className="h-[1px] bg-black w-full flex flex-row justify-center mt-4">
