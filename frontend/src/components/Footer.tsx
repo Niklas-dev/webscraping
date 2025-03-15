@@ -86,26 +86,10 @@ export default function Footer() {
                   Pricing
                 </Link>
               </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
-                  Integrations
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
-                  Changelog
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
-                  Roadmap
-                </Link>
-              </li>
             </ul>
           </div>
 
-          {/* Resources Links */}
-          <div>
+          {/* Resources Links <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
               Resources
             </h3>
@@ -136,7 +120,7 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Company Links */}
           <div>
@@ -145,27 +129,15 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
+                <Link
+                  href="/privacy"
+                  className="text-gray-600 hover:text-gray-900"
+                >
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-gray-900">
+                <Link href="/tos" className="text-gray-600 hover:text-gray-900">
                   Terms of Service
                 </Link>
               </li>
