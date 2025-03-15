@@ -335,7 +335,7 @@ export default function PricingSection() {
                 <CardContent className="flex-grow">
                   <div className="mb-6">
                     <span className="text-4xl font-bold">
-                      ${plan.price.unit_amount}
+                      €{plan.price.unit_amount}
                     </span>
                     <span className="text-gray-500 ml-1">
                       /{planType === "credits" ? "once" : "month"}

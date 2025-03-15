@@ -68,7 +68,7 @@ export default async function page() {
           <div className="flex flex-row gap-4 items-center">
             <a
               className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg shadow-sm cursor-pointer"
-              href={url! === null ? "/pricing" : url!}
+              href={url! === null ? "/#pricing" : url!}
             >
               Manage Plan
             </a>
@@ -82,7 +82,7 @@ export default async function page() {
             <h3 className="text-lg font-bold text-gray-800">Current Plan</h3>
             <Link
               className="border-gray-300 text-gray-700 border-2 px-3 py-1.5 font-semibold rounded-lg shadow-sm"
-              href={"/pricing"}
+              href={"/#pricing"}
             >
               Change Plan
             </Link>
@@ -137,7 +137,7 @@ export default async function page() {
 
               <Link
                 className="bg-[#1b1b1b] hover:bg-[#252525] p-2.5 px-8 w-fit h-fit font-bold text-xl rounded-lg text-white"
-                href={"/pricing"}
+                href={"/#pricing"}
               >
                 Start now
               </Link>
@@ -172,7 +172,7 @@ export default async function page() {
               </div>
             </div>
             <Link
-              href={"/pricing#credits"}
+              href={"/#pricing"}
               className="w-96 h-32 border-2 border-gray-300 rounded-2xl px-6 flex flex-row items-center justify-center shadow-sm group cursor-pointer"
             >
               <div className="flex flex-col   text-gray-700 font-bold text-xl  group-hover:text-lg transition-all">
