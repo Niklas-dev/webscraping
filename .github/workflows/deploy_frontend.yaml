@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-22.04
+    environment: production  # Specify the environment here
     steps:
       - name: Cloning repo
         uses: actions/checkout@v3
@@ -22,6 +23,11 @@ jobs:
           ssh-keyscan -t rsa 157.173.105.91 >> ~/.ssh/known_hosts
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Check SSH key permissions
+        run: |
+          ls -l ~/.ssh/id_rsa
+          cat ~/.ssh/id_rsa
 
       - name: Push to dokku
         uses: dokku/github-action@master
