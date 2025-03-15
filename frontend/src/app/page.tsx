@@ -33,7 +33,7 @@ export default function Home() {
               <div className="bg-white border border-gray-200 rounded-full py-2 px-4 sm:px-8 text-sm md:text-base text-gray-600 flex items-center justify-center space-x-3">
                 <div className="flex items-center">
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 mr-2" />
-                  <span className="font-semibold text-gray-800">400+</span>
+                  <span className="font-semibold text-gray-800">250+</span>
                   <span className="ml-1">created posts</span>
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
@@ -43,7 +43,7 @@ export default function Home() {
                 </div>
                 <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                 <div>
-                  <span className="font-semibold text-gray-800">5/5</span>
+                  <span className="font-semibold text-gray-800">4.9/5</span>
                   <span className="ml-1">customer rating</span>
                 </div>
               </div>
@@ -80,7 +80,7 @@ export default function Home() {
             <div className="flex flex-wrap items-center justify-center mt-6 gap-4 text-sm text-gray-500">
               <span className="flex items-center">
                 <CheckCircle className="w-4 h-4 mr-1.5 text-green-500" /> Used
-                by 2,500+ creators
+                by 50+ creators
               </span>
               <span className="flex items-center">
                 <CheckCircle className="w-4 h-4 mr-1.5 text-green-500" /> Cancel
@@ -89,10 +89,10 @@ export default function Home() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
               <Link
                 href={"/login"}
-                className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-8 py-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-8 py-3 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 justify-center"
               >
                 Start Creating Ideas <ArrowRight className="w-5 h-5" />
               </Link>
