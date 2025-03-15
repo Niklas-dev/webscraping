@@ -96,13 +96,15 @@ export default function Home() {
               >
                 Start Creating Ideas <ArrowRight className="w-5 h-5" />
               </Link>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-8 py-6 text-lg rounded-full"
-              >
-                Watch Demo
-              </Button>
+              <a href="#features">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-8 py-6 text-lg rounded-full"
+                >
+                  Watch Demo
+                </Button>
+              </a>
             </div>
 
             {/* Limited Time Offer */}
