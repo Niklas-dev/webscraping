@@ -114,7 +114,7 @@ export default function CTASection() {
                   Get Started Free <ArrowRight className="w-5 h-5" />
                 </Link>
                 <p className="text-sm text-gray-400 mt-3">
-                  Sign up for free • Free plan available
+                  Sign up for free • Free test phase available
                 </p>
               </div>
             </div>
