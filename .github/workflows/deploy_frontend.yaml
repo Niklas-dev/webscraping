@@ -29,8 +29,7 @@ jobs:
           ls -l ~/.ssh/id_rsa
           cat ~/.ssh/id_rsa
 
-      - name: Push to dokku
-        uses: dokku/github-action@master
-        with:
-          git_remote_url: "ssh://dokku@157.173.105.91/trendpilot.frontend"
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Push to dokku production
+        run: |
+          git remote add dokku ssh://dokku@157.173.105.91/trendpilot.frontend
+          git push dokku master:production
