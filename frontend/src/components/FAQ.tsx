@@ -85,7 +85,7 @@ export default function FAQ() {
             Still have questions? We&apos;re here to help.
           </p>
           <Link
-            href="#contact"
+            href="mailto:niklas.developers@gmail.com"
             className="text-yellow-600 font-medium hover:text-yellow-700 underline underline-offset-4"
           >
             Contact our support team
