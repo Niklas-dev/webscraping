@@ -302,13 +302,13 @@ export default function TestimonialSection() {
 
                 <div className="mt-auto w-full flex flex-col justify-center items-center">
                   <div className="text-center mb-3 text-sm text-gray-500">
-                    No credit card required
+                    Cancel anytime
                   </div>
                   <Link
                     href={"/register"}
                     className="bg-gradient-to-r text-center from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 transition-all text-black font-medium px-10 py-3 rounded-md text-lg w-full"
                   >
-                    Try TrendPilot Free for 7 Days
+                    Try TrendPilot Free for 14 Days
                   </Link>
 
                   <div className="text-center mt-3 text-sm text-gray-500">
