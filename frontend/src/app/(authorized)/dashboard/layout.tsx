@@ -1,7 +1,10 @@
+"use client";
 import DashboardNavBar from "@/components/DashboardNavBar";
+import { AuthContext } from "@/providers/AuthProvider";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
+import { useRouter } from "next/navigation";
+import { Suspense, useContext, useEffect } from "react";
 import { FaPlus, FaUserCircle } from "react-icons/fa";
 
 export default function DashboardLayout({
@@ -9,6 +12,17 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+
+  const user = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!user.username) {
+      router.push("/login");
+    }
+
+    return () => {};
+  }, [router, user.username]);
   return (
     <section className="h-screen w-screen  flex flex-row ">
       <DashboardNavBar />

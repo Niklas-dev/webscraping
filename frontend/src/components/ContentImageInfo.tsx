@@ -22,7 +22,7 @@ export default function ContentImageInfo() {
         </div>
       </div>
       {/* Increased height to ensure no overflow is visible */}
-      <div className="w-full h-24 bg-[#fffdf7] -translate-y-2 z-10 shadow-[0px_-1px_2px_rgba(0,0,0,0.05)]"></div>
+      <div className="w-full h-20 bg-white -translate-y-2 z-10 shadow-[0px_-1px_2px_rgba(0,0,0,0.05)]"></div>
     </div>
   );
 }

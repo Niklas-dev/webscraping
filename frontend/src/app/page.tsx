@@ -122,8 +122,6 @@ export default function Home() {
         </section>
 
         <TestimonialCarousel />
-        <RatingInfo />
-        <SocialMedia />
         <Features />
         <PricingSection />
         <FAQ />
