@@ -213,7 +213,7 @@ export default function TestimonialSection() {
                 </div>
 
                 <blockquote className="text-base md:text-lg text-[#0f172a] mb-5 md:mb-6 leading-relaxed">
-                  &qoute;{featuredTestimonial.content}&qoute;
+                  {featuredTestimonial.content}
                 </blockquote>
 
                 {/* Moderately sized featured testimonial stat */}
