@@ -62,52 +62,78 @@ def format_price(unit_amount: int) -> str:
 
 
 # Endpoint to fetch Stripe products based on type
-
 @router.get("/products/")
 async def get_products(product_type: str = Query(..., regex="^(one_time|subscription)$")):
     try:
-        # Fetch all Stripe products
-        stripe_products = stripe.Product.list()
+        # Fetch all Stripe products that are active
+        stripe_products = stripe.Product.list(active=True)
         filtered_products = []
 
+        # Keep track of products we've already added to avoid duplicates
+        added_products = set()
+
         for product in stripe_products["data"]:
-            # Fetch associated pricing for each product
-            prices = stripe.Price.list(product=product["id"])
-            for price in prices["data"]:
-                product_info = {
-                    "id": product["id"],
-                    "name": product["name"],
-                    "description": product["description"] or "No description",
-                    "active": product["active"],
-                    "images": product["images"],
-                    "livemode": product["livemode"],
-                    "created": product["created"],
-                    "updated": product["updated"],
-                    "features": product["marketing_features"] or [],
-                    "price": None  # Placeholder for the price data
+            # Skip if we've already added this product
+            if product["id"] in added_products:
+                continue
+
+            # Fetch prices for this product, prioritizing active ones
+            prices = stripe.Price.list(
+                product=product["id"],
+                active=True,  # Only get active prices
+                limit=100  # Increase limit to ensure we get all prices
+            )
+
+            # If no active prices found for the specified type, skip this product
+            matching_prices = [
+                p for p in prices["data"]
+                if (p["type"] == "one_time" and product_type == "one_time") or
+                   (p["type"] == "recurring" and product_type == "subscription")
+            ]
+
+            if not matching_prices:
+                continue
+
+            # Get the most recently created price of the requested type
+            # (This ensures we show the latest pricing)
+            latest_price = sorted(matching_prices, key=lambda p: p["created"], reverse=True)[0]
+
+            product_info = {
+                "id": product["id"],
+                "name": product["name"],
+                "description": product["description"] or "No description",
+                "active": product["active"],
+                "images": product["images"],
+                "livemode": product["livemode"],
+                "created": product["created"],
+                "updated": product["updated"],
+                "features": product["marketing_features"] or [],
+                "price": None  # Will be filled below
+            }
+
+            # Add price details based on the type
+            if latest_price["type"] == "one_time" and product_type == "one_time":
+                product_info["price"] = {
+                    "price_id": latest_price["id"],
+                    "unit_amount": format_price(latest_price.get("unit_amount", None)),
+                    "currency": latest_price.get("currency", ""),
+                    "recurring": None
                 }
+                filtered_products.append(product_info)
+                added_products.add(product["id"])
 
-
-                # Add price details
-                if price["type"] == "one_time" and product_type == "one_time":
-                    product_info["price"] = {
-                        "price_id": price["id"],  # Add price ID
-                        "unit_amount": format_price(price.get("unit_amount", None)),
-                        "currency": price.get("currency", ""),
-                        "recurring": None
+            elif latest_price["type"] == "recurring" and product_type == "subscription":
+                product_info["price"] = {
+                    "price_id": latest_price["id"],
+                    "unit_amount": format_price(latest_price.get("unit_amount", None)),
+                    "currency": latest_price.get("currency", ""),
+                    "recurring": {
+                        "interval": latest_price["recurring"]["interval"],
+                        "interval_count": latest_price["recurring"]["interval_count"]
                     }
-                    filtered_products.append(product_info)
-                elif price["type"] == "recurring" and product_type == "subscription":
-                    product_info["price"] = {
-                        "price_id": price["id"],  # Add price ID
-                        "unit_amount": format_price(price.get("unit_amount", None)),
-                        "currency": price.get("currency", ""),
-                        "recurring": {
-                            "interval": price["recurring"]["interval"],
-                            "interval_count": price["recurring"]["interval_count"]
-                        }
-                    }
-                    filtered_products.append(product_info)
+                }
+                filtered_products.append(product_info)
+                added_products.add(product["id"])
 
         return {"products": filtered_products}
 
