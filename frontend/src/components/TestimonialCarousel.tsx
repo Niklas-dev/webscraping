@@ -356,7 +356,7 @@ export default function TestimonialSection() {
               </div>
 
               <blockquote className="text-sm text-gray-600 mb-4 line-clamp-3">
-                &qoute;{testimonial.content}&qoute;
+                {testimonial.content}
               </blockquote>
 
               {/* Moderately sized stat badges */}
