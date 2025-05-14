@@ -1,13 +1,16 @@
+"use client";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 export default function Page() {
+  const searchParams = useSearchParams();
   return (
     <div className="min-h-screen bg-white text-black">
       <div className="max-w-3xl mx-auto px-4 py-8">
         <Link
-          href={"/"}
+          href={searchParams.get("ref") === "register" ? "/register" : "/"}
           className="flex items-center text-black hover:text-gray-600 transition-colors mb-6 text-lg"
         >
           <FaArrowLeft className="w-4 h-4 mr-2 mb-1" />
