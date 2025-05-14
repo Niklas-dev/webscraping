@@ -1,3 +1,12 @@
+export interface ScheduledPost {
+  id: string;
+  title: string;
+  description: string;
+  publishDate: string;
+  platforms: string[];
+  thumbnail?: string;
+}
+
 export interface ISubscription {
   id: string;
   current_period_start: number | string;
