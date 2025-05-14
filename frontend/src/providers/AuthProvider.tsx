@@ -11,6 +11,7 @@ interface IUser {
 
 interface IAuthState extends IUser {
   loading: boolean;
+  getUser: () => Promise<void>; // Logout callback
   logout: () => void; // Logout callback
 }
 
@@ -19,6 +20,7 @@ export const AuthContext = createContext<IAuthState>({
   email: "",
   id: "",
   loading: true,
+  getUser: async () => {}, // Initialize with no-op
   logout: () => {}, // Default no-op function
 });
 
@@ -32,6 +34,7 @@ export function AuthProvider({
     email: "",
     id: "",
     loading: true,
+    getUser: async () => {}, // Initialize with no-op
     logout: () => {}, // Initialize with no-op
   });
 
@@ -124,6 +127,7 @@ export function AuthProvider({
       email: "",
       id: "",
       loading: false,
+      getUser,
       logout, // Re-include logout in state
     });
   };
@@ -131,6 +135,7 @@ export function AuthProvider({
   useEffect(() => {
     setUser((prev) => ({
       ...prev,
+      getUser,
       logout, // Attach logout to state
     }));
     getUser();
