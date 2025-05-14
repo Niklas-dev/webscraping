@@ -59,6 +59,10 @@ export function AuthProvider({
   };
 
   const getUser = async () => {
+    setUser((prev) => ({
+      ...prev,
+      loading: true,
+    }));
     let token = getCookie("access_token");
     if (!token) {
       setUser((prev) => ({
