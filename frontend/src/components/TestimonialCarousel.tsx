@@ -142,7 +142,7 @@ export default function TestimonialSection() {
   }, []);
 
   return (
-    <section className="py-12 md:py-20 bg-white -translate-y-2">
+    <section id="reviews" className="py-12 md:py-20 bg-white -translate-y-2">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-10 md:mb-12">
           <div className="inline-flex items-center justify-center bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-sm mb-4">
