@@ -108,7 +108,7 @@ export default function LoginPage() {
           color: "#fff",
         },
       });
-
+      await user.getUser();
       // Set login success state to show loading screen
       setLoginSuccess(true);
 
