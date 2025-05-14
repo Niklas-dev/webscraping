@@ -17,7 +17,7 @@ export default function DashboardLayout({
   const user = useContext(AuthContext);
 
   useEffect(() => {
-    if (!user.username) {
+    if (!user.username && !user.loading) {
       router.push("/login");
     }
 
