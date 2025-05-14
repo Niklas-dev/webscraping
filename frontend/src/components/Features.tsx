@@ -13,7 +13,7 @@ import Link from "next/link";
 export default function SocialMediaFeatures() {
   return (
     <div
-      id="socialmedia"
+      id="feautures"
       className="mt-20 md:mt-32 lg:mt-40 flex flex-col items-center gap-8 px-4 sm:px-6 lg:px-8 overflow-x-hidden pb-16"
     >
       {/* Section Header */}
