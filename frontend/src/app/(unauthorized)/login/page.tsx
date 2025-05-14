@@ -20,6 +20,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false); // New state for loading overlay
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -81,6 +82,7 @@ export default function LoginPage() {
             color: "#fff",
           },
         });
+        setIsLoading(false);
         return;
       }
 
@@ -97,7 +99,23 @@ export default function LoginPage() {
         maxAge: maxAge * 2, // Refresh token lasts longer
       });
 
-      router.push("/dashboard");
+      // Show success message
+      toast.success("Login successful!", {
+        duration: 2000,
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+
+      // Set login success state to show loading screen
+      setLoginSuccess(true);
+
+      // Delay redirect to ensure cookies are set and auth state is updated
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1500);
     } catch (error) {
       toast.error("An error occurred. Please try again.", {
         style: {
@@ -106,7 +124,6 @@ export default function LoginPage() {
           color: "#fff",
         },
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -117,6 +134,38 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-white">
+      {/* Loading overlay - only shown after successful login */}
+      {loginSuccess && (
+        <div className="fixed inset-0 bg-white bg-opacity-80 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+          <div className="bg-white p-8 rounded-xl shadow-lg flex flex-col items-center">
+            <svg
+              className="animate-spin h-10 w-10 text-yellow-500 mb-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Logging you in...
+            </h2>
+            <p className="text-gray-500">Redirecting to your dashboard</p>
+          </div>
+        </div>
+      )}
+
       <BlurBackground />
       <Toaster />
 

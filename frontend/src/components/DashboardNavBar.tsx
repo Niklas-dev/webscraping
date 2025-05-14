@@ -74,17 +74,7 @@ export default function DashboardNavBar() {
                 <BiHeart />
               </SideNavElement>
             </div>
-            <h4 className="font-medium text-gray-400 mt-12">
-              CONTENT MANAGEMENT
-            </h4>
-            <div className="flex flex-col gap-4 mt-2">
-              <SideNavElement
-                route="/dashboard/scheduled-uploads"
-                name="Scheduled Posts"
-              >
-                <BiTime />
-              </SideNavElement>
-            </div>
+
             <h4 className="font-medium text-gray-400 mt-12">SETTINGS</h4>
             <div className="flex flex-col gap-4 mt-2">
               <SideNavElement
