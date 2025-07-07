@@ -1,15 +1,11 @@
-########################################################
 # creates postgres sql database image and pgadmin4 image
 # login db: postgres:postgres hostname: postgres
 # login pgadmin: admin@developer-blog.net:admin port 5555
-########################################################
-version: "1"
+version: "3.8"
 services:
-
   postgres:
     image: postgres
     container_name: webscraping-postgres
-
     ports:
       - 5432:5432
     environment:
@@ -19,7 +15,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
-
+    
   pgadmin:
     image: dpage/pgadmin4
     container_name: webscraping-pgadmin
@@ -31,51 +27,64 @@ services:
       PGADMIN_DEFAULT_EMAIL: test@gmail.com
       PGADMIN_DEFAULT_PASSWORD: admin
     restart: unless-stopped
-
+    
   redis:
     image: redis:6.2-alpine
     container_name: "redis"
     restart: unless-stopped
     ports:
       - '6379:6379'
-    command: redis-server --requirepass yourpassword --save 20 1 #--loglevel warning 
+    command: redis-server --requirepass yourpassword --save 20 1
     volumes:
       - redis:/data
-
+      
   celery_worker:
     container_name: celery_worker
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     working_dir: /app/backend/
-    command: celery -A celery_setup worker --pool=solo --loglevel=info
+    command: celery -A celery_setup worker --pool=solo --loglevel=info --queues=default,trending_queue,cleanup_queue
     volumes:
       - .:/app
     depends_on:
       - redis
       - postgres
     restart: unless-stopped
-
+    
+  celery_beat:
+    container_name: celery_beat
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/backend/
+    command: celery -A celery_setup.celery_app beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - postgres
+      - celery_worker
+    restart: unless-stopped
+    
   flower:
     image: mher/flower
     ports:
       - "5556:5556"
     environment:
-      - CELERY_BROKER_API=redis://:yourpassword@192.168.178.50:6379
-      - CELERY_BROKER_URL=redis://:yourpassword@192.168.178.50:6379
+      - CELERY_BROKER_API=redis://:yourpassword@redis:6379
+      - CELERY_BROKER_URL=redis://:yourpassword@redis:6379
     depends_on:
       - postgres
       - redis
       - celery_worker
     restart: unless-stopped
-
+    
   stripe-cli:
     image: stripe/stripe-cli
     command: listen --api-key sk_test_51Obq2MGpk89JeyEsOLGE66rs3pbgFuqclsfDJOjF8R7fewtXee5oNnV2pKBbGlWYlBKYsGWpUtsjHADjKnOLx9E300yqpMIf4g --forward-to localhost/payments/webhook
     restart: unless-stopped
-
-
-
+    
 volumes:
   postgres-data:
   redis:
