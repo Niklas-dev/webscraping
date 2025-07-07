@@ -19,6 +19,7 @@ if config.config_file_name is not None:
 from app.routers.auth import models as auth_models
 from app.routers.socials import models as socials_models
 from app.routers.payments import models as payments_models
+from app.routers.trending import models as trending_models
 
 target_metadata = [auth_models.Base.metadata]
 

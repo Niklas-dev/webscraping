@@ -11,10 +11,12 @@ from app.routers.auth.services import user_dependency
 from app.routers.auth import models as auth_models
 from app.routers.payments import models as payments_models
 from app.routers.socials import models as socials_models
+from app.routers.trending import models as trending_models
 
 from app.routers.auth.auth import router as auth_router
 from app.routers.payments.payments import router as payments_router
 from app.routers.socials.socials import router as socials_router
+from app.routers.trending.trending import router as trending_router
 from fastapi.middleware.cors import CORSMiddleware
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -34,10 +36,12 @@ app.add_middleware(SessionMiddleware, secret_key=app_settings.SECRET_KEY)
 app.include_router(auth_router)
 app.include_router(payments_router)
 app.include_router(socials_router)
+app.include_router(trending_router)
 
 auth_models.Base.metadata.create_all(bind=engine)
 payments_models.Base.metadata.create_all(bind=engine)
 socials_models.Base.metadata.create_all(bind=engine)
+trending_models.Base.metadata.create_all(bind=engine)
 
 
 @app.get("/", status_code=status.HTTP_200_OK)
