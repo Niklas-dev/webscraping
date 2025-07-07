@@ -18,12 +18,12 @@ celery_app = Celery(
 celery_app.conf.beat_schedule = {
     'fetch-trending-data': {
         'task': 'app.routers.trending.tasks.fetch_all_trending_data',
-        'schedule': timedelta(seconds=30),  # every 30 seconds
+        'schedule': crontab(minute="0", hour='*/4'),  # every 4 hours at minute 0
         'options': {'queue': 'trending_queue'}
     },
     'cleanup-old-trends': {
         'task': 'app.routers.trending.tasks.cleanup_old_trends',
-        'schedule': timedelta(minutes=1),  # every 1 minute
+        'schedule': crontab(minute="0", hour='1'),  # every day at 1:00 AM
         'options': {'queue': 'cleanup_queue'}
     },
 }
