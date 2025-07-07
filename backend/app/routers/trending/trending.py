@@ -35,7 +35,6 @@ async def get_all_trends(user: user_dependency, db: db_dependency):
         reddit_trends = [trend.to_dict() for trend in trends if trend.source == 'reddit']
         news_trends = [trend.to_dict() for trend in trends if trend.source == 'news']
         youtube_trends = [trend.to_dict() for trend in trends if trend.source == 'youtube']
-        print(reddit_trends[0])
         result = {
             'reddit': reddit_trends,
             'news': news_trends,
