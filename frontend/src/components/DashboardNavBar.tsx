@@ -64,10 +64,7 @@ export default function DashboardNavBar() {
               <SideNavElement route="/dashboard/roadmap" name="Roadmap">
                 <BiMap />
               </SideNavElement>
-              <SideNavElement
-                route="/dashboard/trending"
-                name="Trending (Soon)"
-              >
+              <SideNavElement route="/dashboard/trending" name="Trending">
                 <BiTrendingUp />
               </SideNavElement>
               <SideNavElement route="/dashboard/liked-ideas" name="Liked Ideas">
