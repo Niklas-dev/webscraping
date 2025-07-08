@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 interface SocialMediaIdeaTrends {
   title: string;
@@ -42,6 +43,8 @@ interface PostIdeaCardTrendsProps {
 }
 
 export function PostIdeaCardTrends({ idea }: PostIdeaCardTrendsProps) {
+  const router = useRouter();
+
   const getSourceBadgeStyle = (source: string) => {
     switch (source) {
       case "reddit":
@@ -68,6 +71,25 @@ export function PostIdeaCardTrends({ idea }: PostIdeaCardTrendsProps) {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
     return num.toString();
+  };
+
+  const handleCreatePost = () => {
+    // Create URL params with the trend data
+    const params = new URLSearchParams({
+      from_trend: "true",
+      trend_title: idea.title,
+      trend_source: idea.source,
+      trend_angle: idea.post_angle,
+      trend_hashtags: idea.hashtags.join(","),
+      trend_engagement: idea.engagement_potential,
+      trend_url: idea.original_url || idea.video_url || "",
+      ...(idea.post_type && { trend_post_type: idea.post_type }),
+      ...(idea.channel && { trend_channel: idea.channel }),
+      ...(idea.subreddit && { trend_subreddit: idea.subreddit }),
+      ...(idea.news_source && { trend_news_source: idea.news_source }),
+    });
+
+    router.push(`/dashboard/create-post-idea?${params.toString()}`);
   };
 
   const getSourceSpecificInfo = () => {
@@ -233,6 +255,7 @@ export function PostIdeaCardTrends({ idea }: PostIdeaCardTrendsProps) {
           <Button
             size="sm"
             className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black"
+            onClick={handleCreatePost}
           >
             Create Post
             <ArrowRight className="h-3 w-3 ml-1" />
