@@ -1,3 +1,5 @@
+import os
+
 import requests
 import asyncio
 import aiohttp
@@ -20,20 +22,48 @@ class TrendAggregator:
         if self.session:
             await self.session.close()
 
+    async def get_access_token(self, client_id: str, client_secret: str, user_agent: str) -> str:
+        auth = aiohttp.BasicAuth(client_id, client_secret)
+        headers = {'User-Agent': user_agent}
+        data = {'grant_type': 'client_credentials'}
+
+        async with self.session.post(
+                'https://www.reddit.com/api/v1/access_token',
+                auth=auth,
+                data=data,
+                headers=headers
+        ) as resp:
+            if resp.status == 200:
+                token_json = await resp.json()
+                return token_json['access_token']
+            else:
+                text = await resp.text()
+                raise Exception(f"Failed to get token: {resp.status} {text}")
+
     async def get_reddit_trends(self) -> List[Dict[str, Any]]:
-        """Get trending posts from Reddit"""
+        """Get trending posts from Reddit with OAuth authentication"""
         try:
-            headers = {'User-Agent': 'TrendBot/1.0'}
+            client_id = os.getenv('REDDIT_CLIENT_ID')
+            client_secret = os.getenv('REDDIT_CLIENT_SECRET')
+            user_agent = 'TrendBot/1.0 by YourRedditUsername'
+
+            if not client_id or not client_secret:
+                raise Exception("Missing Reddit API credentials in environment variables")
+
+            access_token = await self.get_access_token(client_id, client_secret, user_agent)
+            headers = {
+                'User-Agent': user_agent,
+                'Authorization': f'Bearer {access_token}',
+            }
             subreddits = ['all', 'popular', 'news', 'worldnews']
             all_trends = []
 
             for subreddit in subreddits:
-                url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10"
+                url = f"https://oauth.reddit.com/r/{subreddit}/hot?limit=10"
 
                 async with self.session.get(url, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
-
                         for post in data['data']['children']:
                             post_data = post['data']
                             all_trends.append({
@@ -46,8 +76,10 @@ class TrendAggregator:
                                 'comments': post_data['num_comments'],
                                 'upvote_ratio': post_data.get('upvote_ratio', 0)
                             })
+                    else:
+                        text = await response.text()
+                        print(f"Failed to fetch {subreddit}: {response.status} {text}")
 
-            # Sort by score and return top 20
             return sorted(all_trends, key=lambda x: x['score'], reverse=True)[:40]
 
         except Exception as e:
