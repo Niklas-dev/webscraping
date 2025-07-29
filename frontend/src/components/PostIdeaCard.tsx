@@ -117,8 +117,8 @@ export default function PostIdeaCard({
     // Check if hashtags are not null or empty
     if (hashtags) {
       // Remove curly braces and split the string into a list of hashtags
-      const hashtagsStr = hashtags.replace(/^\{|\}$/g, ""); // Remove curly braces using regex
-      return hashtagsStr.split(",").map((hashtag) => hashtag.trim()); // Split by comma and trim extra spaces
+
+      return JSON.parse(hashtags); // Split by comma and trim extra spaces
     }
     return [];
   };
