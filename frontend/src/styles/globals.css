@@ -101,3 +101,162 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Highlight.js theme - slightly less colorful */
+.hljs {
+  color: #e0e0e0; /* General text color in code blocks */
+  background: #1a1a1a; /* Dark background for code blocks */
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+  border: 1px solid #444444; /* Subtle border color */
+  border-radius: 0.375rem; /* Tailwind's rounded-md */
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #888888; /* Gray for comments */
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst,
+.hljs-meta-keyword {
+  color: #ff8c69; /* Softer reddish-orange for keywords */
+}
+
+.hljs-literal,
+.hljs-number,
+.hljs-tag .hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-attribute {
+  color: #9acfea; /* Softer light blue/cyan for types, numbers, built-ins */
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable.constant_,
+.hljs-list .hljs-title,
+.hljs-bullet,
+.hljs-link {
+  color: #bada55; /* Softer greenish-yellow for strings */
+}
+
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-meta {
+  color: #c792ea; /* Softer purple/pink for decorators, meta */
+}
+
+.hljs-deletion {
+  background-color: #490202;
+  color: #ff8181;
+}
+
+.hljs-addition {
+  background-color: #033a16;
+  color: #2ea043;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+.hljs-section {
+  color: #1f6feb;
+  font-weight: 700;
+}
+
+.hljs-class .hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__ {
+  color: #9acfea; /* Softer light blue for class names */
+}
+
+.hljs-attr,
+.hljs-variable.property_,
+.hljs-title.function_ {
+  color: #9acfea; /* Softer light blue for function names, attributes */
+}
+
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-selector-tag {
+  color: #9acfea;
+}
+
+.hljs-name,
+.hljs-tag {
+  color: #90ee90; /* Softer green */
+}
+
+.hljs-doctag,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+  color: #ff8c69; /* Softer reddish-orange */
+}
+
+.hljs-params {
+  color: #e0e0e0; /* Inherit general text color for parameters */
+}
+
+/* Styles for rehype-code-titles */
+.rehype-code-title {
+  @apply bg-gray-800 text-gray-200 text-sm font-mono px-4 py-2 rounded-t-md border-b border-gray-700;
+  background-color: #1a1a1a; /* Match code block background */
+  border: 1px solid #444444; /* Match code block border */
+  border-bottom: none; /* No bottom border as it connects to the code block */
+  margin-top: 1.5rem;
+  margin-bottom: 0; /* Remove margin to connect to pre */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Ensure prose styles integrate well with highlight.js and code titles */
+.prose pre {
+  background-color: #1a1a1a; /* Match highlight.js background */
+  border-radius: 0.375rem; /* Tailwind's rounded-md */
+  padding: 1rem;
+  overflow-x: auto;
+  margin-top: 0; /* Remove top margin if title is present */
+  border: 1px solid #444444; /* Subtle border color */
+}
+
+/* Adjust border-radius for pre when a title is present */
+.rehype-code-title + pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.prose :not(pre) > code {
+  /* Inline code styling */
+  background-color: #2a2a2a; /* Slightly lighter background for inline code */
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em; /* text-sm */
+  color: #e0e0e0; /* Match general code text color */
+}
+
+/* Ensure highlight.js classes take precedence for code blocks */
+.prose pre.hljs {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  padding: 1em; /* Reverted padding to 1em for consistency */
+}
+
+.prose code.hljs {
+  background-color: transparent;
+  color: inherit;
+  padding: 8px; /* Reverted padding to 0 for consistency */
+}
