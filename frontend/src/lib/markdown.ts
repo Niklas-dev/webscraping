@@ -50,7 +50,6 @@ export async function markdownToHtml(markdown: string): Promise<string> {
     // Apply syntax highlighting to code blocks
     .use(rehypeHighlight, {
       detect: true, // Attempt to auto-detect language if not specified
-      ignoreMissing: true, // Don't throw errors for unknown languages
     })
     // Add target="_blank" and rel="noopener noreferrer" to all external links
     .use(rehypeExternalLinks, {
