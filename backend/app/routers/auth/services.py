@@ -241,7 +241,7 @@ async def send_verification_email(email: str, token: str):
 
     try:
         params = {
-            "from": "support@trendpilot.pro",
+            "from": "support@mail.trendpilot.pro",
             "to": [email],
             "subject": subject,
             "html": html_content,
@@ -271,7 +271,7 @@ async def send_password_reset_email(email: str, token: str):
     """
     try:
         params = {
-            "from": "support@trendpilot.pro",
+            "from": "support@mail.trendpilot.pro",
             "to": [email],
             "subject": subject,
             "html": html_content,
