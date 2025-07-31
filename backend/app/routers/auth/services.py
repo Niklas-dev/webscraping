@@ -18,7 +18,9 @@ from .validators import GoogleUser
 from .models import User
 from ...config.settings import app_settings
 from ...db.database import db_dependency
+import resend
 
+resend.api_key = app_settings.RESEND_API_KEY
 ALGORITHM = "HS256"
 
 oauth_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
@@ -237,20 +239,18 @@ async def send_verification_email(email: str, token: str):
     </html>
     """
 
-    message = Mail(
-        from_email='support@trendpilot.pro',
-        to_emails=email,
-        subject=subject,
-        html_content=html_content)
-
     try:
-        sg = SendGridAPIClient(app_settings.SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
+        params = {
+            "from": "support@trendpilot.pro",
+            "to": [email],
+            "subject": subject,
+            "html": html_content,
+        }
+
+        email_response = resend.Emails.send(params)
+        print(f"Email sent successfully: {email_response}")
     except Exception as e:
-        print(e.message)
+        print(f"Error sending email: {e}")
 
     print(f"Verification email sent to {email}")
 
@@ -269,19 +269,18 @@ async def send_password_reset_email(email: str, token: str):
         </body>
     </html>
     """
-    message = Mail(
-        from_email='support@trendpilot.pro',
-        to_emails=email,
-        subject=subject,
-        html_content=html_content)
     try:
-        sg = SendGridAPIClient(app_settings.SENDGRID_API_KEY)
-        response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
+        params = {
+            "from": "support@trendpilot.pro",
+            "to": [email],
+            "subject": subject,
+            "html": html_content,
+        }
+
+        email_response = resend.Emails.send(params)
+        print(f"Email sent successfully: {email_response}")
     except Exception as e:
-        print(e.message)
+        print(f"Error sending email: {e}")
     print(f"Password reset email sent to {email}")
 
 

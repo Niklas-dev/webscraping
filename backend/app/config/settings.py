@@ -18,6 +18,7 @@ class Settings:
         self.GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET")
         self.GOOGLE_REDIRECT_URI: str = os.getenv("GOOGLE_REDIRECT_URI")
         self.SENDGRID_API_KEY: str = os.getenv("SENDGRID_API_KEY")
+        self.RESEND_API_KEY: str = os.getenv("RESEND_API_KEY")
 
 
 app_settings = Settings()
